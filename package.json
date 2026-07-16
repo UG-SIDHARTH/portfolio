@@ -4,11 +4,18 @@
   "description": "Interactive OS-style Web Portfolio of Sidharth D with Express Backend",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "frontend": "http-server . -p 8080 -c-1",
+    "backend": "node server.js",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1"
   },
   "author": "Sidharth D",
   "license": "MIT"

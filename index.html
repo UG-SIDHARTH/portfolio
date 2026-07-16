@@ -71,17 +71,11 @@
                 <div class="window-body">
                     <div class="profile-layout">
                         <div class="profile-left">
-                            <div class="profile-avatar">SD</div>
-                            <h2 class="profile-name">Sidharth D</h2>
-                            <p class="profile-tagline">IoT & AI/ML Developer</p>
-                            <div class="profile-meta">
-                                <div class="meta-line">📍 Kazhakkoottam, Kerala</div>
-                                <div class="meta-line">📧 ugsidharth@icloud.com</div>
-                            </div>
-                            <div class="profile-socials">
-                                <a href="https://github.com/ugsidharth" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="GitHub">GitHub</a>
-                                <a href="https://linkedin.com/in/sidharth-d" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="LinkedIn">LinkedIn</a>
-                            </div>
+                            <div class="profile-avatar" id="prof-avatar">SD</div>
+                            <h2 class="profile-name" id="prof-name">Loading Profile...</h2>
+                            <p class="profile-tagline" id="prof-tagline"></p>
+                            <div class="profile-meta" id="prof-meta"></div>
+                            <div class="profile-socials" id="prof-socials"></div>
                         </div>
                         <div class="profile-right">
                             <h3>Overview</h3>
@@ -127,37 +121,7 @@
                         </div>
                         <div class="skills-content-area">
                             <div class="skills-os-grid" id="skills-os-grid">
-                                <!-- Group: Languages -->
-                                <div class="skill-os-item" data-category="languages"><span>🐍 Python</span></div>
-                                <div class="skill-os-item" data-category="languages"><span>⚙️ C++</span></div>
-                                <div class="skill-os-item" data-category="languages"><span>🔧 C</span></div>
-                                <div class="skill-os-item" data-category="languages"><span>🐚 Bash Scripting</span></div>
-                                <div class="skill-os-item" data-category="languages"><span>🌐 HTML/CSS</span></div>
-                                <div class="skill-os-item" data-category="languages"><span>🐧 Linux OS</span></div>
-                                
-                                <!-- Group: IoT -->
-                                <div class="skill-os-item" data-category="iot"><span>🔌 ESP32 Dev</span></div>
-                                <div class="skill-os-item" data-category="iot"><span>🍓 Raspberry Pi</span></div>
-                                <div class="skill-os-item" data-category="iot"><span>📟 Arduino IDE</span></div>
-                                <div class="skill-os-item" data-category="iot"><span>🛰️ MQTT Protocol</span></div>
-                                <div class="skill-os-item" data-category="iot"><span>🎛️ Prototyping</span></div>
-                                <div class="skill-os-item" data-category="iot"><span>⚡ ANSYS Simulation</span></div>
-                                
-                                <!-- Group: AI -->
-                                <div class="skill-os-item" data-category="ai"><span>🤖 Machine Learning</span></div>
-                                <div class="skill-os-item" data-category="ai"><span>👁️ Face Recognition</span></div>
-                                <div class="skill-os-item" data-category="ai"><span>🧠 Edge AI</span></div>
-                                <div class="skill-os-item" data-category="ai"><span>📊 Data Analysis</span></div>
-                                <div class="skill-os-item" data-category="ai"><span>📈 NumPy & Pandas</span></div>
-                                <div class="skill-os-item" data-category="ai"><span>📡 Telecom Analytics</span></div>
-                                
-                                <!-- Group: Creative/Other -->
-                                <div class="skill-os-item" data-category="creative"><span>🎨 Figma Design</span></div>
-                                <div class="skill-os-item" data-category="creative"><span>📷 Photography</span></div>
-                                <div class="skill-os-item" data-category="creative"><span>🎥 Videography</span></div>
-                                <div class="skill-os-item" data-category="creative"><span>📝 LaTeX Typing</span></div>
-                                <div class="skill-os-item" data-category="creative"><span>🏢 MS Office</span></div>
-                                <div class="skill-os-item" data-category="creative"><span>🗣️ English / Malayalam</span></div>
+                                <div id="skills-loader" style="color: #888; font-family: var(--ff-heading); font-size: 0.85rem; padding: 1rem; grid-column: span 3; text-align: center;">Loading skills roster...</div>
                             </div>
                         </div>
                     </div>
@@ -193,74 +157,8 @@
                             </div>
                         </div>
 
-                        <div class="projects-tech-grid">
-                            <!-- Card 01: Grabster -->
-                            <div class="tech-card" data-live="true">
-                                <div class="tech-card-ticks"></div>
-                                <div class="tech-card-header">
-                                    <div class="tech-card-title-row">
-                                        <h3><span class="tech-card-num">01</span> GRABSTER</h3>
-                                        <div class="tech-card-actions">
-                                            <a href="https://github.com/UG-SIDHARTH/Grabster-5.0" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
-                                            <a href="https://novara.ugsidharth.in/" target="_blank" rel="noopener noreferrer" class="tech-btn btn-run">[RUN]</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tech-card-body">
-                                    <p class="tech-card-desc">Production-ready self-hosted media downloader. Bypasses download restrictions using Netscape cookies session streams.</p>
-                                    
-                                    <div class="tech-lang-bar">
-                                        <div class="lang-seg" style="width: 48.2%; background: #f1e05a;"></div> <!-- JavaScript (Yellow) -->
-                                        <div class="lang-seg" style="width: 24.1%; background: #563d7c;"></div> <!-- CSS (Purple) -->
-                                        <div class="lang-seg" style="width: 15.3%; background: #e34c26;"></div> <!-- HTML (Red) -->
-                                        <div class="lang-seg" style="width: 12.4%; background: #384d54;"></div> <!-- Docker (Blue-Grey) -->
-                                    </div>
-                                    
-                                    <div class="tech-lang-legend">
-                                        <span class="legend-item"><span class="dot" style="background: #f1e05a;"></span> JavaScript <strong>48.2%</strong></span>
-                                        <span class="legend-item"><span class="dot" style="background: #563d7c;"></span> CSS <strong>24.1%</strong></span>
-                                        <span class="legend-item"><span class="dot" style="background: #e34c26;"></span> HTML <strong>15.3%</strong></span>
-                                        <span class="legend-item"><span class="dot" style="background: #384d54;"></span> Dockerfile <strong>12.4%</strong></span>
-                                    </div>
-                                </div>
-                                <div class="tech-card-footer">
-                                    <div class="dash-separator"></div>
-                                    <span class="footer-meta">NO_TAG_METADATA_DETECTED</span>
-                                </div>
-                            </div>
-
-                            <!-- Card 02: SidharthOS -->
-                            <div class="tech-card" data-live="true">
-                                <div class="tech-card-ticks"></div>
-                                <div class="tech-card-header">
-                                    <div class="tech-card-title-row">
-                                        <h3><span class="tech-card-num">02</span> SIDHARTH_OS</h3>
-                                        <div class="tech-card-actions">
-                                            <a href="https://github.com/UG-SIDHARTH/portfolio" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
-                                            <a href="https://ug-sidharth.github.io/portfolio" target="_blank" rel="noopener noreferrer" class="tech-btn btn-run">[RUN]</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tech-card-body">
-                                    <p class="tech-card-desc">Interactive glassmorphic desktop environment designed to display profile metrics and timeline data feeds.</p>
-                                    
-                                    <div class="tech-lang-bar">
-                                        <div class="lang-seg" style="width: 45.0%; background: #e34c26;"></div> <!-- HTML (Red) -->
-                                        <div class="lang-seg" style="width: 35.0%; background: #563d7c;"></div> <!-- CSS (Purple) -->
-                                        <div class="lang-seg" style="width: 20.0%; background: #f1e05a;"></div> <!-- JavaScript (Yellow) -->
-                                    </div>
-                                    
-                                    <div class="tech-lang-legend">
-                                        <span class="legend-item"><span class="dot" style="background: #e34c26;"></span> HTML <strong>45.0%</strong></span>
-                                        <span class="legend-item"><span class="dot" style="background: #563d7c;"></span> CSS <strong>35.0%</strong></span>
-                                        <span class="legend-item"><span class="dot" style="background: #f1e05a;"></span> JavaScript <strong>20.0%</strong></span>
-                                    </div>
-                                </div>
-                                <div class="tech-card-footer">
-                                    <div class="dash-separator"></div>
-                                    <span class="footer-meta">NO_TAG_METADATA_DETECTED</span>
-                                </div>
-                            </div>
+                        <div class="projects-tech-grid" id="projects-tech-grid">
+                            <div style="color: #ff9e00; font-family: 'Consolas', monospace; font-size: 0.85rem; grid-column: span 2; padding: 2rem; text-align: center;">Loading modules registry...</div>
                         </div>
                     </div>
                     
@@ -277,7 +175,7 @@
                                 ↗
                             </a>
                         </div>
-                        <iframe id="projects-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+                        <iframe id="projects-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"></iframe>
                     </div>
                 </div>
             </div>
@@ -294,28 +192,8 @@
                     <div class="window-spacer"></div>
                 </div>
                 <div class="window-body">
-                    <div class="timeline-window-container">
-                        
-                        <div class="timeline-card">
-                            <span class="timeline-meta">2025 - 2029 (Expected)</span>
-                            <h4>B.Tech in Computer Science and Engineering</h4>
-                            <p class="timeline-subtitle">College of Engineering, Attingal (CEAL)</p>
-                            <p class="timeline-text">Focusing on advanced programming systems, microcontrollers, embedded nodes, systems debugging, and artificial intelligence coursework.</p>
-                        </div>
-                        
-                        <div class="timeline-card">
-                            <span class="timeline-meta">2025 (Completed)</span>
-                            <h4>Higher Secondary Education (12th Class)</h4>
-                            <p class="timeline-subtitle">Jyoti Nilayam Higher Secondary School</p>
-                            <p class="timeline-text">Graduated high school in Thiruvananthapuram with core modules in Physics, Mathematics, and Computer Science.</p>
-                        </div>
-
-                        <div class="timeline-card">
-                            <span class="timeline-meta">Certification</span>
-                            <h4>AI/ML in Junior Telecom Data Analyst</h4>
-                            <p class="timeline-subtitle">Professional Competency Certification</p>
-                            <p class="timeline-text">Learned foundational telecom telemetry analysis, database mapping, signal classification, and neural network data models.</p>
-                        </div>
+                    <div class="timeline-window-container" id="timeline-window-container">
+                        <div style="color: #888; font-family: var(--ff-heading); font-size: 0.85rem; padding: 1rem; text-align: center;">Loading timeline feed...</div>
 
                     </div>
                 </div>
@@ -511,51 +389,7 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- VS Code Templates for Code Display -->
-    <template id="template-vscode-resume">{
-  <span class="code-keyword">"developer_profile"</span>: {
-    <span class="code-keyword">"name"</span>: <span class="code-string">"Sidharth D"</span>,
-    <span class="code-keyword">"specialization"</span>: <span class="code-string">"IoT, AI & Machine Learning"</span>,
-    <span class="code-keyword">"location"</span>: <span class="code-string">"Kazhakkoottam, Kerala, India"</span>,
-    <span class="code-keyword">"email"</span>: <span class="code-string">"ugsidharth@icloud.com"</span>
-  },
-  <span class="code-keyword">"education"</span>: {
-    <span class="code-keyword">"degree"</span>: <span class="code-string">"B.Tech in Computer Science and Engineering"</span>,
-    <span class="code-keyword">"college"</span>: <span class="code-string">"College of Engineering, Attingal (CEAL)"</span>,
-    <span class="code-keyword">"tenure"</span>: <span class="code-string">"2025 - 2029 (Expected)"</span>
-  },
-  <span class="code-keyword">"featured_project"</span>: {
-    <span class="code-keyword">"name"</span>: <span class="code-string">"Grabster / MediaHub Downloader"</span>,
-    <span class="code-keyword">"live_demo"</span>: <span class="code-string">"https://novara.ugsidharth.in/"</span>,
-    <span class="code-keyword">"source_code"</span>: <span class="code-string">"https://github.com/UG-SIDHARTH/Grabster-5.0"</span>
-  }
-}</template>
 
-    <template id="template-vscode-index">&lt;<span class="code-tag">div</span> <span class="code-attr">id</span>=<span class="code-string">"desktop"</span>&gt;
-  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"desktop-icons"</span>&gt;
-    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"desktop-icon"</span> <span class="code-attr">data-app</span>=<span class="code-string">"vscode"</span>&gt;
-      &lt;<span class="code-tag">span</span>&gt;📝 VS_Code.app&lt;/<span class="code-tag">span</span>&gt;
-    &lt;/<span class="code-tag">div</span>&gt;
-  &lt;/<span class="code-tag">div</span>&gt;
-  &lt;<span class="code-tag">div</span> <span class="code-attr">id</span>=<span class="code-string">"windows-workspace"</span>&gt;&lt;/<span class="code-tag">div</span>&gt;
-&lt;/<span class="code-tag">div</span>&gt;</template>
-
-    <template id="template-vscode-script"><span class="code-comment">// Active WebOS Window Drag Handler</span>
-<span class="code-keyword">function</span> <span class="code-keyword">initDrag</span>(winEl) {
-  winEl.addEventListener(<span class="code-string">'mousedown'</span>, (e) =&gt; {
-    <span class="code-keyword">let</span> startX = e.clientX;
-    <span class="code-keyword">let</span> startY = e.clientY;
-    <span class="code-comment">// Grab window offset coordinate limits...</span>
-    console.log(<span class="code-string">"Launching App: "</span> + winEl.id);
-  });
-}</template>
-
-    <template id="template-vscode-styles"><span class="code-comment">/* Custom Cyberpunk variables variables */</span>
-<span class="code-tag">:root</span> {
-  <span class="code-attr">--bg-primary</span>: <span class="code-number">#07090e</span>;
-  <span class="code-attr">--color-cyan</span>: <span class="code-number">#00f2fe</span>;
-  <span class="code-attr">--border-glow</span>: <span class="code-string">rgba(0, 242, 254, 0.35)</span>;
-}</template>
 
     <!-- Custom JS -->
     <script src="script.js"></script>

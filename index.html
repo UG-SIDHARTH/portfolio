@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive OS-style portfolio of Sidharth D. Computer Science undergraduate specializing in IoT development, Artificial Intelligence, and Machine Learning.">
+    <meta name="keywords" content="Sidharth D, portfolio, OS portfolio, web OS, IoT, Artificial Intelligence, Machine Learning, ESP32, Raspberry Pi, Arduino, Edge AI, Python, B.Tech CSE, CEAL">
+    <meta name="author" content="Sidharth D">
+    <title>Sidharth D | Interactive Web OS Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Particle Canvas (Desktop Wallpaper) -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Main OS Desktop Environment -->
+    <div id="desktop">
+        <!-- 1. Desktop Icon Grid -->
+        <div class="desktop-icons">
+            <div class="desktop-icon" data-app="profile" id="icon-profile">
+                <div class="icon-visual">👤</div>
+                <span class="icon-label">Profile.app</span>
+            </div>
+            <div class="desktop-icon" data-app="skills" id="icon-skills">
+                <div class="icon-visual">🛠️</div>
+                <span class="icon-label">Skills.app</span>
+            </div>
+            <div class="desktop-icon" data-app="projects" id="icon-projects">
+                <div class="icon-visual">📂</div>
+                <span class="icon-label">Projects.app</span>
+            </div>
+            <div class="desktop-icon" data-app="timeline" id="icon-timeline">
+                <div class="icon-visual">📜</div>
+                <span class="icon-label">Timeline.app</span>
+            </div>
+            <div class="desktop-icon" data-app="terminal" id="icon-terminal">
+                <div class="icon-visual">💻</div>
+                <span class="icon-label">Terminal.app</span>
+            </div>
+            <div class="desktop-icon" data-app="mail" id="icon-mail">
+                <div class="icon-visual">✉️</div>
+                <span class="icon-label">Mail.app</span>
+            </div>
+            <div class="desktop-icon" data-app="vscode" id="icon-vscode">
+                <div class="icon-visual">📝</div>
+                <span class="icon-label">VS_Code.app</span>
+            </div>
+        </div>
+
+        <!-- 2. Windows Workspace Container -->
+        <div id="windows-workspace">
+            
+            <!-- APPLICATION WINDOW: Profile (About Me) -->
+            <div class="window glass-card" id="window-profile" data-window="profile" style="width: 780px; height: 500px; top: 10%; left: 15%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                    </div>
+                    <div class="window-title">👤 Profile.app - About Me</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body">
+                    <div class="profile-layout">
+                        <div class="profile-left">
+                            <div class="profile-avatar">SD</div>
+                            <h2 class="profile-name">Sidharth D</h2>
+                            <p class="profile-tagline">IoT & AI/ML Developer</p>
+                            <div class="profile-meta">
+                                <div class="meta-line">📍 Kazhakkoottam, Kerala</div>
+                                <div class="meta-line">📧 ugsidharth@icloud.com</div>
+                            </div>
+                            <div class="profile-socials">
+                                <a href="https://github.com/ugsidharth" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="GitHub">GitHub</a>
+                                <a href="https://linkedin.com/in/sidharth-d" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="LinkedIn">LinkedIn</a>
+                            </div>
+                        </div>
+                        <div class="profile-right">
+                            <h3>Overview</h3>
+                            <p>
+                                I am a Computer Science undergraduate specializing in IoT development, artificial intelligence, and machine learning. I enjoy bridging the gap between hardware prototyping (ESP32, Raspberry Pi, Arduino) and AI pathways (edge AI, facial recognition).
+                            </p>
+                            <p>
+                                Currently pursuing a B.Tech in CSE at College of Engineering, Attingal (2025-2029). Skilled in Python-based analysis and telemetry debugging.
+                            </p>
+                            <h3 style="margin-top: 1.5rem;">Areas of Focus</h3>
+                            <div class="focus-tags">
+                                <span class="focus-tag">IoT Development</span>
+                                <span class="focus-tag">Edge AI Systems</span>
+                                <span class="focus-tag">System Debugging</span>
+                                <span class="focus-tag">Telecom Data Analytics</span>
+                                <span class="focus-tag">Technical Writing</span>
+                                <span class="focus-tag">Photography</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Skills -->
+            <div class="window glass-card" id="window-skills" data-window="skills" style="width: 720px; height: 480px; top: 15%; left: 20%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                    </div>
+                    <div class="window-title">🛠️ Skills.app - Inventory</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body">
+                    <div class="skills-window-layout">
+                        <div class="skills-sidebar">
+                            <button class="skill-tab-btn active" data-tab="all">All Skills</button>
+                            <button class="skill-tab-btn" data-tab="languages">Languages & OS</button>
+                            <button class="skill-tab-btn" data-tab="iot">IoT & Hardware</button>
+                            <button class="skill-tab-btn" data-tab="ai">AI / ML & Data</button>
+                            <button class="skill-tab-btn" data-tab="creative">Creative & Other</button>
+                        </div>
+                        <div class="skills-content-area">
+                            <div class="skills-os-grid" id="skills-os-grid">
+                                <!-- Group: Languages -->
+                                <div class="skill-os-item" data-category="languages"><span>🐍 Python</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>⚙️ C++</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>🔧 C</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>🐚 Bash Scripting</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>🌐 HTML/CSS</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>🐧 Linux OS</span></div>
+                                
+                                <!-- Group: IoT -->
+                                <div class="skill-os-item" data-category="iot"><span>🔌 ESP32 Dev</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>🍓 Raspberry Pi</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>📟 Arduino IDE</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>🛰️ MQTT Protocol</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>🎛️ Prototyping</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>⚡ ANSYS Simulation</span></div>
+                                
+                                <!-- Group: AI -->
+                                <div class="skill-os-item" data-category="ai"><span>🤖 Machine Learning</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>👁️ Face Recognition</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>🧠 Edge AI</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>📊 Data Analysis</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>📈 NumPy & Pandas</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>📡 Telecom Analytics</span></div>
+                                
+                                <!-- Group: Creative/Other -->
+                                <div class="skill-os-item" data-category="creative"><span>🎨 Figma Design</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>📷 Photography</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>🎥 Videography</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>📝 LaTeX Typing</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>🏢 MS Office</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>🗣️ English / Malayalam</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Projects -->
+            <div class="window glass-card" id="window-projects" data-window="projects" style="width: 840px; height: 540px; top: 12%; left: 16%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                    </div>
+                    <div class="window-title">📂 Projects.app - Showcase</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0;">
+                    <div class="projects-window-container">
+                        <div class="projects-os-header">
+                            <div class="projects-os-title-group">
+                                <h1>PROJECTS <span class="blink-cursor">_</span></h1>
+                                <p>Select a module to view details</p>
+                            </div>
+                            <div class="projects-os-actions">
+                                <label class="projects-live-only">
+                                    <input type="checkbox" id="live-only-check"> LIVE ONLY
+                                </label>
+                                <button class="projects-action-btn" id="projects-refresh-btn">
+                                    <span class="refresh-icon" style="display: inline-block; transition: transform 0.4s ease;">🔄</span> REFRESH
+                                </button>
+                                <span class="projects-count-badge">2 MODULES DETECTED</span>
+                            </div>
+                        </div>
+
+                        <div class="projects-tech-grid">
+                            <!-- Card 01: Grabster -->
+                            <div class="tech-card" data-live="true">
+                                <div class="tech-card-ticks"></div>
+                                <div class="tech-card-header">
+                                    <div class="tech-card-title-row">
+                                        <h3><span class="tech-card-num">01</span> GRABSTER</h3>
+                                        <div class="tech-card-actions">
+                                            <a href="https://github.com/UG-SIDHARTH/Grabster-5.0" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
+                                            <a href="https://novara.ugsidharth.in/" target="_blank" rel="noopener noreferrer" class="tech-btn btn-run">[RUN]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tech-card-body">
+                                    <p class="tech-card-desc">Production-ready self-hosted media downloader. Bypasses download restrictions using Netscape cookies session streams.</p>
+                                    
+                                    <div class="tech-lang-bar">
+                                        <div class="lang-seg" style="width: 48.2%; background: #f1e05a;"></div> <!-- JavaScript (Yellow) -->
+                                        <div class="lang-seg" style="width: 24.1%; background: #563d7c;"></div> <!-- CSS (Purple) -->
+                                        <div class="lang-seg" style="width: 15.3%; background: #e34c26;"></div> <!-- HTML (Red) -->
+                                        <div class="lang-seg" style="width: 12.4%; background: #384d54;"></div> <!-- Docker (Blue-Grey) -->
+                                    </div>
+                                    
+                                    <div class="tech-lang-legend">
+                                        <span class="legend-item"><span class="dot" style="background: #f1e05a;"></span> JavaScript <strong>48.2%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #563d7c;"></span> CSS <strong>24.1%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #e34c26;"></span> HTML <strong>15.3%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #384d54;"></span> Dockerfile <strong>12.4%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="tech-card-footer">
+                                    <div class="dash-separator"></div>
+                                    <span class="footer-meta">NO_TAG_METADATA_DETECTED</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 02: SidharthOS -->
+                            <div class="tech-card" data-live="true">
+                                <div class="tech-card-ticks"></div>
+                                <div class="tech-card-header">
+                                    <div class="tech-card-title-row">
+                                        <h3><span class="tech-card-num">02</span> SIDHARTH_OS</h3>
+                                        <div class="tech-card-actions">
+                                            <a href="https://github.com/UG-SIDHARTH/portfolio" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
+                                            <a href="https://ug-sidharth.github.io/portfolio" target="_blank" rel="noopener noreferrer" class="tech-btn btn-run">[RUN]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tech-card-body">
+                                    <p class="tech-card-desc">Interactive glassmorphic desktop environment designed to display profile metrics and timeline data feeds.</p>
+                                    
+                                    <div class="tech-lang-bar">
+                                        <div class="lang-seg" style="width: 45.0%; background: #e34c26;"></div> <!-- HTML (Red) -->
+                                        <div class="lang-seg" style="width: 35.0%; background: #563d7c;"></div> <!-- CSS (Purple) -->
+                                        <div class="lang-seg" style="width: 20.0%; background: #f1e05a;"></div> <!-- JavaScript (Yellow) -->
+                                    </div>
+                                    
+                                    <div class="tech-lang-legend">
+                                        <span class="legend-item"><span class="dot" style="background: #e34c26;"></span> HTML <strong>45.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #563d7c;"></span> CSS <strong>35.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #f1e05a;"></span> JavaScript <strong>20.0%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="tech-card-footer">
+                                    <div class="dash-separator"></div>
+                                    <span class="footer-meta">NO_TAG_METADATA_DETECTED</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Embedded Projects Live Browser View -->
+                    <div class="projects-iframe-container">
+                        <div class="projects-iframe-header">
+                            <div class="iframe-nav-left">
+                                <button id="btn-iframe-back">
+                                    ← BACK_TO_MODULES
+                                </button>
+                                <span id="iframe-current-url">https://novara.ugsidharth.in</span>
+                            </div>
+                            <a id="iframe-external-link" href="https://novara.ugsidharth.in" target="_blank" rel="noopener noreferrer" title="Open in new tab">
+                                ↗
+                            </a>
+                        </div>
+                        <iframe id="projects-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Timeline -->
+            <div class="window glass-card" id="window-timeline" data-window="timeline" style="width: 700px; height: 460px; top: 18%; left: 22%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                    </div>
+                    <div class="window-title">📜 Timeline.app - Education & Certs</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body">
+                    <div class="timeline-window-container">
+                        
+                        <div class="timeline-card">
+                            <span class="timeline-meta">2025 - 2029 (Expected)</span>
+                            <h4>B.Tech in Computer Science and Engineering</h4>
+                            <p class="timeline-subtitle">College of Engineering, Attingal (CEAL)</p>
+                            <p class="timeline-text">Focusing on advanced programming systems, microcontrollers, embedded nodes, systems debugging, and artificial intelligence coursework.</p>
+                        </div>
+                        
+                        <div class="timeline-card">
+                            <span class="timeline-meta">2025 (Completed)</span>
+                            <h4>Higher Secondary Education (12th Class)</h4>
+                            <p class="timeline-subtitle">Jyoti Nilayam Higher Secondary School</p>
+                            <p class="timeline-text">Graduated high school in Thiruvananthapuram with core modules in Physics, Mathematics, and Computer Science.</p>
+                        </div>
+
+                        <div class="timeline-card">
+                            <span class="timeline-meta">Certification</span>
+                            <h4>AI/ML in Junior Telecom Data Analyst</h4>
+                            <p class="timeline-subtitle">Professional Competency Certification</p>
+                            <p class="timeline-text">Learned foundational telecom telemetry analysis, database mapping, signal classification, and neural network data models.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Terminal -->
+            <div class="window glass-card" id="window-terminal" data-window="terminal" style="width: 680px; height: 420px; top: 22%; left: 24%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                    </div>
+                    <div class="window-title">💻 Terminal.app - bash</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body terminal-body">
+                    <div class="terminal-output" id="terminal-output">
+                        <div>SidharthOS v1.0.4 (tty1) - Interactive shell</div>
+                        <div>Logged in as visitor@sidharth-portfolio</div>
+                        <div>Type <span class="term-highlight">'help'</span> to see a list of commands, or try <span class="term-highlight">'neofetch'</span>.</div>
+                        <br>
+                    </div>
+                    <div class="terminal-line-input">
+                        <span class="terminal-prompt">visitor@sidharth-os:~$</span>
+                        <input type="text" id="terminal-input" autocomplete="off" autofocus>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Mail (Contact Form) -->
+            <div class="window glass-card" id="window-mail" data-window="mail" style="width: 650px; height: 470px; top: 20%; left: 26%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                    </div>
+                    <div class="window-title">✉️ Mail.app - Send Message</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body">
+                    <form id="mail-form" class="os-form">
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="mail-name">Your Name</label>
+                                <input type="text" id="mail-name" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-col">
+                                <label for="mail-email">Your Email</label>
+                                <input type="email" id="mail-email" placeholder="john@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="mail-subject">Subject</label>
+                                <input type="text" id="mail-subject" placeholder="Project Collaboration" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="mail-message">Message Content</label>
+                                <textarea id="mail-message" rows="5" placeholder="Hi Sidharth, let's connect..." required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="mail-submit-btn">Send Transmission</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: VS Code Mock Editor -->
+            <div class="window glass-card" id="window-vscode" data-window="vscode" style="width: 820px; height: 530px; top: 8%; left: 12%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                    </div>
+                    <div class="window-title">📝 VS_Code.app - Portfolio Editor</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0; display: flex; flex-direction: column;">
+                    <div class="vscode-layout">
+                        <div class="vscode-sidebar">
+                            <div class="vscode-sidebar-title">Explorer: Portfolio</div>
+                            <div class="vscode-files-list">
+                                <div class="vscode-file-item active-file" data-file="resume"><span>📄 resume.json</span></div>
+                                <div class="vscode-file-item" data-file="index"><span>🌐 index.html</span></div>
+                                <div class="vscode-file-item" data-file="script"><span>⚙️ script.js</span></div>
+                                <div class="vscode-file-item" data-file="styles"><span>🎨 styles.css</span></div>
+                            </div>
+                        </div>
+                        <div class="vscode-editor-pane">
+                            <div class="vscode-tabs-header">
+                                <div class="vscode-tab active-tab" id="vscode-active-tab"><span>resume.json</span></div>
+                            </div>
+                            <div class="vscode-code-area">
+                                <pre><code id="vscode-code-display"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3. Bottom OS Taskbar Dock -->
+        <div id="dock-container">
+            <div id="dock" class="glass-card">
+                <!-- App shortcuts -->
+                <button class="dock-item" data-app="profile" aria-label="Profile App">
+                    <span class="dock-icon">👤</span>
+                    <span class="dock-tooltip">Profile</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="skills" aria-label="Skills App">
+                    <span class="dock-icon">🛠️</span>
+                    <span class="dock-tooltip">Skills</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="projects" aria-label="Projects App">
+                    <span class="dock-icon">📂</span>
+                    <span class="dock-tooltip">Projects</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="timeline" aria-label="Timeline App">
+                    <span class="dock-icon">📜</span>
+                    <span class="dock-tooltip">Timeline</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="terminal" aria-label="Terminal App">
+                    <span class="dock-icon">💻</span>
+                    <span class="dock-tooltip">Terminal</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="mail" aria-label="Mail App">
+                    <span class="dock-icon">✉️</span>
+                    <span class="dock-tooltip">Contact Mail</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="vscode" aria-label="VS Code App">
+                    <span class="dock-icon">📝</span>
+                    <span class="dock-tooltip">VS Code</span>
+                    <span class="dock-dot"></span>
+                </button>
+                
+                <div class="dock-divider"></div>
+                
+                <!-- Start / Menu icon -->
+                <button class="dock-item" id="start-btn" aria-label="Start Menu">
+                    <span class="dock-icon">👾</span>
+                    <span class="dock-tooltip">Start Menu</span>
+                </button>
+            </div>
+            
+            <!-- System tray on the right corner -->
+            <div id="system-tray" class="glass-card">
+                <span class="tray-telemetry" id="tray-stats">CPU: 1.5% | ONLINE</span>
+                <span class="tray-divider">|</span>
+                <span class="tray-clock" id="tray-clock">10:00:00 PM</span>
+            </div>
+        </div>
+
+        <!-- 4. Interactive Start Menu Popover -->
+        <div id="start-menu" class="glass-card">
+            <div class="start-header">
+                <div class="start-avatar">SD</div>
+                <div class="start-user-info">
+                    <h4>Sidharth D</h4>
+                    <p>visitor@sidharth-os</p>
+                </div>
+            </div>
+            <div class="start-body">
+                <div class="start-shortcuts">
+                    <h5>Applications</h5>
+                    <button class="start-shortcut-item" data-app="profile">👤 Profile (About Me)</button>
+                    <button class="start-shortcut-item" data-app="skills">🛠️ Skills & Technologies</button>
+                    <button class="start-shortcut-item" data-app="projects">📂 Projects Showcase</button>
+                    <button class="start-shortcut-item" data-app="timeline">📜 Academic Timeline</button>
+                    <button class="start-shortcut-item" data-app="terminal">💻 Terminal Command Line</button>
+                    <button class="start-shortcut-item" data-app="mail">✉️ Mail.app (Contact Form)</button>
+                    <button class="start-shortcut-item" data-app="vscode">📝 VS Code (Editor)</button>
+                </div>
+                <div class="start-actions">
+                    <h5>System Options</h5>
+                    <button class="start-action-btn" id="sys-reboot">🔄 Restart OS Wallpapers</button>
+                    <button class="start-action-btn" id="sys-shutdown">🔴 Shutdown Animations</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- VS Code Templates for Code Display -->
+    <template id="template-vscode-resume">{
+  <span class="code-keyword">"developer_profile"</span>: {
+    <span class="code-keyword">"name"</span>: <span class="code-string">"Sidharth D"</span>,
+    <span class="code-keyword">"specialization"</span>: <span class="code-string">"IoT, AI & Machine Learning"</span>,
+    <span class="code-keyword">"location"</span>: <span class="code-string">"Kazhakkoottam, Kerala, India"</span>,
+    <span class="code-keyword">"email"</span>: <span class="code-string">"ugsidharth@icloud.com"</span>
+  },
+  <span class="code-keyword">"education"</span>: {
+    <span class="code-keyword">"degree"</span>: <span class="code-string">"B.Tech in Computer Science and Engineering"</span>,
+    <span class="code-keyword">"college"</span>: <span class="code-string">"College of Engineering, Attingal (CEAL)"</span>,
+    <span class="code-keyword">"tenure"</span>: <span class="code-string">"2025 - 2029 (Expected)"</span>
+  },
+  <span class="code-keyword">"featured_project"</span>: {
+    <span class="code-keyword">"name"</span>: <span class="code-string">"Grabster / MediaHub Downloader"</span>,
+    <span class="code-keyword">"live_demo"</span>: <span class="code-string">"https://novara.ugsidharth.in/"</span>,
+    <span class="code-keyword">"source_code"</span>: <span class="code-string">"https://github.com/UG-SIDHARTH/Grabster-5.0"</span>
+  }
+}</template>
+
+    <template id="template-vscode-index">&lt;<span class="code-tag">div</span> <span class="code-attr">id</span>=<span class="code-string">"desktop"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"desktop-icons"</span>&gt;
+    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"desktop-icon"</span> <span class="code-attr">data-app</span>=<span class="code-string">"vscode"</span>&gt;
+      &lt;<span class="code-tag">span</span>&gt;📝 VS_Code.app&lt;/<span class="code-tag">span</span>&gt;
+    &lt;/<span class="code-tag">div</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">id</span>=<span class="code-string">"windows-workspace"</span>&gt;&lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;</template>
+
+    <template id="template-vscode-script"><span class="code-comment">// Active WebOS Window Drag Handler</span>
+<span class="code-keyword">function</span> <span class="code-keyword">initDrag</span>(winEl) {
+  winEl.addEventListener(<span class="code-string">'mousedown'</span>, (e) =&gt; {
+    <span class="code-keyword">let</span> startX = e.clientX;
+    <span class="code-keyword">let</span> startY = e.clientY;
+    <span class="code-comment">// Grab window offset coordinate limits...</span>
+    console.log(<span class="code-string">"Launching App: "</span> + winEl.id);
+  });
+}</template>
+
+    <template id="template-vscode-styles"><span class="code-comment">/* Custom Cyberpunk variables variables */</span>
+<span class="code-tag">:root</span> {
+  <span class="code-attr">--bg-primary</span>: <span class="code-number">#07090e</span>;
+  <span class="code-attr">--color-cyan</span>: <span class="code-number">#00f2fe</span>;
+  <span class="code-attr">--border-glow</span>: <span class="code-string">rgba(0, 242, 254, 0.35)</span>;
+}</template>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

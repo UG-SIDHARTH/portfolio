@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  portfolio:
+    build: .
+    container_name: sidharth-portfolio
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./messages.json:/usr/src/app/messages.json
+    environment:
+      - PORT=3000
+      - NODE_ENV=production

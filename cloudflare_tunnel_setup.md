@@ -62,8 +62,6 @@ If your tunnel runs via a local configuration file on your Debian server:
 If you prefer running both the portfolio server and the cloudflared connector side-by-side inside Docker containers, update your [docker-compose.yml](file:///c:/Users/Lenovo/Downloads/porfolio/portfolio/docker-compose.yml):
 
 ```yaml
-version: '3.8'
-
 services:
   portfolio:
     build: .

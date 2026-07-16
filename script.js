@@ -516,23 +516,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const vscodeActiveTab = document.getElementById('vscode-active-tab');
 
     function loadVSCodeFile(fileId) {
-        if (vscodeDisplay && vscodeActiveTab) {
-            vscodeDisplay.innerHTML = '<span style="color: #888;">Streaming code from server...</span>';
+        const template = document.getElementById(`template-vscode-${fileId}`);
+        if (template && vscodeDisplay && vscodeActiveTab) {
+            vscodeDisplay.innerHTML = template.innerHTML;
             const extension = fileId === 'resume' ? 'json' : (fileId === 'index' ? 'html' : (fileId === 'script' ? 'js' : 'css'));
             vscodeActiveTab.querySelector('span').textContent = `${fileId}.${extension}`;
-
-            fetch(`${API_BASE}/api/code?file=${fileId}`)
-                .then(res => {
-                    if (!res.ok) throw new Error('API Code Error');
-                    return res.text();
-                })
-                .then(codeText => {
-                    vscodeDisplay.innerHTML = codeText;
-                })
-                .catch(err => {
-                    console.error('Error fetching file code:', err);
-                    vscodeDisplay.innerHTML = '<span style="color: red;">Error: Failed to stream source code.</span>';
-                });
         }
     }
 
@@ -549,7 +537,26 @@ document.addEventListener('DOMContentLoaded', () => {
     loadVSCodeFile('resume');
 
     // 7.6 Projects Dashboard Interactive Controls
+    const liveOnlyCheck = document.getElementById('live-only-check');
     const refreshBtn = document.getElementById('projects-refresh-btn');
+    const techCards = document.querySelectorAll('.tech-card');
+
+    if (liveOnlyCheck) {
+        liveOnlyCheck.addEventListener('change', () => {
+            const showLiveOnly = liveOnlyCheck.checked;
+            techCards.forEach(card => {
+                const isLive = card.getAttribute('data-live') === 'true';
+                if (showLiveOnly && !isLive) {
+                    card.style.opacity = '0.3';
+                    card.style.pointerEvents = 'none';
+                } else {
+                    card.style.opacity = '1';
+                    card.style.pointerEvents = 'auto';
+                }
+            });
+        });
+    }
+
     if (refreshBtn) {
         refreshBtn.addEventListener('click', () => {
             const icon = refreshBtn.querySelector('.refresh-icon');
@@ -560,16 +567,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 400);
             }
             showToast('Refreshing modules registry...', 'success');
-            initPortfolioData(); // Reload dynamically from backend
         });
     }
 
-    // 7.7 Embedded Projects Run Viewer (Iframe Browser Back Button)
-    const iframeBackBtn = document.getElementById('btn-iframe-back');
+    techCards.forEach(card => {
+        card.addEventListener('click', () => {
+            techCards.forEach(c => c.classList.remove('active-card'));
+            card.classList.add('active-card');
+        });
+    });
+
+    // 7.7 Embedded Projects Run Viewer (Iframe Browser)
+    const runButtons = document.querySelectorAll('.btn-run');
     const projectsContainer = document.querySelector('.projects-window-container');
     const iframeContainer = document.querySelector('.projects-iframe-container');
     const projectsIframe = document.getElementById('projects-iframe');
-    
+    const iframeBackBtn = document.getElementById('btn-iframe-back');
+    const iframeUrlDisplay = document.getElementById('iframe-current-url');
+    const iframeLinkBtn = document.getElementById('iframe-external-link');
+
+    runButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // prevent card click triggers
+            const url = btn.getAttribute('href');
+            
+            if (url && projectsIframe && projectsContainer && iframeContainer) {
+                projectsIframe.src = url;
+                if (iframeUrlDisplay) iframeUrlDisplay.textContent = url;
+                if (iframeLinkBtn) iframeLinkBtn.setAttribute('href', url);
+                
+                projectsContainer.style.display = 'none';
+                iframeContainer.style.display = 'flex';
+            }
+        });
+    });
+
     if (iframeBackBtn) {
         iframeBackBtn.addEventListener('click', () => {
             if (projectsIframe && projectsContainer && iframeContainer) {
@@ -579,205 +612,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // 8.0 Fetch Portfolio Data and Render Dynamically
-    function initPortfolioData() {
-        fetch(`${API_BASE}/api/data`)
-            .then(res => {
-                if (!res.ok) throw new Error('Failed to load portfolio database.');
-                return res.json();
-            })
-            .then(data => {
-                // Populate Profile
-                const nameEl = document.getElementById('prof-name');
-                if (nameEl) nameEl.textContent = data.profile.name;
-                const tagEl = document.getElementById('prof-tagline');
-                if (tagEl) tagEl.textContent = data.profile.tagline;
-                
-                const metaEl = document.getElementById('prof-meta');
-                if (metaEl) {
-                    metaEl.innerHTML = `
-                        <div class="meta-line">📍 ${data.profile.location}</div>
-                        <div class="meta-line">📧 ${data.profile.email}</div>
-                    `;
-                }
-                const socialsEl = document.getElementById('prof-socials');
-                if (socialsEl) {
-                    socialsEl.innerHTML = `
-                        <a href="${data.profile.github}" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="GitHub">GitHub</a>
-                        <a href="${data.profile.linkedin}" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="LinkedIn">LinkedIn</a>
-                    `;
-                }
-
-                // Populate Skills
-                const skillsGrid = document.getElementById('skills-os-grid');
-                if (skillsGrid) {
-                    skillsGrid.innerHTML = '';
-                    data.skills.forEach(skill => {
-                        const item = document.createElement('div');
-                        item.className = 'skill-os-item';
-                        item.setAttribute('data-category', skill.category);
-                        
-                        const span = document.createElement('span');
-                        span.textContent = skill.name;
-                        item.appendChild(span);
-                        skillsGrid.appendChild(item);
-                    });
-                }
-
-                // Populate Projects
-                const projectsGrid = document.getElementById('projects-tech-grid');
-                if (projectsGrid) {
-                    projectsGrid.innerHTML = '';
-                    data.projects.forEach(project => {
-                        const card = document.createElement('div');
-                        card.className = 'tech-card';
-                        card.setAttribute('data-live', project.live ? 'true' : 'false');
-                        
-                        const ticks = document.createElement('div');
-                        ticks.className = 'tech-card-ticks';
-                        card.appendChild(ticks);
-                        
-                        const header = document.createElement('div');
-                        header.className = 'tech-card-header';
-                        
-                        const titleRow = document.createElement('div');
-                        titleRow.className = 'tech-card-title-row';
-                        
-                        const h3 = document.createElement('h3');
-                        h3.innerHTML = `<span class="tech-card-num">${project.id}</span> ${project.title}`;
-                        titleRow.appendChild(h3);
-                        
-                        const actions = document.createElement('div');
-                        actions.className = 'tech-card-actions';
-                        actions.innerHTML = `
-                            <a href="${project.code_url}" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
-                            <a href="${project.run_url}" target="_blank" rel="noopener noreferrer" class="tech-btn btn-run">[RUN]</a>
-                        `;
-                        titleRow.appendChild(actions);
-                        header.appendChild(titleRow);
-                        card.appendChild(header);
-                        
-                        const body = document.createElement('div');
-                        body.className = 'tech-card-body';
-                        
-                        const desc = document.createElement('p');
-                        desc.className = 'tech-card-desc';
-                        desc.textContent = project.desc;
-                        body.appendChild(desc);
-                        
-                        const segBar = document.createElement('div');
-                        segBar.className = 'tech-lang-bar';
-                        
-                        const legend = document.createElement('div');
-                        legend.className = 'tech-lang-legend';
-                        
-                        Object.keys(project.languages).forEach(lang => {
-                            const pct = project.languages[lang];
-                            const color = project.colors[lang] || '#888';
-                            
-                            const seg = document.createElement('div');
-                            seg.className = 'lang-seg';
-                            seg.style.width = pct;
-                            seg.style.backgroundColor = color;
-                            segBar.appendChild(seg);
-                            
-                            const legendItem = document.createElement('span');
-                            legendItem.className = 'legend-item';
-                            legendItem.innerHTML = `<span class="dot" style="background: ${color};"></span> ${lang} <strong>${pct}</strong>`;
-                            legend.appendChild(legendItem);
-                        });
-                        
-                        body.appendChild(segBar);
-                        body.appendChild(legend);
-                        card.appendChild(body);
-                        
-                        const footer = document.createElement('div');
-                        footer.className = 'tech-card-footer';
-                        footer.innerHTML = `
-                            <div class="dash-separator"></div>
-                            <span class="footer-meta">NO_TAG_METADATA_DETECTED</span>
-                        `;
-                        card.appendChild(footer);
-                        
-                        projectsGrid.appendChild(card);
-                    });
-
-                    // Re-bind interactive controls since elements were created dynamically
-                    const liveOnlyCheck = document.getElementById('live-only-check');
-                    const techCards = document.querySelectorAll('.tech-card');
-                    
-                    if (liveOnlyCheck) {
-                        liveOnlyCheck.addEventListener('change', () => {
-                            const showLiveOnly = liveOnlyCheck.checked;
-                            techCards.forEach(card => {
-                                const isLive = card.getAttribute('data-live') === 'true';
-                                if (showLiveOnly && !isLive) {
-                                    card.style.opacity = '0.3';
-                                    card.style.pointerEvents = 'none';
-                                } else {
-                                    card.style.opacity = '1';
-                                    card.style.pointerEvents = 'auto';
-                                }
-                            });
-                        });
-                    }
-
-                    techCards.forEach(card => {
-                        card.addEventListener('click', () => {
-                            techCards.forEach(c => c.classList.remove('active-card'));
-                            card.classList.add('active-card');
-                        });
-                    });
-
-                    // Re-bind runs button listeners
-                    const runButtons = document.querySelectorAll('.btn-run');
-                    const iframeContainer = document.querySelector('.projects-iframe-container');
-                    const iframeUrlDisplay = document.getElementById('iframe-current-url');
-                    const iframeLinkBtn = document.getElementById('iframe-external-link');
-
-                    runButtons.forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            const url = btn.getAttribute('href');
-                            
-                            if (url && projectsIframe && projectsContainer && iframeContainer) {
-                                projectsIframe.src = url;
-                                if (iframeUrlDisplay) iframeUrlDisplay.textContent = url;
-                                if (iframeLinkBtn) iframeLinkBtn.setAttribute('href', url);
-                                
-                                projectsContainer.style.display = 'none';
-                                iframeContainer.style.display = 'flex';
-                            }
-                        });
-                    });
-                }
-
-                // Populate Timeline
-                const timelineContainer = document.getElementById('timeline-window-container');
-                if (timelineContainer) {
-                    timelineContainer.innerHTML = '';
-                    data.timeline.forEach(item => {
-                        const card = document.createElement('div');
-                        card.className = 'timeline-card';
-                        card.innerHTML = `
-                            <span class="timeline-meta">${item.period}</span>
-                            <h4>${item.title}</h4>
-                            <p class="timeline-subtitle">${item.institution}</p>
-                        `;
-                        timelineContainer.appendChild(card);
-                    });
-                }
-            })
-            .catch(err => {
-                console.error('Error initializing portfolio database:', err);
-                showToast('Failed to load system datasets.', 'info');
-            });
-    }
-
-    // Run dynamic rendering boot
-    initPortfolioData();
 
     // Initialize: Open default windows on boot
     setTimeout(() => {

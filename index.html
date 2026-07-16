@@ -17,6 +17,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- BIOS / System Boot Simulator Overlay -->
+    <div id="boot-screen">
+        <div class="boot-loader-container">
+            <div class="boot-logo">👾</div>
+            <div class="boot-title">SidharthOS v1.0.6</div>
+            <div class="boot-terminal-log" id="boot-log"></div>
+            <div class="boot-progress-bar">
+                <div class="boot-progress-fill" id="boot-progress"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Background Particle Canvas (Desktop Wallpaper) -->
     <canvas id="particle-canvas"></canvas>
 
@@ -36,6 +48,10 @@
                 <div class="icon-visual">📂</div>
                 <span class="icon-label">Projects.app</span>
             </div>
+            <div class="desktop-icon" data-app="resume" id="icon-resume">
+                <div class="icon-visual">📄</div>
+                <span class="icon-label">Resume.app</span>
+            </div>
 
             <div class="desktop-icon" data-app="terminal" id="icon-terminal">
                 <div class="icon-visual">💻</div>
@@ -53,6 +69,23 @@
 
         <!-- 2. Windows Workspace Container -->
         <div id="windows-workspace">
+            
+            <!-- APPLICATION WINDOW: Resume PDF Viewer -->
+            <div class="window glass-card" id="window-resume" data-window="resume" style="width: 800px; height: 580px; top: 5%; left: 15%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                    </div>
+                    <div class="window-title">📄 Resume.app - PDF Viewer</div>
+                    <div class="window-spacer"></div>
+                    <a href="Sidharth_Resume.pdf" download="Sidharth_Resume.pdf" class="btn-download" style="margin-right: 1.5rem; text-decoration: none; color: var(--color-cyan); font-size: 0.85rem; font-family: var(--ff-terminal); cursor: pointer;" title="Download PDF Resume">[DOWNLOAD_PDF]</a>
+                </div>
+                <div class="window-body" style="padding: 0; overflow: hidden; background: #202124;">
+                    <iframe src="Sidharth_Resume.pdf" width="100%" height="100%" style="border: none;"></iframe>
+                </div>
+            </div>
             
             <!-- APPLICATION WINDOW: Profile (About Me) -->
             <div class="window glass-card" id="window-profile" data-window="profile" style="width: 780px; height: 500px; top: 10%; left: 15%;">
@@ -399,6 +432,11 @@
                     <span class="dock-tooltip">Projects</span>
                     <span class="dock-dot"></span>
                 </button>
+                <button class="dock-item" data-app="resume" aria-label="Resume App">
+                    <span class="dock-icon">📄</span>
+                    <span class="dock-tooltip">Resume</span>
+                    <span class="dock-dot"></span>
+                </button>
 
                 <button class="dock-item" data-app="terminal" aria-label="Terminal App">
                     <span class="dock-icon">💻</span>
@@ -448,6 +486,7 @@
                     <button class="start-shortcut-item" data-app="profile">👤 Profile (About Me)</button>
                     <button class="start-shortcut-item" data-app="skills">🛠️ Skills & Technologies</button>
                     <button class="start-shortcut-item" data-app="projects">📂 Projects Showcase</button>
+                    <button class="start-shortcut-item" data-app="resume">📄 Resume (PDF Viewer)</button>
 
                     <button class="start-shortcut-item" data-app="terminal">💻 Terminal Command Line</button>
                     <button class="start-shortcut-item" data-app="mail">✉️ Mail.app (Contact Form)</button>
@@ -456,7 +495,6 @@
                 <div class="start-actions">
                     <h5>System Options</h5>
                     <button class="start-action-btn" id="sys-reboot">🔄 Restart OS Wallpapers</button>
-                    <button class="start-action-btn" id="sys-shutdown">🔴 Shutdown Animations</button>
                 </div>
             </div>
         </div>

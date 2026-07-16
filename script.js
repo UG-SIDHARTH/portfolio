@@ -2,6 +2,57 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global API URL Redirection Mapping for decoupled frontend/backend deployment
     const API_BASE = window.location.port === '3500' ? '' : 'http://localhost:3500';
 
+    // BIOS Boot Up Simulation sequence
+    const bootScreen = document.getElementById('boot-screen');
+    const bootLog = document.getElementById('boot-log');
+    const bootProgress = document.getElementById('boot-progress');
+
+    const bootMessages = [
+        { text: "INITIALIZING SIDHARTH_OS KERNEL v1.0.6...", type: "info" },
+        { text: "ALLOCATING PROCESS MEMORY MEM_BASE=0x7FFF...", type: "default" },
+        { text: "ESTABLISHING PERSISTENT DATA DRIVERS... OK", type: "success" },
+        { text: "CHECKING FRONTEND PORT LISTEN METRICS... PORT_8500", type: "default" },
+        { text: "CHECKING SECURE MESSAGE LOG CONNECTIONS... PORT_3500", type: "default" },
+        { text: "MOUNTING CYBERPUNK PARTICLE LAYERS... OK", type: "success" },
+        { text: "DECRYPTING PORTFOLIO DATA ARTIFACTS...", type: "info" },
+        { text: "DECRYPTING GRABSTER / MEDIAHUB MODULES... SUCCESS", type: "success" },
+        { text: "DECRYPTING SIDHARTH_OS DESKTOP INTERFACES... SUCCESS", type: "success" },
+        { text: "SYSTEM DIAGNOSTICS: STATUS_OK (0)", type: "success" },
+        { text: "BOOT SEQUENCE FINISHED. STARTING GUI CLIENT...", type: "info" }
+    ];
+
+    if (bootScreen && bootLog && bootProgress) {
+        let currentMsgIdx = 0;
+        let progressVal = 0;
+
+        function logNextLine() {
+            if (currentMsgIdx < bootMessages.length) {
+                const msg = bootMessages[currentMsgIdx];
+                const line = document.createElement('div');
+                line.className = `boot-terminal-line ${msg.type || ''}`;
+                line.textContent = `> ${msg.text}`;
+                bootLog.appendChild(line);
+                bootLog.scrollTop = bootLog.scrollHeight;
+
+                currentMsgIdx++;
+                progressVal = Math.floor((currentMsgIdx / bootMessages.length) * 100);
+                bootProgress.style.width = `${progressVal}%`;
+
+                // Calculate variable delays for a natural boot logging feeling
+                const delay = Math.random() * 140 + 80;
+                setTimeout(logNextLine, delay);
+            } else {
+                // Boot complete - trigger fade out after a slight final delay
+                setTimeout(() => {
+                    bootScreen.classList.add('fade-out');
+                }, 500);
+            }
+        }
+
+        // Start bootloader logs
+        setTimeout(logNextLine, 200);
+    }
+
     // Global Window Z-Index Tracker
     let activeZIndex = 100;
 
@@ -257,8 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start Menu Actions
     const rebootBtn = document.getElementById('sys-reboot');
-    const shutdownBtn = document.getElementById('sys-shutdown');
-
     if (rebootBtn) {
         rebootBtn.addEventListener('click', () => {
             toggleStartMenu(false);
@@ -266,35 +315,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof initParticles === 'function') {
                 initParticles();
             }
-        });
-    }
-
-    if (shutdownBtn) {
-        shutdownBtn.addEventListener('click', () => {
-            toggleStartMenu(false);
-            showToast("Shutting down system animations. Click restart to restore.", "info");
-            document.body.style.transition = 'filter 2s ease';
-            document.body.style.filter = 'brightness(0)';
-            
-            // Re-boot button simulation overlay
-            const powerOverlay = document.createElement('div');
-            powerOverlay.className = 'power-overlay';
-            powerOverlay.style = 'position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 1.5s ease;';
-            document.body.appendChild(powerOverlay);
-            
-            setTimeout(() => {
-                powerOverlay.style.opacity = '1';
-                const turnOnBtn = document.createElement('button');
-                turnOnBtn.textContent = '⏻ Turn On System';
-                turnOnBtn.className = 'btn btn-primary';
-                turnOnBtn.style = 'font-size: 1.2rem; cursor: pointer;';
-                turnOnBtn.addEventListener('click', () => {
-                    document.body.style.filter = '';
-                    powerOverlay.remove();
-                    showToast("SidharthOS rebooted successfully.", "success");
-                });
-                powerOverlay.appendChild(turnOnBtn);
-            }, 2000);
         });
     }
 
@@ -361,6 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">about</span>: Details on who I am</div>
                     <div>- <span class="term-highlight">skills</span>: Technical skills roster</div>
                     <div>- <span class="term-highlight">projects</span>: View areas of focus</div>
+                    <div>- <span class="term-highlight">resume</span>: View and download my professional resume</div>
                     <div>- <span class="term-highlight">timeline</span>: Education and certifications</div>
                     <div>- <span class="term-highlight">contact</span>: Access email and contact details</div>
                     <div>- <span class="term-highlight">neofetch</span>: System summary report</div>
@@ -391,6 +412,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>   - Live Demo: <a href="https://novara.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">novara.ugsidharth.in</a></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/Grabster-5.0" target="_blank" style="color: var(--color-cyan);">GitHub/Grabster-5.0</a></div>
                 `);
+                break;
+            case 'resume':
+            case 'download resume':
+            case 'get resume':
+                appendTermLine(`<div>Initiating download for <span class="term-highlight">Sidharth_Resume.pdf</span>...</div>`);
+                const link = document.createElement('a');
+                link.href = 'Sidharth_Resume.pdf';
+                link.download = 'Sidharth_Resume.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast("Downloading Resume PDF...", "success");
                 break;
             case 'timeline':
             case 'education':

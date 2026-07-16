@@ -1407,4 +1407,106 @@ html, body {
     background: #fff;
 }
 
+/* BIOS / Boot screen simulator */
+#boot-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #05070a;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ff-terminal);
+    color: var(--color-cyan);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+}
+
+#boot-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.boot-loader-container {
+    width: 90%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.boot-logo {
+    font-size: 3.5rem;
+    filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.35));
+    animation: boot-pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes boot-pulse {
+    from {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+    to {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}
+
+.boot-title {
+    font-family: var(--ff-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+}
+
+.boot-terminal-log {
+    width: 100%;
+    height: 120px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(0, 242, 254, 0.1);
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    overflow-y: auto;
+    white-space: pre-wrap;
+    text-align: left;
+}
+
+.boot-terminal-line {
+    margin-bottom: 0.25rem;
+}
+
+.boot-terminal-line.success {
+    color: var(--color-green);
+}
+
+.boot-terminal-line.info {
+    color: var(--color-cyan);
+}
+
+.boot-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.boot-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-purple));
+    box-shadow: 0 0 8px var(--color-cyan);
+    transition: width 0.1s linear;
+}
+
 

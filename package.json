@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "frontend": "http-server . -p 8080 -c-1",
+    "frontend": "http-server . -p 8500 -c-1",
     "backend": "node server.js",
     "dev": "concurrently \"npm run frontend\" \"npm run backend\""
   },

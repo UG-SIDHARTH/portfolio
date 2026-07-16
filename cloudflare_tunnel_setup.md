@@ -18,7 +18,7 @@ If you manage your tunnel through the Cloudflare Zero Trust web dashboard, you d
    - **Domain:** `ugsidharth.in` (Select your custom domain)
    - **Path:** (Leave blank)
    - **Type:** `HTTP`
-   - **URL:** `localhost:3000` (This targets your portfolio backend)
+   - **URL:** `localhost:3500` (This targets your portfolio backend)
 6. Click **Save hostname**. Cloudflare will automatically route your root domain and provision active SSL certificates immediately.
 
 ---
@@ -38,11 +38,11 @@ If your tunnel runs via a local configuration file on your Debian server:
    ingress:
      # Route root apex domain to portfolio Node.js process
      - hostname: ugsidharth.in
-       service: http://localhost:3000
+       service: http://localhost:3500
 
      # Route www subdomain to portfolio Node.js process
      - hostname: www.ugsidharth.in
-       service: http://localhost:3000
+       service: http://localhost:3500
 
      # Catch-all rule (required at the end of ingress blocks)
      - service: http_status:404
@@ -70,11 +70,11 @@ services:
     container_name: sidharth-portfolio
     restart: always
     ports:
-      - "3000:3000"
+      - "3500:3500"
     volumes:
       - ./messages.json:/usr/src/app/messages.json
     environment:
-      - PORT=3000
+      - PORT=3500
       - NODE_ENV=production
 
   cloudflared:

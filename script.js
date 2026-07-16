@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Global API URL Redirection Mapping for decoupled frontend/backend deployment
-    const API_BASE = window.location.port === '3000' ? '' : 'http://localhost:3000';
+    const API_BASE = window.location.port === '3500' ? '' : 'http://localhost:3500';
 
     // Global Window Z-Index Tracker
     let activeZIndex = 100;

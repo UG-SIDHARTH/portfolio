@@ -6,9 +6,9 @@ services:
     container_name: sidharth-portfolio
     restart: always
     ports:
-      - "3000:3000"
+      - "3500:3500"
     volumes:
       - ./messages.json:/usr/src/app/messages.json
     environment:
-      - PORT=3000
+      - PORT=3500
       - NODE_ENV=production

@@ -495,9 +495,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 appendTermLine(`
                     <div>Portfolio Projects:</div>
                     <div>1. <span class="term-highlight">Grabster / MediaHub Downloader ⚡</span></div>
-                    <div>   - Description: Self-hosted production-ready video/audio downloader powered by yt-dlp.</div>
+                    <div>   - Description: Self-hosted video/audio downloader powered by yt-dlp session streams.</div>
                     <div>   - Live Demo: <a href="https://novara.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">novara.ugsidharth.in</a></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/Grabster-5.0" target="_blank" style="color: var(--color-cyan);">GitHub/Grabster-5.0</a></div>
+                    <br>
+                    <div>2. <span class="term-highlight">OS (WebOS Portfolio) 🖥️</span></div>
+                    <div>   - Description: Interactive glassmorphic desktop environment displaying profile stats and timelines.</div>
+                    <div>   - Live Demo: <a href="https://ug-sidharth.github.io/portfolio" target="_blank" style="color: var(--color-cyan);">ug-sidharth.github.io/portfolio</a></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/portfolio" target="_blank" style="color: var(--color-cyan);">GitHub/portfolio</a></div>
+                    <br>
+                    <div>3. <span class="term-highlight">Smart Monitor Backend 📡</span></div>
+                    <div>   - Description: Telemetry processing backend for real-time sensor monitoring.</div>
+                    <div>   - Status: <span style="color: #ff5f56;">Offline Backend Module</span></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/project" target="_blank" style="color: var(--color-cyan);">GitHub/project</a></div>
+                    <br>
+                    <div>4. <span class="term-highlight">Football Outcome Predictor ⚽</span></div>
+                    <div>   - Description: Machine learning team statistics outcome predictive model.</div>
+                    <div>   - Status: <span style="color: #ff5f56;">Prediction Model Offline</span></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/Football-Match-Outcome-Predictor/tree/main" target="_blank" style="color: var(--color-cyan);">GitHub/Predictor</a></div>
+                    <br>
+                    <div>5. <span class="term-highlight">Project Front-End 🌐</span></div>
+                    <div>   - Description: Device telemetry frontend and real-time dashboard view.</div>
+                    <div>   - Status: <span style="color: #ff5f56;">Client Interface Offline</span></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/PROJECT-FRONT-END/tree/main" target="_blank" style="color: var(--color-cyan);">GitHub/Front-End</a></div>
                 `);
                 break;
             case 'resume':

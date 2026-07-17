@@ -186,7 +186,7 @@
             </div>
         </div>
 
-        <a href="/" class="back-link">&larr; Return to SidharthOS</a>
+        <a href="/" class="back-link">&larr; Return to OS</a>
     </div>
 
     <script>
@@ -265,37 +265,74 @@
                 snake.pop();
             }
 
-            snakeCtx.fillStyle = '#05070a';
-            snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
-
-            // Draw grids
-            snakeCtx.strokeStyle = 'rgba(0, 242, 254, 0.04)';
-            for (let i = 0; i < snakeCanvas.width; i += gridSize) {
-                snakeCtx.beginPath();
-                snakeCtx.moveTo(i, 0);
-                snakeCtx.lineTo(i, snakeCanvas.height);
-                snakeCtx.stroke();
-                snakeCtx.beginPath();
-                snakeCtx.moveTo(0, i);
-                snakeCtx.lineTo(snakeCanvas.width, i);
-                snakeCtx.stroke();
+            // Draw green checkered board
+            for (let row = 0; row < snakeCanvas.height / gridSize; row++) {
+                for (let col = 0; col < snakeCanvas.width / gridSize; col++) {
+                    const isEven = (col + row) % 2 === 0;
+                    snakeCtx.fillStyle = isEven ? '#aad751' : '#a2d149';
+                    snakeCtx.fillRect(col * gridSize, row * gridSize, gridSize, gridSize);
+                }
             }
 
-            // Draw Food
-            snakeCtx.shadowBlur = 8;
-            snakeCtx.shadowColor = '#7f00ff';
-            snakeCtx.fillStyle = '#7f00ff';
-            snakeCtx.fillRect(food.x + 2, food.y + 2, gridSize - 4, gridSize - 4);
-
-            // Draw Snake
-            snakeCtx.shadowBlur = 8;
-            snakeCtx.shadowColor = '#00f2fe';
-            snake.forEach((part, idx) => {
-                snakeCtx.fillStyle = idx === 0 ? '#ffffff' : '#00f2fe';
-                snakeCtx.fillRect(part.x + 1, part.y + 1, gridSize - 2, gridSize - 2);
-            });
+            // Draw Food (detailed Red Apple)
+            const centerX = food.x + gridSize / 2;
+            const centerY = food.y + gridSize / 2;
+            const appleRadius = 6;
             
-            snakeCtx.shadowBlur = 0;
+            snakeCtx.fillStyle = '#e83a14';
+            snakeCtx.beginPath();
+            snakeCtx.arc(centerX, centerY, appleRadius, 0, Math.PI * 2);
+            snakeCtx.fill();
+            
+            snakeCtx.strokeStyle = '#8b4513';
+            snakeCtx.lineWidth = 1.5;
+            snakeCtx.beginPath();
+            snakeCtx.moveTo(centerX, centerY - appleRadius);
+            snakeCtx.quadraticCurveTo(centerX - 2, centerY - appleRadius - 4, centerX - 1, centerY - appleRadius - 5);
+            snakeCtx.stroke();
+            
+            snakeCtx.fillStyle = '#2e8b57';
+            snakeCtx.beginPath();
+            snakeCtx.ellipse(centerX + 2, centerY - appleRadius - 3, 2, 1.2, Math.PI / 4, 0, Math.PI * 2);
+            snakeCtx.fill();
+
+            // Draw Snake (Classic blue with direction-aware eyes on the head)
+            snake.forEach((part, idx) => {
+                if (idx === 0) {
+                    snakeCtx.fillStyle = '#3f61d8';
+                    snakeCtx.fillRect(part.x, part.y, gridSize, gridSize);
+
+                    snakeCtx.fillStyle = '#ffffff';
+                    let eye1 = {}, eye2 = {};
+                    if (dx > 0) {
+                        eye1 = { x: part.x + 11, y: part.y + 4 };
+                        eye2 = { x: part.x + 11, y: part.y + 12 };
+                    } else if (dx < 0) {
+                        eye1 = { x: part.x + 5, y: part.y + 4 };
+                        eye2 = { x: part.x + 5, y: part.y + 12 };
+                    } else if (dy > 0) {
+                        eye1 = { x: part.x + 4, y: part.y + 11 };
+                        eye2 = { x: part.x + 12, y: part.y + 11 };
+                    } else {
+                        eye1 = { x: part.x + 4, y: part.y + 5 };
+                        eye2 = { x: part.x + 12, y: part.y + 5 };
+                    }
+
+                    snakeCtx.beginPath();
+                    snakeCtx.arc(eye1.x, eye1.y, 2.5, 0, Math.PI * 2);
+                    snakeCtx.arc(eye2.x, eye2.y, 2.5, 0, Math.PI * 2);
+                    snakeCtx.fill();
+
+                    snakeCtx.fillStyle = '#000000';
+                    snakeCtx.beginPath();
+                    snakeCtx.arc(eye1.x, eye1.y, 1.2, 0, Math.PI * 2);
+                    snakeCtx.arc(eye2.x, eye2.y, 1.2, 0, Math.PI * 2);
+                    snakeCtx.fill();
+                } else {
+                    snakeCtx.fillStyle = '#4e7cf6';
+                    snakeCtx.fillRect(part.x + 0.5, part.y + 0.5, gridSize - 1, gridSize - 1);
+                }
+            });
         }
 
         function checkSelfCollision(head) {

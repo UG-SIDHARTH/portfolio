@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const bootProgress = document.getElementById('boot-progress');
 
     const bootMessages = [
-        { text: "INITIALIZING SIDHARTH_OS KERNEL v1.0.6...", type: "info" },
         { text: "ALLOCATING PROCESS MEMORY MEM_BASE=0x7FFF...", type: "default" },
         { text: "ESTABLISHING PERSISTENT DATA DRIVERS... OK", type: "success" },
         { text: "CHECKING FRONTEND PORT LISTEN METRICS... PORT_8500", type: "default" },
@@ -16,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: "MOUNTING CYBERPUNK PARTICLE LAYERS... OK", type: "success" },
         { text: "DECRYPTING PORTFOLIO DATA ARTIFACTS...", type: "info" },
         { text: "DECRYPTING GRABSTER / MEDIAHUB MODULES... SUCCESS", type: "success" },
-        { text: "DECRYPTING SIDHARTH_OS DESKTOP INTERFACES... SUCCESS", type: "success" },
+        { text: "DECRYPTING OS DESKTOP INTERFACES... SUCCESS", type: "success" },
         { text: "SYSTEM DIAGNOSTICS: STATUS_OK (0)", type: "success" },
         { text: "BOOT SEQUENCE FINISHED. STARTING GUI CLIENT...", type: "info" }
     ];
@@ -366,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (rebootBtn) {
         rebootBtn.addEventListener('click', () => {
             toggleStartMenu(false);
-            showToast("Rebooting SidharthOS...", "info");
+            showToast("Rebooting OS...", "info");
             
             // Close all windows
             windows.forEach(win => {
@@ -446,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function processTerminalCommand(cmd) {
         // Output prompt echo
-        appendTermLine(`<span class="terminal-prompt">visitor@sidharth-os:~$</span> ${cmd}`);
+        appendTermLine(`<span class="terminal-prompt">visitor@os:~$</span> ${cmd}`);
 
         const trimmedCmd = cmd.trim();
         if (trimmedCmd === '') return;
@@ -471,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">resume</span>: View and download my professional resume</div>
                     <div>- <span class="term-highlight">timeline</span>: Education and certifications</div>
                     <div>- <span class="term-highlight">contact</span>: Access email and contact details</div>
-                    <div>- <span class="term-highlight">snake</span>: Play Snake game (Easter Egg)</div>
+                    <div>- <span class="term-highlight">snake</span>: Play Classic Snake game</div>
                     <div>- <span class="term-highlight">neofetch</span>: System summary report</div>
                     <div>- <span class="term-highlight">clear</span>: Clear terminal console screen</div>
                     <div>- <span class="term-highlight">sudo [command]</span>: Request superuser elevation</div>
@@ -542,7 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 'snake':
             case 'game':
-                appendTermLine(`<div>Launching <span class="term-highlight">Snake.app</span> easter egg game...</div>`);
+                appendTermLine(`<div>Launching <span class="term-highlight">Snake.app</span> Classic Snake...</div>`);
                 openApp('snake');
                 break;
             case 'fight':
@@ -560,13 +559,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const screenRes = `${window.innerWidth}x${window.innerHeight}`;
                 appendTermLine(`
                     <pre style="color: #00ff55; font-family: monospace; font-size: 0.8rem; line-height: 1.25;">
-     .---.       visitor@sidharth-portfolio
-    /     \\      --------------------------
-    \\   _./      OS: SidharthOS v1.0.6 x86_64
-     \`-'-'       Host: WebOS Desktop Environment
-    /|\\ | /|\\    Kernel: Javascript ES6 Engine
-   / | \\|/ | \\   Uptime: 4 mins
-  /  |  |  |  \\  Resolution: ${screenRes}
+      .---.       visitor@os-portfolio
+     /     \\      --------------------------
+     \\   _./      OS: OS v1.0.6 x86_64
+      \`-'-'       Host: WebOS Desktop Environment
+     /|\\ | /|\\    Kernel: Javascript ES6 Engine
+    / | \\|/ | \\   Uptime: 4 mins
+   /  |  |  |  \\  Resolution: ${screenRes}
                  Shell: custom-bash-sh
                  Theme: Glassmorphism Dark Mesh
                  CPU: ESP32 Hardware Emulator
@@ -853,7 +852,7 @@ document.addEventListener('DOMContentLoaded', () => {
         googleLuckyBtn.addEventListener('click', () => {
             const apps = ['profile', 'skills', 'projects', 'resume', 'terminal', 'mail', 'vscode', 'snake'];
             const randomApp = apps[Math.floor(Math.random() * apps.length)];
-            showToast(`SidharthOS feeling lucky! Launching ${randomApp}.app...`, 'success');
+            showToast(`OS feeling lucky! Launching ${randomApp}.app...`, 'success');
             setTimeout(() => {
                 openApp(randomApp);
             }, 500);
@@ -935,35 +934,74 @@ document.addEventListener('DOMContentLoaded', () => {
             snake.pop();
         }
 
-        snakeCtx.fillStyle = '#0c0f17';
-        snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
-
-        snakeCtx.strokeStyle = 'rgba(0, 242, 254, 0.04)';
-        for (let i = 0; i < snakeCanvas.width; i += gridSize) {
-            snakeCtx.beginPath();
-            snakeCtx.moveTo(i, 0);
-            snakeCtx.lineTo(i, snakeCanvas.height);
-            snakeCtx.stroke();
-            snakeCtx.beginPath();
-            snakeCtx.moveTo(0, i);
-            snakeCtx.lineTo(snakeCanvas.width, i);
-            snakeCtx.stroke();
+        // Draw green checkered board
+        for (let row = 0; row < snakeCanvas.height / gridSize; row++) {
+            for (let col = 0; col < snakeCanvas.width / gridSize; col++) {
+                const isEven = (col + row) % 2 === 0;
+                snakeCtx.fillStyle = isEven ? '#aad751' : '#a2d149';
+                snakeCtx.fillRect(col * gridSize, row * gridSize, gridSize, gridSize);
+            }
         }
 
-        // Draw Food
-        snakeCtx.shadowBlur = 8;
-        snakeCtx.shadowColor = '#7f00ff';
-        snakeCtx.fillStyle = '#7f00ff';
-        snakeCtx.fillRect(food.x + 2, food.y + 2, gridSize - 4, gridSize - 4);
-
-        // Draw Snake
-        snakeCtx.shadowColor = '#00f2fe';
-        snake.forEach((part, idx) => {
-            snakeCtx.fillStyle = idx === 0 ? '#ffffff' : '#00f2fe';
-            snakeCtx.fillRect(part.x + 1, part.y + 1, gridSize - 2, gridSize - 2);
-        });
+        // Draw Food (detailed Red Apple)
+        const centerX = food.x + gridSize / 2;
+        const centerY = food.y + gridSize / 2;
+        const appleRadius = 6;
         
-        snakeCtx.shadowBlur = 0;
+        snakeCtx.fillStyle = '#e83a14';
+        snakeCtx.beginPath();
+        snakeCtx.arc(centerX, centerY, appleRadius, 0, Math.PI * 2);
+        snakeCtx.fill();
+        
+        snakeCtx.strokeStyle = '#8b4513';
+        snakeCtx.lineWidth = 1.5;
+        snakeCtx.beginPath();
+        snakeCtx.moveTo(centerX, centerY - appleRadius);
+        snakeCtx.quadraticCurveTo(centerX - 2, centerY - appleRadius - 4, centerX - 1, centerY - appleRadius - 5);
+        snakeCtx.stroke();
+        
+        snakeCtx.fillStyle = '#2e8b57';
+        snakeCtx.beginPath();
+        snakeCtx.ellipse(centerX + 2, centerY - appleRadius - 3, 2, 1.2, Math.PI / 4, 0, Math.PI * 2);
+        snakeCtx.fill();
+
+        // Draw Snake (Classic blue with direction-aware eyes on the head)
+        snake.forEach((part, idx) => {
+            if (idx === 0) {
+                snakeCtx.fillStyle = '#3f61d8';
+                snakeCtx.fillRect(part.x, part.y, gridSize, gridSize);
+
+                snakeCtx.fillStyle = '#ffffff';
+                let eye1 = {}, eye2 = {};
+                if (dx > 0) {
+                    eye1 = { x: part.x + 11, y: part.y + 4 };
+                    eye2 = { x: part.x + 11, y: part.y + 12 };
+                } else if (dx < 0) {
+                    eye1 = { x: part.x + 5, y: part.y + 4 };
+                    eye2 = { x: part.x + 5, y: part.y + 12 };
+                } else if (dy > 0) {
+                    eye1 = { x: part.x + 4, y: part.y + 11 };
+                    eye2 = { x: part.x + 12, y: part.y + 11 };
+                } else {
+                    eye1 = { x: part.x + 4, y: part.y + 5 };
+                    eye2 = { x: part.x + 12, y: part.y + 5 };
+                }
+
+                snakeCtx.beginPath();
+                snakeCtx.arc(eye1.x, eye1.y, 2.5, 0, Math.PI * 2);
+                snakeCtx.arc(eye2.x, eye2.y, 2.5, 0, Math.PI * 2);
+                snakeCtx.fill();
+
+                snakeCtx.fillStyle = '#000000';
+                snakeCtx.beginPath();
+                snakeCtx.arc(eye1.x, eye1.y, 1.2, 0, Math.PI * 2);
+                snakeCtx.arc(eye2.x, eye2.y, 1.2, 0, Math.PI * 2);
+                snakeCtx.fill();
+            } else {
+                snakeCtx.fillStyle = '#4e7cf6';
+                snakeCtx.fillRect(part.x + 0.5, part.y + 0.5, gridSize - 1, gridSize - 1);
+            }
+        });
     }
 
     function checkSelfCollision(head) {

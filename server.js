@@ -71,6 +71,6 @@ app.get('*', (req, res) => {
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`SidharthOS backend running on port ${PORT}`);
+    console.log(`OS backend running on port ${PORT}`);
     console.log(`Servicing files at http://localhost:${PORT}`);
 });

@@ -509,15 +509,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     openApp('resume');
                 } else {
                     appendTermLine(`
-                        <div style="color: #fff; font-weight: 500;">📄 SREEDEV S S - PROFESSIONAL RESUME</div>
+                        <div style="color: #fff; font-weight: 500;">📄 SIDHARTH D - PROFESSIONAL RESUME</div>
                         <div>------------------------------------</div>
-                        <div><span class="term-highlight">Name:</span> Sreedev S S</div>
-                        <div><span class="term-highlight">Role:</span> Developer, Designer, Editor</div>
-                        <div><span class="term-highlight">Email:</span> sreedevss05@gmail.com</div>
-                        <div><span class="term-highlight">Web:</span> sreedevss.in</div>
-                        <div><span class="term-highlight">Location:</span> Thiruvananthapuram, Kerala, India</div>
-                        <div><span class="term-highlight">Experience 1:</span> Intern @ Logixmotion Pvt Ltd</div>
-                        <div><span class="term-highlight">Experience 2:</span> Deputy CFA @ FOSS CEAL</div>
+                        <div><span class="term-highlight">Name:</span> Sidharth D</div>
+                        <div><span class="term-highlight">Specialization:</span> IoT Development, AI, Machine Learning</div>
+                        <div><span class="term-highlight">Education:</span> B.Tech in CSE at College of Engineering Attingal (2025-2029)</div>
+                        <div><span class="term-highlight">Primary Stack:</span> Python, C/C++, ESP32, Edge AI, Data Analytics</div>
+                        <div><span class="term-highlight">Email:</span> mail@ugsidharth.in</div>
+                        <div><span class="term-highlight">Location:</span> Kazhakkoottam, Kerala, India</div>
                         <div>------------------------------------</div>
                         <div>Command Options:</div>
                         <div>- Type <span class="term-highlight">resume -v</span> or <span class="term-highlight">resume --view</span> to launch CV Viewer</div>
@@ -545,6 +544,12 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'game':
                 appendTermLine(`<div>Launching <span class="term-highlight">Snake.app</span> easter egg game...</div>`);
                 openApp('snake');
+                break;
+            case 'fight':
+            case 'battle':
+            case 'shooter':
+                appendTermLine(`<div>Launching secret <span class="term-highlight">Fight.app</span> Space Battle...</div>`);
+                openApp('fight');
                 break;
             case 'clear':
                 if (terminalOutput) {
@@ -992,6 +997,32 @@ document.addEventListener('DOMContentLoaded', () => {
         snakeStartBtn.addEventListener('click', startSnakeGame);
     }
 
+    const dpadUp = document.getElementById('snake-dpad-up');
+    const dpadDown = document.getElementById('snake-dpad-down');
+    const dpadLeft = document.getElementById('snake-dpad-left');
+    const dpadRight = document.getElementById('snake-dpad-right');
+
+    if (dpadUp) {
+        dpadUp.addEventListener('click', () => {
+            if (dy === 0) { dx = 0; dy = -gridSize; }
+        });
+    }
+    if (dpadDown) {
+        dpadDown.addEventListener('click', () => {
+            if (dy === 0) { dx = 0; dy = gridSize; }
+        });
+    }
+    if (dpadLeft) {
+        dpadLeft.addEventListener('click', () => {
+            if (dx === 0) { dx = -gridSize; dy = 0; }
+        });
+    }
+    if (dpadRight) {
+        dpadRight.addEventListener('click', () => {
+            if (dx === 0) { dx = gridSize; dy = 0; }
+        });
+    }
+
     window.addEventListener('keydown', (e) => {
         const snakeWin = document.getElementById('window-snake');
         if (!snakeWin || !snakeWin.classList.contains('focused-window')) return;
@@ -1014,6 +1045,229 @@ document.addEventListener('DOMContentLoaded', () => {
             dy = 0;
         }
     });
+
+    // 7.95 Fight Game Easter Egg Logic
+    const fightCanvas = document.getElementById('fight-canvas');
+    const fightScoreVal = document.getElementById('fight-score');
+    const fightHighscoreVal = document.getElementById('fight-highscore');
+    const fightStartBtn = document.getElementById('fight-start-btn');
+    const fightCtrlLeft = document.getElementById('fight-ctrl-left');
+    const fightCtrlRight = document.getElementById('fight-ctrl-right');
+    const fightCtrlFire = document.getElementById('fight-ctrl-fire');
+
+    let fightCtx = fightCanvas ? fightCanvas.getContext('2d') : null;
+    let shooterPlayer = { x: 150, y: 290, width: 22, height: 16, speed: 6 };
+    let lasers = [];
+    let enemies = [];
+    let particles = [];
+    let fightScore = 0;
+    let fightHighscore = localStorage.getItem('fight_highscore') || 0;
+    let fightInterval = null;
+    let fightRunning = false;
+    let lastFireTime = 0;
+    const fireCooldown = 250;
+    let enemySpawnCounter = 0;
+
+    if (fightHighscoreVal) fightHighscoreVal.textContent = fightHighscore;
+
+    function startFightGame() {
+        if (fightRunning) return;
+        fightRunning = true;
+        fightScore = 0;
+        if (fightScoreVal) fightScoreVal.textContent = fightScore;
+        shooterPlayer.x = 150;
+        lasers = [];
+        enemies = [];
+        particles = [];
+        enemySpawnCounter = 0;
+        if (fightStartBtn) fightStartBtn.style.display = 'none';
+
+        if (fightInterval) clearInterval(fightInterval);
+        fightInterval = setInterval(updateFightGame, 1000 / 60);
+    }
+
+    function spawnEnemy() {
+        if (!fightCanvas) return;
+        const size = Math.random() * 12 + 10;
+        const x = Math.random() * (fightCanvas.width - size);
+        const speed = Math.random() * 1.5 + 1.2;
+        enemies.push({ x, y: -size, size, speed });
+    }
+
+    function createExplosion(x, y, color) {
+        for (let i = 0; i < 8; i++) {
+            particles.push({
+                x,
+                y,
+                dx: (Math.random() - 0.5) * 4,
+                dy: (Math.random() - 0.5) * 4,
+                size: Math.random() * 3 + 1,
+                color: color || '#ff5f56',
+                life: 30
+            });
+        }
+    }
+
+    function fireLaser() {
+        const now = Date.now();
+        if (now - lastFireTime < fireCooldown) return;
+        lastFireTime = now;
+        lasers.push({
+            x: shooterPlayer.x + shooterPlayer.width / 2 - 2,
+            y: shooterPlayer.y,
+            width: 4,
+            height: 12,
+            speed: 5
+        });
+        createExplosion(shooterPlayer.x + shooterPlayer.width / 2, shooterPlayer.y, '#00f2fe');
+    }
+
+    function updateFightGame() {
+        if (!fightCtx || !fightCanvas) return;
+
+        fightCtx.fillStyle = '#020305';
+        fightCtx.fillRect(0, 0, fightCanvas.width, fightCanvas.height);
+
+        enemySpawnCounter++;
+        if (enemySpawnCounter >= 55) {
+            enemySpawnCounter = 0;
+            spawnEnemy();
+        }
+
+        fightCtx.shadowBlur = 10;
+        fightCtx.shadowColor = '#00f2fe';
+        fightCtx.fillStyle = '#00f2fe';
+        fightCtx.beginPath();
+        fightCtx.moveTo(shooterPlayer.x + shooterPlayer.width / 2, shooterPlayer.y);
+        fightCtx.lineTo(shooterPlayer.x, shooterPlayer.y + shooterPlayer.height);
+        fightCtx.lineTo(shooterPlayer.x + shooterPlayer.width, shooterPlayer.y + shooterPlayer.height);
+        fightCtx.closePath();
+        fightCtx.fill();
+
+        fightCtx.shadowColor = '#00f2fe';
+        fightCtx.fillStyle = '#00f2fe';
+        for (let i = lasers.length - 1; i >= 0; i--) {
+            lasers[i].y -= lasers[i].speed;
+            fightCtx.fillRect(lasers[i].x, lasers[i].y, lasers[i].width, lasers[i].height);
+            if (lasers[i].y < -20) {
+                lasers.splice(i, 1);
+            }
+        }
+
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            enemies[i].y += enemies[i].speed;
+
+            fightCtx.shadowColor = '#ff5f56';
+            fightCtx.fillStyle = '#ff5f56';
+            fightCtx.beginPath();
+            fightCtx.arc(enemies[i].x + enemies[i].size / 2, enemies[i].y + enemies[i].size / 2, enemies[i].size / 2, 0, Math.PI * 2);
+            fightCtx.fill();
+
+            for (let j = lasers.length - 1; j >= 0; j--) {
+                const laser = lasers[j];
+                const enemy = enemies[i];
+                if (laser.x > enemy.x && laser.x < enemy.x + enemy.size &&
+                    laser.y > enemy.y && laser.y < enemy.y + enemy.size) {
+                    createExplosion(enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, '#ff5f56');
+                    enemies.splice(i, 1);
+                    lasers.splice(j, 1);
+                    fightScore += 10;
+                    if (fightScoreVal) fightScoreVal.textContent = fightScore;
+                    if (fightScore > fightHighscore) {
+                        fightHighscore = fightScore;
+                        localStorage.setItem('fight_highscore', fightHighscore);
+                        if (fightHighscoreVal) fightHighscoreVal.textContent = fightHighscore;
+                    }
+                    break;
+                }
+            }
+
+            if (enemies[i]) {
+                const enemy = enemies[i];
+                const hitsBottom = (enemy.y + enemy.size >= fightCanvas.height);
+                const hitsShip = (
+                    enemy.x + enemy.size > shooterPlayer.x &&
+                    enemy.x < shooterPlayer.x + shooterPlayer.width &&
+                    enemy.y + enemy.size > shooterPlayer.y &&
+                    enemy.y < shooterPlayer.y + shooterPlayer.height
+                );
+
+                if (hitsBottom || hitsShip) {
+                    endFightGame();
+                    return;
+                }
+            }
+        }
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].x += particles[i].dx;
+            particles[i].y += particles[i].dy;
+            particles[i].life--;
+            fightCtx.shadowColor = particles[i].color;
+            fightCtx.fillStyle = particles[i].color;
+            fightCtx.fillRect(particles[i].x, particles[i].y, particles[i].size, particles[i].size);
+            if (particles[i].life <= 0) {
+                particles.splice(i, 1);
+            }
+        }
+
+        fightCtx.shadowBlur = 0;
+    }
+
+    function endFightGame() {
+        fightRunning = false;
+        clearInterval(fightInterval);
+        if (fightStartBtn) {
+            fightStartBtn.style.display = 'block';
+            fightStartBtn.textContent = 'RESTART';
+        }
+        if (fightCtx && fightCanvas) {
+            fightCtx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+            fightCtx.fillRect(0, 0, fightCanvas.width, fightCanvas.height);
+            fightCtx.font = '16px "Fira Code", monospace';
+            fightCtx.fillStyle = '#ff5f56';
+            fightCtx.textAlign = 'center';
+            fightCtx.fillText('GAME OVER', fightCanvas.width / 2, fightCanvas.height / 2 - 10);
+            fightCtx.font = '12px "Fira Code", monospace';
+            fightCtx.fillStyle = '#94a3b8';
+            fightCtx.fillText(`SCORE: ${fightScore}`, fightCanvas.width / 2, fightCanvas.height / 2 + 20);
+        }
+    }
+
+    if (fightStartBtn) {
+        fightStartBtn.addEventListener('click', startFightGame);
+    }
+
+    window.addEventListener('keydown', (e) => {
+        const fightWin = document.getElementById('window-fight');
+        if (!fightWin || !fightWin.classList.contains('focused-window')) return;
+
+        if (['ArrowLeft', 'ArrowRight', 'Space', ' '].includes(e.key)) {
+            e.preventDefault();
+        }
+
+        if (e.key === 'ArrowLeft' || e.key === 'Left') {
+            shooterPlayer.x = Math.max(0, shooterPlayer.x - shooterPlayer.speed);
+        } else if (e.key === 'ArrowRight' || e.key === 'Right') {
+            if (fightCanvas) shooterPlayer.x = Math.min(fightCanvas.width - shooterPlayer.width, shooterPlayer.x + shooterPlayer.speed);
+        } else if (e.key === ' ' || e.key === 'Spacebar') {
+            fireLaser();
+        }
+    });
+
+    if (fightCtrlLeft) {
+        fightCtrlLeft.addEventListener('click', () => {
+            shooterPlayer.x = Math.max(0, shooterPlayer.x - 20);
+        });
+    }
+    if (fightCtrlRight) {
+        fightCtrlRight.addEventListener('click', () => {
+            if (fightCanvas) shooterPlayer.x = Math.min(fightCanvas.width - shooterPlayer.width, shooterPlayer.x + 20);
+        });
+    }
+    if (fightCtrlFire) {
+        fightCtrlFire.addEventListener('click', fireLaser);
+    }
 
     // 8. Wallpaper Canvas particles
     const canvas = document.getElementById('particle-canvas');

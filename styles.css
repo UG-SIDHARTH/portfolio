@@ -2121,6 +2121,57 @@ html, body {
     font-weight: bold;
 }
 
+/* Virtual D-pad styles for Snake game accessibility */
+.dpad-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.dpad-row {
+    display: flex;
+    gap: 22px;
+}
+
+.dpad-btn {
+    width: 34px;
+    height: 34px;
+    background: rgba(0, 242, 254, 0.05);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: 6px;
+    color: var(--color-cyan);
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    user-select: none;
+    outline: none;
+}
+
+.dpad-btn:hover {
+    background: rgba(0, 242, 254, 0.15);
+    box-shadow: 0 0 6px rgba(0, 242, 254, 0.3);
+}
+
+.dpad-btn:active {
+    background: var(--color-cyan);
+    color: #000;
+    box-shadow: 0 0 10px var(--color-cyan);
+}
+
+#fight-start-btn:hover {
+    background: #ff5f56 !important;
+    color: #000 !important;
+    box-shadow: 0 0 10px #ff5f56 !important;
+}
+
+#fight-start-btn:active {
+    background: rgba(255, 95, 86, 0.25) !important;
+}
+
 
 
 

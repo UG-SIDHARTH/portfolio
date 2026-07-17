@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake.app - Standing Alone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #07090e;
+            --bg-card: rgba(13, 20, 33, 0.45);
+            --color-cyan: #00f2fe;
+            --color-purple: #7f00ff;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg-primary);
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* CRT scanlines effect */
+        body::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 10;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        .game-wrapper {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 242, 254, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin: 0 0 1rem 0;
+            color: #fff;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .game-stats {
+            width: 320px;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--color-cyan);
+            margin-bottom: 0.8rem;
+            text-shadow: 0 0 4px rgba(0, 242, 254, 0.4);
+        }
+
+        #snake-canvas {
+            background: #05070a;
+            border: 2px solid rgba(0, 242, 254, 0.25);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.05);
+        }
+
+        .controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 320px;
+            margin-top: 1rem;
+        }
+
+        #snake-start-btn {
+            padding: 0.6rem 1.8rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-cyan);
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        #snake-start-btn:hover {
+            background: var(--color-cyan);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-cyan);
+        }
+
+        /* Virtual D-pad styles */
+        .dpad-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dpad-row {
+            display: flex;
+            gap: 22px;
+        }
+
+        .dpad-btn {
+            width: 34px;
+            height: 34px;
+            background: rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 6px;
+            color: var(--color-cyan);
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            user-select: none;
+            outline: none;
+        }
+
+        .dpad-btn:hover {
+            background: rgba(0, 242, 254, 0.15);
+            box-shadow: 0 0 6px rgba(0, 242, 254, 0.3);
+        }
+
+        .dpad-btn:active {
+            background: var(--color-cyan);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-cyan);
+        }
+
+        .back-link {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--color-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+        <h1>🐍 Snake.app</h1>
+        <div class="game-stats">
+            <span>SCORE: <span id="snake-score">0</span></span>
+            <span>HIGH SCORE: <span id="snake-highscore">0</span></span>
+        </div>
+        <canvas id="snake-canvas" width="320" height="320"></canvas>
+        
+        <div class="controls-row">
+            <button id="snake-start-btn">START</button>
+            
+            <div class="dpad-container">
+                <button class="dpad-btn" id="snake-dpad-up">▲</button>
+                <div class="dpad-row">
+                    <button class="dpad-btn" id="snake-dpad-left">◀</button>
+                    <button class="dpad-btn" id="snake-dpad-right">▶</button>
+                </div>
+                <button class="dpad-btn" id="snake-dpad-down">▼</button>
+            </div>
+        </div>
+
+        <a href="/" class="back-link">&larr; Return to SidharthOS</a>
+    </div>
+
+    <script>
+        const snakeCanvas = document.getElementById('snake-canvas');
+        const snakeScoreVal = document.getElementById('snake-score');
+        const snakeHighscoreVal = document.getElementById('snake-highscore');
+        const snakeStartBtn = document.getElementById('snake-start-btn');
+        const dpadUp = document.getElementById('snake-dpad-up');
+        const dpadDown = document.getElementById('snake-dpad-down');
+        const dpadLeft = document.getElementById('snake-dpad-left');
+        const dpadRight = document.getElementById('snake-dpad-right');
+
+        const snakeCtx = snakeCanvas.getContext('2d');
+        let snake = [];
+        let food = {};
+        let dx = 16;
+        let dy = 0;
+        let score = 0;
+        let highscore = localStorage.getItem('snake_highscore') || 0;
+        let gameInterval = null;
+        let gameRunning = false;
+        const gridSize = 16;
+
+        if (snakeHighscoreVal) snakeHighscoreVal.textContent = highscore;
+
+        function startSnakeGame() {
+            if (gameRunning) return;
+            gameRunning = true;
+            score = 0;
+            snakeScoreVal.textContent = score;
+            dx = gridSize;
+            dy = 0;
+            snake = [
+                { x: gridSize * 5, y: gridSize * 5 },
+                { x: gridSize * 4, y: gridSize * 5 },
+                { x: gridSize * 3, y: gridSize * 5 }
+            ];
+            createFood();
+            snakeStartBtn.style.display = 'none';
+
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(updateSnakeGame, 100);
+        }
+
+        function createFood() {
+            food.x = Math.floor(Math.random() * (snakeCanvas.width / gridSize)) * gridSize;
+            food.y = Math.floor(Math.random() * (snakeCanvas.height / gridSize)) * gridSize;
+            
+            let foodOnSnake = false;
+            snake.forEach(part => {
+                if (part.x === food.x && part.y === food.y) foodOnSnake = true;
+            });
+            if (foodOnSnake) createFood();
+        }
+
+        function updateSnakeGame() {
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+            if (head.x < 0 || head.x >= snakeCanvas.width || head.y < 0 || head.y >= snakeCanvas.height || checkSelfCollision(head)) {
+                endSnakeGame();
+                return;
+            }
+
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                snakeScoreVal.textContent = score;
+                if (score > highscore) {
+                    highscore = score;
+                    localStorage.setItem('snake_highscore', highscore);
+                    snakeHighscoreVal.textContent = highscore;
+                }
+                createFood();
+            } else {
+                snake.pop();
+            }
+
+            snakeCtx.fillStyle = '#05070a';
+            snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+
+            // Draw grids
+            snakeCtx.strokeStyle = 'rgba(0, 242, 254, 0.04)';
+            for (let i = 0; i < snakeCanvas.width; i += gridSize) {
+                snakeCtx.beginPath();
+                snakeCtx.moveTo(i, 0);
+                snakeCtx.lineTo(i, snakeCanvas.height);
+                snakeCtx.stroke();
+                snakeCtx.beginPath();
+                snakeCtx.moveTo(0, i);
+                snakeCtx.lineTo(snakeCanvas.width, i);
+                snakeCtx.stroke();
+            }
+
+            // Draw Food
+            snakeCtx.shadowBlur = 8;
+            snakeCtx.shadowColor = '#7f00ff';
+            snakeCtx.fillStyle = '#7f00ff';
+            snakeCtx.fillRect(food.x + 2, food.y + 2, gridSize - 4, gridSize - 4);
+
+            // Draw Snake
+            snakeCtx.shadowBlur = 8;
+            snakeCtx.shadowColor = '#00f2fe';
+            snake.forEach((part, idx) => {
+                snakeCtx.fillStyle = idx === 0 ? '#ffffff' : '#00f2fe';
+                snakeCtx.fillRect(part.x + 1, part.y + 1, gridSize - 2, gridSize - 2);
+            });
+            
+            snakeCtx.shadowBlur = 0;
+        }
+
+        function checkSelfCollision(head) {
+            for (let i = 1; i < snake.length; i++) {
+                if (snake[i].x === head.x && snake[i].y === head.y) return true;
+            }
+            return false;
+        }
+
+        function endSnakeGame() {
+            gameRunning = false;
+            clearInterval(gameInterval);
+            snakeStartBtn.style.display = 'block';
+            snakeStartBtn.textContent = 'RESTART';
+            
+            snakeCtx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+            snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+            snakeCtx.font = '16px "Fira Code", monospace';
+            snakeCtx.fillStyle = '#ff5f56';
+            snakeCtx.textAlign = 'center';
+            snakeCtx.fillText('GAME OVER', snakeCanvas.width / 2, snakeCanvas.height / 2 - 10);
+            snakeCtx.font = '12px "Fira Code", monospace';
+            snakeCtx.fillStyle = '#94a3b8';
+            snakeCtx.fillText(`SCORE: ${score}`, snakeCanvas.width / 2, snakeCanvas.height / 2 + 20);
+        }
+
+        snakeStartBtn.addEventListener('click', startSnakeGame);
+
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+            }
+
+            if (e.key === 'ArrowUp' && dy === 0) {
+                dx = 0; dy = -gridSize;
+            } else if (e.key === 'ArrowDown' && dy === 0) {
+                dx = 0; dy = gridSize;
+            } else if (e.key === 'ArrowLeft' && dx === 0) {
+                dx = -gridSize; dy = 0;
+            } else if (e.key === 'ArrowRight' && dx === 0) {
+                dx = gridSize; dy = 0;
+            }
+        });
+
+        // Virtual D-pad navigation
+        dpadUp.addEventListener('click', () => {
+            if (dy === 0) { dx = 0; dy = -gridSize; }
+        });
+        dpadDown.addEventListener('click', () => {
+            if (dy === 0) { dx = 0; dy = gridSize; }
+        });
+        dpadLeft.addEventListener('click', () => {
+            if (dx === 0) { dx = -gridSize; dy = 0; }
+        });
+        dpadRight.addEventListener('click', () => {
+            if (dx === 0) { dx = gridSize; dy = 0; }
+        });
+    </script>
+</body>
+</html>

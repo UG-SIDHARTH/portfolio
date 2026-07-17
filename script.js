@@ -21,9 +21,52 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: "BOOT SEQUENCE FINISHED. STARTING GUI CLIENT...", type: "info" }
     ];
 
-    if (bootScreen && bootLog && bootProgress) {
-        let currentMsgIdx = 0;
-        let progressVal = 0;
+    let bootTimeoutId = null;
+    let currentMsgIdx = 0;
+
+    function skipBoot() {
+        if (!bootScreen || bootScreen.classList.contains('fade-out')) return;
+
+        if (bootTimeoutId) {
+            clearTimeout(bootTimeoutId);
+            bootTimeoutId = null;
+        }
+
+        if (bootProgress) {
+            bootProgress.style.width = '100%';
+        }
+
+        if (bootLog && currentMsgIdx < bootMessages.length) {
+            while (currentMsgIdx < bootMessages.length) {
+                const msg = bootMessages[currentMsgIdx];
+                const line = document.createElement('div');
+                line.className = `boot-terminal-line ${msg.type || ''}`;
+                line.textContent = `> ${msg.text}`;
+                bootLog.appendChild(line);
+                currentMsgIdx++;
+            }
+            bootLog.scrollTop = bootLog.scrollHeight;
+        }
+
+        setTimeout(() => {
+            if (bootScreen) bootScreen.classList.add('fade-out');
+            setTimeout(() => {
+                openApp('profile');
+            }, 300);
+        }, 150);
+    }
+
+    function runBootloader() {
+        if (!bootScreen || !bootLog || !bootProgress) return;
+
+        bootScreen.classList.remove('fade-out');
+        bootProgress.style.width = '0%';
+        bootLog.innerHTML = '';
+        currentMsgIdx = 0;
+
+        if (bootTimeoutId) {
+            clearTimeout(bootTimeoutId);
+        }
 
         function logNextLine() {
             if (currentMsgIdx < bootMessages.length) {
@@ -35,22 +78,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 bootLog.scrollTop = bootLog.scrollHeight;
 
                 currentMsgIdx++;
-                progressVal = Math.floor((currentMsgIdx / bootMessages.length) * 100);
+                const progressVal = Math.floor((currentMsgIdx / bootMessages.length) * 100);
                 bootProgress.style.width = `${progressVal}%`;
 
-                // Calculate variable delays for a natural boot logging feeling
                 const delay = Math.random() * 140 + 80;
-                setTimeout(logNextLine, delay);
+                bootTimeoutId = setTimeout(logNextLine, delay);
             } else {
-                // Boot complete - trigger fade out after a slight final delay
-                setTimeout(() => {
+                bootTimeoutId = setTimeout(() => {
                     bootScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        openApp('profile');
+                    }, 500);
                 }, 500);
             }
         }
 
-        // Start bootloader logs
-        setTimeout(logNextLine, 200);
+        bootTimeoutId = setTimeout(logNextLine, 200);
+    }
+
+    if (bootScreen) {
+        bootScreen.addEventListener('click', skipBoot);
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                skipBoot();
+            }
+        });
     }
 
     // Global Window Z-Index Tracker
@@ -151,6 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetWin = document.getElementById(`window-${appId}`);
         if (targetWin) {
             focusWindow(targetWin);
+            if (appId === 'browser') {
+                initBrowserApp();
+            }
         }
     }
 
@@ -311,9 +366,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (rebootBtn) {
         rebootBtn.addEventListener('click', () => {
             toggleStartMenu(false);
-            showToast("System wallpaper rebooting...", "info");
-            if (typeof initParticles === 'function') {
-                initParticles();
+            showToast("Rebooting SidharthOS...", "info");
+            
+            // Close all windows
+            windows.forEach(win => {
+                closeWindow(win);
+            });
+            
+            // Trigger boot loader sequence
+            runBootloader();
+            
+            // Reinitialize wallpaper canvas particles
+            if (window.initParticles) {
+                window.initParticles();
             }
         });
     }
@@ -368,13 +433,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function triggerResumeDownload() {
+        appendTermLine(`<div>Initiating download for <span class="term-highlight">Sidharth_Resume.pdf</span>...</div>`);
+        const link = document.createElement('a');
+        link.href = 'Sidharth_Resume.pdf';
+        link.download = 'Sidharth_Resume.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast("Downloading Resume PDF...", "success");
+    }
+
     function processTerminalCommand(cmd) {
         // Output prompt echo
         appendTermLine(`<span class="terminal-prompt">visitor@sidharth-os:~$</span> ${cmd}`);
 
-        if (cmd === '') return;
+        const trimmedCmd = cmd.trim();
+        if (trimmedCmd === '') return;
 
-        switch (cmd) {
+        const cmdLower = trimmedCmd.toLowerCase();
+        if (cmdLower === 'download resume' || cmdLower === 'get resume') {
+            triggerResumeDownload();
+            return;
+        }
+
+        const parts = trimmedCmd.split(/\s+/);
+        const baseCmd = parts[0].toLowerCase();
+        const args = parts.slice(1);
+
+        switch (baseCmd) {
             case 'help':
                 appendTermLine(`
                     <div>Available Commands:</div>
@@ -384,6 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">resume</span>: View and download my professional resume</div>
                     <div>- <span class="term-highlight">timeline</span>: Education and certifications</div>
                     <div>- <span class="term-highlight">contact</span>: Access email and contact details</div>
+                    <div>- <span class="term-highlight">snake</span>: Play Snake game (Easter Egg)</div>
                     <div>- <span class="term-highlight">neofetch</span>: System summary report</div>
                     <div>- <span class="term-highlight">clear</span>: Clear terminal console screen</div>
                     <div>- <span class="term-highlight">sudo [command]</span>: Request superuser elevation</div>
@@ -414,16 +502,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 `);
                 break;
             case 'resume':
-            case 'download resume':
-            case 'get resume':
-                appendTermLine(`<div>Initiating download for <span class="term-highlight">Sidharth_Resume.pdf</span>...</div>`);
-                const link = document.createElement('a');
-                link.href = 'Sidharth_Resume.pdf';
-                link.download = 'Sidharth_Resume.pdf';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showToast("Downloading Resume PDF...", "success");
+                if (args.includes('-d') || args.includes('--download')) {
+                    triggerResumeDownload();
+                } else if (args.includes('-v') || args.includes('--view')) {
+                    appendTermLine(`<div>Opening <span class="term-highlight">Resume.app</span> window...</div>`);
+                    openApp('resume');
+                } else {
+                    appendTermLine(`
+                        <div style="color: #fff; font-weight: 500;">📄 SREEDEV S S - PROFESSIONAL RESUME</div>
+                        <div>------------------------------------</div>
+                        <div><span class="term-highlight">Name:</span> Sreedev S S</div>
+                        <div><span class="term-highlight">Role:</span> Developer, Designer, Editor</div>
+                        <div><span class="term-highlight">Email:</span> sreedevss05@gmail.com</div>
+                        <div><span class="term-highlight">Web:</span> sreedevss.in</div>
+                        <div><span class="term-highlight">Location:</span> Thiruvananthapuram, Kerala, India</div>
+                        <div><span class="term-highlight">Experience 1:</span> Intern @ Logixmotion Pvt Ltd</div>
+                        <div><span class="term-highlight">Experience 2:</span> Deputy CFA @ FOSS CEAL</div>
+                        <div>------------------------------------</div>
+                        <div>Command Options:</div>
+                        <div>- Type <span class="term-highlight">resume -v</span> or <span class="term-highlight">resume --view</span> to launch CV Viewer</div>
+                    `);
+                }
                 break;
             case 'timeline':
             case 'education':
@@ -438,9 +537,14 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'mail':
                 appendTermLine(`
                     <div>Contact Telemetry:</div>
-                    <div>- <span class="term-highlight">Email:</span> ugsidharth@icloud.com</div>
+                    <div>- <span class="term-highlight">Email:</span> mail@ugsidharth.in</div>
                     <div>- <span class="term-highlight">Location:</span> Kazhakkoottam, Kerala, India</div>
                 `);
+                break;
+            case 'snake':
+            case 'game':
+                appendTermLine(`<div>Launching <span class="term-highlight">Snake.app</span> easter egg game...</div>`);
+                openApp('snake');
                 break;
             case 'clear':
                 if (terminalOutput) {
@@ -453,7 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <pre style="color: #00ff55; font-family: monospace; font-size: 0.8rem; line-height: 1.25;">
      .---.       visitor@sidharth-portfolio
     /     \\      --------------------------
-    \\   _./      OS: SidharthOS v1.0.4 x86_64
+    \\   _./      OS: SidharthOS v1.0.6 x86_64
      \`-'-'       Host: WebOS Desktop Environment
     /|\\ | /|\\    Kernel: Javascript ES6 Engine
    / | \\|/ | \\   Uptime: 4 mins
@@ -470,7 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 appendTermLine(`<div>Permission Denied: Nice try, but visitor accounts do not have root clearance!</div>`);
                 break;
             default:
-                if (cmd.startsWith('sudo ')) {
+                if (baseCmd === 'sudo') {
                     appendTermLine(`<div>Permission Denied: Nice try, but visitor accounts do not have root clearance!</div>`);
                 } else {
                     appendTermLine(`<div>bash: command not found: <span style="color: red;">${cmd}</span>. Type <span class="term-highlight">'help'</span> for reference.</div>`);
@@ -647,9 +751,269 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize: Open default windows on boot
-    setTimeout(() => {
-        openApp('profile');
-    }, 800);
+    runBootloader();
+
+    // 7.8 Browser.app Navigation & Search Emulator
+    const browserAddress = document.getElementById('browser-address');
+    const browserGoBtn = document.getElementById('browser-go-btn');
+    const browserBackBtn = document.getElementById('browser-back-btn');
+    const browserHomeBtn = document.getElementById('browser-home-btn');
+    const googleHome = document.getElementById('google-home');
+    const googleSearchQuery = document.getElementById('google-search-query');
+    const googleSearchBtn = document.getElementById('google-search-btn');
+    const googleLuckyBtn = document.getElementById('google-lucky-btn');
+    const browserIframe = document.getElementById('browser-iframe');
+
+    function showGoogleHome() {
+        if (browserAddress) browserAddress.value = 'https://google.com';
+        if (googleHome) googleHome.style.display = 'flex';
+        if (browserIframe) {
+            browserIframe.style.display = 'none';
+            browserIframe.src = 'about:blank';
+        }
+        if (googleSearchQuery) {
+            googleSearchQuery.value = '';
+            googleSearchQuery.focus();
+        }
+    }
+
+    function initBrowserApp() {
+        showGoogleHome();
+    }
+
+    function performWebSearch(query) {
+        query = query.trim();
+        if (query === '') return;
+        showToast('Launching Google Search...', 'success');
+        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+    }
+
+    function handleAddressSubmit() {
+        if (!browserAddress) return;
+        const value = browserAddress.value.trim();
+        if (value === '') return;
+
+        const isDomain = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/i.test(value);
+        
+        if (isDomain) {
+            let url = value;
+            if (!/^https?:\/\//i.test(url)) {
+                url = 'https://' + url;
+            }
+            
+            if (url.includes('google.com') && !url.includes('/search')) {
+                showGoogleHome();
+                return;
+            }
+
+            if (googleHome) googleHome.style.display = 'none';
+            if (browserIframe) {
+                browserIframe.style.display = 'block';
+                browserIframe.src = url;
+            }
+        } else {
+            performWebSearch(value);
+        }
+    }
+
+    if (browserHomeBtn) browserHomeBtn.addEventListener('click', showGoogleHome);
+    if (browserBackBtn) browserBackBtn.addEventListener('click', showGoogleHome);
+
+    if (browserGoBtn) {
+        browserGoBtn.addEventListener('click', handleAddressSubmit);
+    }
+    if (browserAddress) {
+        browserAddress.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                handleAddressSubmit();
+            }
+        });
+    }
+
+    if (googleSearchBtn && googleSearchQuery) {
+        googleSearchBtn.addEventListener('click', () => {
+            performWebSearch(googleSearchQuery.value);
+        });
+    }
+
+    if (googleSearchQuery) {
+        googleSearchQuery.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performWebSearch(googleSearchQuery.value);
+            }
+        });
+    }
+
+    if (googleLuckyBtn) {
+        googleLuckyBtn.addEventListener('click', () => {
+            const apps = ['profile', 'skills', 'projects', 'resume', 'terminal', 'mail', 'vscode', 'snake'];
+            const randomApp = apps[Math.floor(Math.random() * apps.length)];
+            showToast(`SidharthOS feeling lucky! Launching ${randomApp}.app...`, 'success');
+            setTimeout(() => {
+                openApp(randomApp);
+            }, 500);
+        });
+    }
+
+    // 7.9 Snake Game Easter Egg Logic
+    const snakeCanvas = document.getElementById('snake-canvas');
+    const snakeScoreVal = document.getElementById('snake-score');
+    const snakeHighscoreVal = document.getElementById('snake-highscore');
+    const snakeStartBtn = document.getElementById('snake-start-btn');
+
+    let snakeCtx = snakeCanvas ? snakeCanvas.getContext('2d') : null;
+    let snake = [];
+    let food = {};
+    let dx = 16;
+    let dy = 0;
+    let score = 0;
+    let highscore = localStorage.getItem('snake_highscore') || 0;
+    let gameInterval = null;
+    let gameRunning = false;
+    const gridSize = 16;
+
+    if (snakeHighscoreVal) snakeHighscoreVal.textContent = highscore;
+
+    function startSnakeGame() {
+        if (gameRunning) return;
+        gameRunning = true;
+        score = 0;
+        if (snakeScoreVal) snakeScoreVal.textContent = score;
+        dx = gridSize;
+        dy = 0;
+        snake = [
+            { x: gridSize * 5, y: gridSize * 5 },
+            { x: gridSize * 4, y: gridSize * 5 },
+            { x: gridSize * 3, y: gridSize * 5 }
+        ];
+        createFood();
+        if (snakeStartBtn) snakeStartBtn.style.display = 'none';
+
+        if (gameInterval) clearInterval(gameInterval);
+        gameInterval = setInterval(updateSnakeGame, 100);
+    }
+
+    function createFood() {
+        if (!snakeCanvas) return;
+        food.x = Math.floor(Math.random() * (snakeCanvas.width / gridSize)) * gridSize;
+        food.y = Math.floor(Math.random() * (snakeCanvas.height / gridSize)) * gridSize;
+        
+        let foodOnSnake = false;
+        snake.forEach(part => {
+            if (part.x === food.x && part.y === food.y) foodOnSnake = true;
+        });
+        if (foodOnSnake) createFood();
+    }
+
+    function updateSnakeGame() {
+        if (!snakeCtx || !snakeCanvas) return;
+
+        const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+        if (head.x < 0 || head.x >= snakeCanvas.width || head.y < 0 || head.y >= snakeCanvas.height || checkSelfCollision(head)) {
+            endSnakeGame();
+            return;
+        }
+
+        snake.unshift(head);
+
+        if (head.x === food.x && head.y === food.y) {
+            score += 10;
+            if (snakeScoreVal) snakeScoreVal.textContent = score;
+            if (score > highscore) {
+                highscore = score;
+                localStorage.setItem('snake_highscore', highscore);
+                if (snakeHighscoreVal) snakeHighscoreVal.textContent = highscore;
+            }
+            createFood();
+        } else {
+            snake.pop();
+        }
+
+        snakeCtx.fillStyle = '#0c0f17';
+        snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+
+        snakeCtx.strokeStyle = 'rgba(0, 242, 254, 0.04)';
+        for (let i = 0; i < snakeCanvas.width; i += gridSize) {
+            snakeCtx.beginPath();
+            snakeCtx.moveTo(i, 0);
+            snakeCtx.lineTo(i, snakeCanvas.height);
+            snakeCtx.stroke();
+            snakeCtx.beginPath();
+            snakeCtx.moveTo(0, i);
+            snakeCtx.lineTo(snakeCanvas.width, i);
+            snakeCtx.stroke();
+        }
+
+        // Draw Food
+        snakeCtx.shadowBlur = 8;
+        snakeCtx.shadowColor = '#7f00ff';
+        snakeCtx.fillStyle = '#7f00ff';
+        snakeCtx.fillRect(food.x + 2, food.y + 2, gridSize - 4, gridSize - 4);
+
+        // Draw Snake
+        snakeCtx.shadowColor = '#00f2fe';
+        snake.forEach((part, idx) => {
+            snakeCtx.fillStyle = idx === 0 ? '#ffffff' : '#00f2fe';
+            snakeCtx.fillRect(part.x + 1, part.y + 1, gridSize - 2, gridSize - 2);
+        });
+        
+        snakeCtx.shadowBlur = 0;
+    }
+
+    function checkSelfCollision(head) {
+        for (let i = 1; i < snake.length; i++) {
+            if (snake[i].x === head.x && snake[i].y === head.y) return true;
+        }
+        return false;
+    }
+
+    function endSnakeGame() {
+        gameRunning = false;
+        clearInterval(gameInterval);
+        if (snakeStartBtn) {
+            snakeStartBtn.style.display = 'block';
+            snakeStartBtn.textContent = 'RESTART';
+        }
+        if (snakeCtx && snakeCanvas) {
+            snakeCtx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+            snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+            snakeCtx.font = '16px "Fira Code", monospace';
+            snakeCtx.fillStyle = '#ff5f56';
+            snakeCtx.textAlign = 'center';
+            snakeCtx.fillText('GAME OVER', snakeCanvas.width / 2, snakeCanvas.height / 2 - 10);
+            snakeCtx.font = '12px "Fira Code", monospace';
+            snakeCtx.fillStyle = '#94a3b8';
+            snakeCtx.fillText(`SCORE: ${score}`, snakeCanvas.width / 2, snakeCanvas.height / 2 + 20);
+        }
+    }
+
+    if (snakeStartBtn) {
+        snakeStartBtn.addEventListener('click', startSnakeGame);
+    }
+
+    window.addEventListener('keydown', (e) => {
+        const snakeWin = document.getElementById('window-snake');
+        if (!snakeWin || !snakeWin.classList.contains('focused-window')) return;
+
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+            e.preventDefault();
+        }
+
+        if (e.key === 'ArrowUp' && dy === 0) {
+            dx = 0;
+            dy = -gridSize;
+        } else if (e.key === 'ArrowDown' && dy === 0) {
+            dx = 0;
+            dy = gridSize;
+        } else if (e.key === 'ArrowLeft' && dx === 0) {
+            dx = -gridSize;
+            dy = 0;
+        } else if (e.key === 'ArrowRight' && dx === 0) {
+            dx = gridSize;
+            dy = 0;
+        }
+    });
 
     // 8. Wallpaper Canvas particles
     const canvas = document.getElementById('particle-canvas');

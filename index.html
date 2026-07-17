@@ -19,13 +19,14 @@
 <body>
     <!-- BIOS / System Boot Simulator Overlay -->
     <div id="boot-screen">
+        <div class="crt-overlay"></div>
         <div class="boot-loader-container">
             <div class="boot-logo">👾</div>
-            <div class="boot-title">SidharthOS v1.0.6</div>
             <div class="boot-terminal-log" id="boot-log"></div>
             <div class="boot-progress-bar">
                 <div class="boot-progress-fill" id="boot-progress"></div>
             </div>
+            <div class="boot-skip-hint">Press <span class="key-hint">ESC</span> or click anywhere to skip boot sequence</div>
         </div>
     </div>
 
@@ -52,6 +53,10 @@
                 <div class="icon-visual">📄</div>
                 <span class="icon-label">Resume.app</span>
             </div>
+            <div class="desktop-icon" data-app="browser" id="icon-browser">
+                <div class="icon-visual">🌐</div>
+                <span class="icon-label">Browser.app</span>
+            </div>
 
             <div class="desktop-icon" data-app="terminal" id="icon-terminal">
                 <div class="icon-visual">💻</div>
@@ -65,6 +70,10 @@
                 <div class="icon-visual">📝</div>
                 <span class="icon-label">VS_Code.app</span>
             </div>
+            <div class="desktop-icon" data-app="snake" id="icon-snake">
+                <div class="icon-visual">🐍</div>
+                <span class="icon-label">Snake.app</span>
+            </div>
         </div>
 
         <!-- 2. Windows Workspace Container -->
@@ -74,16 +83,122 @@
             <div class="window glass-card" id="window-resume" data-window="resume" style="width: 800px; height: 580px; top: 5%; left: 15%;">
                 <div class="window-header">
                     <div class="window-controls">
-                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
-                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
-                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
                     </div>
-                    <div class="window-title">📄 Resume.app - PDF Viewer</div>
+                    <div class="window-title">📄 Resume.app - CV</div>
                     <div class="window-spacer"></div>
-                    <a href="Sidharth_Resume.pdf" download="Sidharth_Resume.pdf" class="btn-download" style="margin-right: 1.5rem; text-decoration: none; color: var(--color-cyan); font-size: 0.85rem; font-family: var(--ff-terminal); cursor: pointer;" title="Download PDF Resume">[DOWNLOAD_PDF]</a>
                 </div>
-                <div class="window-body" style="padding: 0; overflow: hidden; background: #202124;">
-                    <iframe src="Sidharth_Resume.pdf" width="100%" height="100%" style="border: none;"></iframe>
+                <div class="window-body" style="padding: 0; background: #07090e;">
+                    <div class="resume-container">
+                        <div class="resume-header">
+                            <div class="resume-title-section">
+                                <h1 class="resume-name">SREEDEV S S</h1>
+                                <span class="resume-subtitle">DEVELOPER &bull; DESIGNER &bull; EDITOR</span>
+                            </div>
+                            <div class="resume-contact">
+                                <div class="contact-row">
+                                    <span class="contact-label">EMAIL</span>
+                                    <span class="contact-val">sreedevss05@gmail.com</span>
+                                </div>
+                                <div class="contact-row">
+                                    <span class="contact-label">WEB</span>
+                                    <span class="contact-val">sreedevss.in</span>
+                                </div>
+                                <div class="contact-row">
+                                    <span class="contact-label">LOCATION</span>
+                                    <span class="contact-val">Thiruvananthapuram, Kerala</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="resume-divider"></div>
+
+                        <div class="resume-section">
+                            <div class="resume-section-title">
+                                <span>01.</span> EXPERIENCE
+                            </div>
+                            <div class="resume-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-badge active"></div>
+                                    <div class="timeline-header">
+                                        <span class="timeline-role active">INTERN</span>
+                                        <span class="timeline-date">NOV 2024 - PRESENT</span>
+                                    </div>
+                                    <div class="timeline-company active">LOGIXMOTION PVT LTD</div>
+                                    <ul class="timeline-desc">
+                                        <li>Worked on Initial UI/UX design</li>
+                                        <li>Frontend Development</li>
+                                        <li>Gained real-world experience in software development</li>
+                                    </ul>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-badge muted"></div>
+                                    <div class="timeline-header">
+                                        <span class="timeline-role muted">DEPUTY CFA</span>
+                                        <span class="timeline-date">JUL 2025 - MAY 2026</span>
+                                    </div>
+                                    <div class="timeline-company muted">FOSS CEAL</div>
+                                    <ul class="timeline-desc">
+                                        <li>Promoted open-source culture through workshops and events</li>
+                                        <li>Coordinated with the team to organise events</li>
+                                        <li>Part of planning most of the events</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- APPLICATION WINDOW: Browser / Google Search -->
+            <div class="window glass-card" id="window-browser" data-window="browser" style="width: 800px; height: 550px; top: 8%; left: 18%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">🌐 Browser.app - Web Explorer</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0; display: flex; flex-direction: column; overflow: hidden; background: #12131a; height: calc(100% - 38px);">
+                    <!-- Browser toolbar -->
+                    <div class="browser-toolbar">
+                        <button class="browser-tool-btn" id="browser-back-btn" title="Back to Home">←</button>
+                        <button class="browser-tool-btn" id="browser-home-btn" title="Home">🏠</button>
+                        <input type="text" class="browser-address-bar" id="browser-address" value="https://google.com">
+                        <button class="browser-tool-btn" id="browser-go-btn">Go</button>
+                    </div>
+                    
+                    <!-- Browser viewport -->
+                    <div class="browser-viewport" id="browser-view" style="padding: 0;">
+                        <!-- Google Search homepage -->
+                        <div class="google-homepage" id="google-home" style="display: flex;">
+                            <div class="google-logo">
+                                <span style="color: #4285F4">G</span>
+                                <span style="color: #EA4335">o</span>
+                                <span style="color: #FBBC05">o</span>
+                                <span style="color: #4285F4">g</span>
+                                <span style="color: #34A853">l</span>
+                                <span style="color: #EA4335">e</span>
+                            </div>
+                            <div class="google-search-container">
+                                <div class="google-input-wrapper">
+                                    <span class="search-icon">🔍</span>
+                                    <input type="text" class="google-search-input" id="google-search-query" placeholder="Search Google..." autocomplete="off">
+                                </div>
+                                <div class="google-btn-row">
+                                    <button class="google-btn" id="google-search-btn">Google Search</button>
+                                    <button class="google-btn" id="google-lucky-btn">I'm Feeling Lucky</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Iframe for direct pages (if iframe supports it) -->
+                        <iframe id="browser-iframe" src="" style="display: none; width: 100%; height: 100%; border: none; background: white;"></iframe>
+                    </div>
                 </div>
             </div>
             
@@ -91,9 +206,9 @@
             <div class="window glass-card" id="window-profile" data-window="profile" style="width: 780px; height: 500px; top: 10%; left: 15%;">
                 <div class="window-header">
                     <div class="window-controls">
-                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
-                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
-                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
                     </div>
                     <div class="window-title">👤 Profile.app - About Me</div>
                     <div class="window-spacer"></div>
@@ -106,7 +221,7 @@
                             <p class="profile-tagline">IoT & AI/ML Developer</p>
                             <div class="profile-meta">
                                 <div class="meta-line">📍 Kazhakkoottam, Kerala</div>
-                                <div class="meta-line">📧 ugsidharth@icloud.com</div>
+                                <div class="meta-line">📧 mail@ugsidharth.in</div>
                             </div>
                             <div class="profile-socials">
                                 <a href="https://github.com/ugsidharth" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="GitHub">GitHub</a>
@@ -139,9 +254,9 @@
             <div class="window glass-card" id="window-skills" data-window="skills" style="width: 720px; height: 480px; top: 15%; left: 20%;">
                 <div class="window-header">
                     <div class="window-controls">
-                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
-                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
-                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
                     </div>
                     <div class="window-title">🛠️ Skills.app - Inventory</div>
                     <div class="window-spacer"></div>
@@ -198,9 +313,9 @@
             <div class="window glass-card" id="window-projects" data-window="projects" style="width: 840px; height: 540px; top: 12%; left: 16%;">
                 <div class="window-header">
                     <div class="window-controls">
-                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
-                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
-                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
                     </div>
                     <div class="window-title">📂 Projects.app - Showcase</div>
                     <div class="window-spacer"></div>
@@ -316,16 +431,16 @@
             <div class="window glass-card" id="window-terminal" data-window="terminal" style="width: 680px; height: 420px; top: 22%; left: 24%;">
                 <div class="window-header">
                     <div class="window-controls">
-                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
-                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
-                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
                     </div>
                     <div class="window-title">💻 Terminal.app - bash</div>
                     <div class="window-spacer"></div>
                 </div>
                 <div class="window-body terminal-body">
                     <div class="terminal-output" id="terminal-output">
-                        <div>SidharthOS v1.0.4 (tty1) - Interactive shell</div>
+                        <div>SidharthOS v1.0.6 (tty1) - Interactive shell</div>
                         <div>Logged in as visitor@sidharth-portfolio</div>
                         <div>Type <span class="term-highlight">'help'</span> to see a list of commands, or try <span class="term-highlight">'neofetch'</span>.</div>
                         <br>
@@ -341,9 +456,9 @@
             <div class="window glass-card" id="window-mail" data-window="mail" style="width: 650px; height: 470px; top: 20%; left: 26%;">
                 <div class="window-header">
                     <div class="window-controls">
-                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
-                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
-                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
                     </div>
                     <div class="window-title">✉️ Mail.app - Send Message</div>
                     <div class="window-spacer"></div>
@@ -381,9 +496,9 @@
             <div class="window glass-card" id="window-vscode" data-window="vscode" style="width: 820px; height: 530px; top: 8%; left: 12%;">
                 <div class="window-header">
                     <div class="window-controls">
-                        <button class="win-btn close-btn" data-control="close" aria-label="Close"></button>
-                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize"></button>
-                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize"></button>
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
                     </div>
                     <div class="window-title">📝 VS_Code.app - Portfolio Editor</div>
                     <div class="window-spacer"></div>
@@ -407,6 +522,29 @@
                                 <pre><code id="vscode-code-display"></code></pre>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Snake Game (Easter Egg) -->
+            <div class="window glass-card" id="window-snake" data-window="snake" style="width: 450px; height: 500px; top: 15%; left: 20%; display: none;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">🐍 Snake.app - Game</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #07090e; overflow: hidden;">
+                    <div class="game-container">
+                        <div class="game-stats">
+                            <span>SCORE: <span id="snake-score">0</span></span>
+                            <span>HIGH SCORE: <span id="snake-highscore">0</span></span>
+                        </div>
+                        <canvas id="snake-canvas" width="320" height="320"></canvas>
+                        <button id="snake-start-btn">START</button>
                     </div>
                 </div>
             </div>
@@ -437,6 +575,11 @@
                     <span class="dock-tooltip">Resume</span>
                     <span class="dock-dot"></span>
                 </button>
+                <button class="dock-item" data-app="browser" aria-label="Browser App">
+                    <span class="dock-icon">🌐</span>
+                    <span class="dock-tooltip">Browser</span>
+                    <span class="dock-dot"></span>
+                </button>
 
                 <button class="dock-item" data-app="terminal" aria-label="Terminal App">
                     <span class="dock-icon">💻</span>
@@ -451,6 +594,11 @@
                 <button class="dock-item" data-app="vscode" aria-label="VS Code App">
                     <span class="dock-icon">📝</span>
                     <span class="dock-tooltip">VS Code</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="snake" aria-label="Snake Game App">
+                    <span class="dock-icon">🐍</span>
+                    <span class="dock-tooltip">Snake Game</span>
                     <span class="dock-dot"></span>
                 </button>
                 
@@ -487,10 +635,13 @@
                     <button class="start-shortcut-item" data-app="skills">🛠️ Skills & Technologies</button>
                     <button class="start-shortcut-item" data-app="projects">📂 Projects Showcase</button>
                     <button class="start-shortcut-item" data-app="resume">📄 Resume (PDF Viewer)</button>
+                    <button class="start-shortcut-item" data-app="browser">🌐 Web Browser (Google)</button>
+
 
                     <button class="start-shortcut-item" data-app="terminal">💻 Terminal Command Line</button>
                     <button class="start-shortcut-item" data-app="mail">✉️ Mail.app (Contact Form)</button>
                     <button class="start-shortcut-item" data-app="vscode">📝 VS Code (Editor)</button>
+                    <button class="start-shortcut-item" data-app="snake">🐍 Snake Game (Easter Egg)</button>
                 </div>
                 <div class="start-actions">
                     <h5>System Options</h5>
@@ -506,21 +657,34 @@
     <!-- VS Code Templates for Code Display -->
     <template id="template-vscode-resume">{
   <span class="code-keyword">"developer_profile"</span>: {
-    <span class="code-keyword">"name"</span>: <span class="code-string">"Sidharth D"</span>,
-    <span class="code-keyword">"specialization"</span>: <span class="code-string">"IoT, AI & Machine Learning"</span>,
-    <span class="code-keyword">"location"</span>: <span class="code-string">"Kazhakkoottam, Kerala, India"</span>,
-    <span class="code-keyword">"email"</span>: <span class="code-string">"ugsidharth@icloud.com"</span>
+    <span class="code-keyword">"name"</span>: <span class="code-string">"Sreedev S S"</span>,
+    <span class="code-keyword">"specialization"</span>: <span class="code-string">"Developer, Designer & Editor"</span>,
+    <span class="code-keyword">"location"</span>: <span class="code-string">"Thiruvananthapuram, Kerala, India"</span>,
+    <span class="code-keyword">"email"</span>: <span class="code-string">"sreedevss05@gmail.com"</span>,
+    <span class="code-keyword">"web"</span>: <span class="code-string">"sreedevss.in"</span>
   },
-  <span class="code-keyword">"education"</span>: {
-    <span class="code-keyword">"degree"</span>: <span class="code-string">"B.Tech in Computer Science and Engineering"</span>,
-    <span class="code-keyword">"college"</span>: <span class="code-string">"College of Engineering, Attingal (CEAL)"</span>,
-    <span class="code-keyword">"tenure"</span>: <span class="code-string">"2025 - 2029 (Expected)"</span>
-  },
-  <span class="code-keyword">"featured_project"</span>: {
-    <span class="code-keyword">"name"</span>: <span class="code-string">"Grabster / MediaHub Downloader"</span>,
-    <span class="code-keyword">"live_demo"</span>: <span class="code-string">"https://novara.ugsidharth.in/"</span>,
-    <span class="code-keyword">"source_code"</span>: <span class="code-string">"https://github.com/UG-SIDHARTH/Grabster-5.0"</span>
-  }
+  <span class="code-keyword">"experience"</span>: [
+    {
+      <span class="code-keyword">"role"</span>: <span class="code-string">"Intern"</span>,
+      <span class="code-keyword">"company"</span>: <span class="code-string">"Logixmotion Pvt Ltd"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"Nov 2024 - Present"</span>,
+      <span class="code-keyword">"details"</span>: [
+        <span class="code-string">"Worked on Initial UI/UX design"</span>,
+        <span class="code-string">"Frontend Development"</span>,
+        <span class="code-string">"Gained real-world experience in software development"</span>
+      ]
+    },
+    {
+      <span class="code-keyword">"role"</span>: <span class="code-string">"Deputy CFA"</span>,
+      <span class="code-keyword">"company"</span>: <span class="code-string">"FOSS CEAL"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"Jul 2025 - May 2026"</span>,
+      <span class="code-keyword">"details"</span>: [
+        <span class="code-string">"Promoted open-source culture through workshops and events"</span>,
+        <span class="code-string">"Coordinated with the team to organise events"</span>,
+        <span class="code-string">"Part of planning most of the events"</span>
+      ]
+    }
+  ]
 }</template>
 
     <template id="template-vscode-index">&lt;<span class="code-tag">div</span> <span class="code-attr">id</span>=<span class="code-string">"desktop"</span>&gt;

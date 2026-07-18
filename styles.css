@@ -2172,6 +2172,24 @@ html, body {
     background: rgba(255, 95, 86, 0.25) !important;
 }
 
+/* Resume Grid Layout Styles */
+.resume-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .resume-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    .resume-right-col {
+        border-left: none !important;
+        padding-left: 0 !important;
+    }
+}
+
 
 
 

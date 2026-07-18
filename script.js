@@ -533,12 +533,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div style="color: #fff; font-weight: 500;">📄 SIDHARTH D - PROFESSIONAL RESUME</div>
                         <div>------------------------------------</div>
                         <div><span class="term-highlight">Name:</span> Sidharth D</div>
-                        <div><span class="term-highlight">Specialization:</span> IoT Development, AI, Machine Learning</div>
-                        <div><span class="term-highlight">Education:</span> B.Tech in CSE at College of Engineering Attingal (2025-2029)</div>
-                        <div><span class="term-highlight">Experience:</span> Media @ IEEE SB CEAL | Media @ FOSS CEAL | Media Lead @ ISTE CEAL</div>
+                        <div><span class="term-highlight">Specialization:</span> Developer, IoT Engineer, ML Enthusiast</div>
+                        <div><span class="term-highlight">Education:</span> B.Tech in CSE at College of Engineering, Attingal (2025-2029)</div>
+                        <div><span class="term-highlight">Experience:</span> Media Team @ IEEE SB CEAL | Media Team @ FOSS SB CEAL | Media Lead @ ISTE</div>
                         <div><span class="term-highlight">Primary Stack:</span> Python, C/C++, ESP32, Edge AI, Data Analytics</div>
-                        <div><span class="term-highlight">Email:</span> mail@ugsidharth.in</div>
-                        <div><span class="term-highlight">Location:</span> Kazhakkoottam, Kerala, India</div>
+                        <div><span class="term-highlight">Email:</span> ugsidharth@icloud.com</div>
+                        <div><span class="term-highlight">Location:</span> Kazhakkoottam, Kerala</div>
                         <div>------------------------------------</div>
                         <div>Command Options:</div>
                         <div>- Type <span class="term-highlight">resume -v</span> or <span class="term-highlight">resume --view</span> to launch CV Viewer</div>
@@ -550,9 +550,9 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'exp':
                 appendTermLine(`
                     <div>Organizational Experience:</div>
-                    <div>- <span class="term-highlight">Media:</span> IEEE SB CEAL | 2025 - Present</div>
-                    <div>- <span class="term-highlight">Media:</span> FOSS CEAL | 2025 - Present</div>
-                    <div>- <span class="term-highlight">Media Lead:</span> ISTE CEAL | 2025 - Present</div>
+                    <div>- <span class="term-highlight">Media Team:</span> IEEE SB CEAL | Apr 2026 - Present</div>
+                    <div>- <span class="term-highlight">Media Team:</span> FOSS SB CEAL | Jun 2026 - Present</div>
+                    <div>- <span class="term-highlight">Media Lead:</span> ISTE | Jul 2026 - Present</div>
                 `);
                 break;
             case 'timeline':

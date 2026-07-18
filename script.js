@@ -468,6 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">skills</span>: Technical skills roster</div>
                     <div>- <span class="term-highlight">projects</span>: View areas of focus</div>
                     <div>- <span class="term-highlight">resume</span>: View and download my professional resume</div>
+                    <div>- <span class="term-highlight">experience</span>: Professional & organization experiences</div>
                     <div>- <span class="term-highlight">timeline</span>: Education and certifications</div>
                     <div>- <span class="term-highlight">contact</span>: Access email and contact details</div>
                     <div>- <span class="term-highlight">snake</span>: Play Classic Snake game</div>
@@ -486,7 +487,8 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'skills':
                 appendTermLine(`
                     <div>Skills Inventory:</div>
-                    <div>- <span class="term-highlight">Languages:</span> Python, C++, C, Bash, HTML/CSS, LaTeX</div>
+                    <div>- <span class="term-highlight">Programming & OS:</span> Python, C++, C, Bash, HTML/CSS, Linux OS</div>
+                    <div>- <span class="term-highlight">Languages:</span> English, Malayalam, Hindi</div>
                     <div>- <span class="term-highlight">IoT & Hardware:</span> ESP32, Raspberry Pi, Arduino, MQTT, Prototyping</div>
                     <div>- <span class="term-highlight">AI/ML & Data:</span> Edge AI, Face Recognition, NumPy, SciPy, Pandas</div>
                 `);
@@ -533,6 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div><span class="term-highlight">Name:</span> Sidharth D</div>
                         <div><span class="term-highlight">Specialization:</span> IoT Development, AI, Machine Learning</div>
                         <div><span class="term-highlight">Education:</span> B.Tech in CSE at College of Engineering Attingal (2025-2029)</div>
+                        <div><span class="term-highlight">Experience:</span> Media @ IEEE SB CEAL | Media @ FOSS CEAL | Media Lead @ ISTE CEAL</div>
                         <div><span class="term-highlight">Primary Stack:</span> Python, C/C++, ESP32, Edge AI, Data Analytics</div>
                         <div><span class="term-highlight">Email:</span> mail@ugsidharth.in</div>
                         <div><span class="term-highlight">Location:</span> Kazhakkoottam, Kerala, India</div>
@@ -541,6 +544,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div>- Type <span class="term-highlight">resume -v</span> or <span class="term-highlight">resume --view</span> to launch CV Viewer</div>
                     `);
                 }
+                break;
+            case 'experience':
+            case 'experiences':
+            case 'exp':
+                appendTermLine(`
+                    <div>Organizational Experience:</div>
+                    <div>- <span class="term-highlight">Media:</span> IEEE SB CEAL | 2025 - Present</div>
+                    <div>- <span class="term-highlight">Media:</span> FOSS CEAL | 2025 - Present</div>
+                    <div>- <span class="term-highlight">Media Lead:</span> ISTE CEAL | 2025 - Present</div>
+                `);
                 break;
             case 'timeline':
             case 'education':
@@ -1326,6 +1339,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fightCtrlFire) {
         fightCtrlFire.addEventListener('click', fireLaser);
     }
+
+    // 7.5. Creative.app tab-switching logic
+    const creativeTabBtns = document.querySelectorAll('.creative-tab-btn');
+    const creativePanels = document.querySelectorAll('.creative-panel');
+
+    creativeTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            creativeTabBtns.forEach(b => {
+                b.classList.remove('active-creative-tab');
+                b.style.background = 'transparent';
+                b.style.borderColor = 'transparent';
+                b.style.color = '#94a3b8';
+            });
+            btn.classList.add('active-creative-tab');
+            btn.style.background = 'rgba(0, 242, 254, 0.08)';
+            btn.style.borderColor = 'rgba(0, 242, 254, 0.35)';
+            btn.style.color = 'var(--color-cyan)';
+
+            const targetTab = btn.getAttribute('data-creative-tab');
+            creativePanels.forEach(panel => {
+                if (panel.id === `creative-panel-${targetTab}`) {
+                    panel.style.display = 'flex';
+                } else {
+                    panel.style.display = 'none';
+                }
+            });
+        });
+    });
 
     // 8. Wallpaper Canvas particles
     const canvas = document.getElementById('particle-canvas');

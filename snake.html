@@ -202,6 +202,7 @@
         const snakeCtx = snakeCanvas.getContext('2d');
         let snake = [];
         let food = {};
+        let obstacles = [];
         let dx = 16;
         let dy = 0;
         let score = 0;
@@ -224,28 +225,44 @@
                 { x: gridSize * 4, y: gridSize * 5 },
                 { x: gridSize * 3, y: gridSize * 5 }
             ];
+            // Static obstacles configured outside snake start line (row 5, cols 3-5)
+            obstacles = [
+                { x: gridSize * 4, y: gridSize * 12 },
+                { x: gridSize * 15, y: gridSize * 4 },
+                { x: gridSize * 12, y: gridSize * 12 },
+                { x: gridSize * 8, y: gridSize * 8 },
+                { x: gridSize * 8, y: gridSize * 9 }
+            ];
             createFood();
             snakeStartBtn.style.display = 'none';
 
             if (gameInterval) clearInterval(gameInterval);
-            gameInterval = setInterval(updateSnakeGame, 100);
+            gameInterval = setInterval(updateSnakeGame, 140); // Slower speed (140ms vs 100ms)
         }
 
         function createFood() {
             food.x = Math.floor(Math.random() * (snakeCanvas.width / gridSize)) * gridSize;
             food.y = Math.floor(Math.random() * (snakeCanvas.height / gridSize)) * gridSize;
             
-            let foodOnSnake = false;
+            let foodOnInvalidSpace = false;
             snake.forEach(part => {
-                if (part.x === food.x && part.y === food.y) foodOnSnake = true;
+                if (part.x === food.x && part.y === food.y) foodOnInvalidSpace = true;
             });
-            if (foodOnSnake) createFood();
+            obstacles.forEach(obs => {
+                if (obs.x === food.x && obs.y === food.y) foodOnInvalidSpace = true;
+            });
+            if (foodOnInvalidSpace) createFood();
         }
 
         function updateSnakeGame() {
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
-            if (head.x < 0 || head.x >= snakeCanvas.width || head.y < 0 || head.y >= snakeCanvas.height || checkSelfCollision(head)) {
+            let hitObstacle = false;
+            obstacles.forEach(obs => {
+                if (head.x === obs.x && head.y === obs.y) hitObstacle = true;
+            });
+
+            if (head.x < 0 || head.x >= snakeCanvas.width || head.y < 0 || head.y >= snakeCanvas.height || checkSelfCollision(head) || hitObstacle) {
                 endSnakeGame();
                 return;
             }
@@ -273,6 +290,15 @@
                     snakeCtx.fillRect(col * gridSize, row * gridSize, gridSize, gridSize);
                 }
             }
+
+            // Draw Obstacles (Neon Pink Blocks)
+            obstacles.forEach(obs => {
+                snakeCtx.fillStyle = '#ff007f'; // neon pink
+                snakeCtx.fillRect(obs.x + 1, obs.y + 1, gridSize - 2, gridSize - 2);
+                snakeCtx.strokeStyle = '#7f00ff'; // neon purple border
+                snakeCtx.lineWidth = 1.5;
+                snakeCtx.strokeRect(obs.x + 1, obs.y + 1, gridSize - 2, gridSize - 2);
+            });
 
             // Draw Food (detailed Red Apple)
             const centerX = food.x + gridSize / 2;

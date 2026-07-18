@@ -74,6 +74,10 @@
                 <div class="icon-visual">🐍</div>
                 <span class="icon-label">Snake.app</span>
             </div>
+            <div class="desktop-icon" data-app="creative" id="icon-creative">
+                <div class="icon-visual">🎨</div>
+                <span class="icon-label">Creative.app</span>
+            </div>
         </div>
 
         <!-- 2. Windows Workspace Container -->
@@ -182,10 +186,43 @@
                             </div>
                         </div>
 
-                        <!-- 04. Areas of Focus -->
+                        <!-- 04. Experience Section -->
                         <div class="resume-section">
                             <div class="resume-section-title">
-                                <span>04.</span> AREAS OF FOCUS
+                                <span>04.</span> EXPERIENCE & ORGANIZATIONS
+                            </div>
+                            <div class="resume-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-badge active"></div>
+                                    <div class="timeline-header">
+                                        <span class="timeline-role active">MEDIA</span>
+                                        <span class="timeline-date">2025 - PRESENT</span>
+                                    </div>
+                                    <div class="timeline-company active">IEEE SB CEAL</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-badge active"></div>
+                                    <div class="timeline-header">
+                                        <span class="timeline-role active">MEDIA</span>
+                                        <span class="timeline-date">2025 - PRESENT</span>
+                                    </div>
+                                    <div class="timeline-company active">FOSS CEAL</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-badge active"></div>
+                                    <div class="timeline-header">
+                                        <span class="timeline-role active">MEDIA LEAD</span>
+                                        <span class="timeline-date">2025 - PRESENT</span>
+                                    </div>
+                                    <div class="timeline-company active">ISTE CEAL</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 05. Areas of Focus -->
+                        <div class="resume-section">
+                            <div class="resume-section-title">
+                                <span>05.</span> AREAS OF FOCUS
                             </div>
                             <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-left: 0.6rem;">
                                 <span style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.3rem 0.8rem; font-size: 0.8rem; color: var(--color-cyan); font-family: var(--ff-terminal);">IoT Development & Prototyping</span>
@@ -312,7 +349,8 @@
                     <div class="skills-window-layout">
                         <div class="skills-sidebar">
                             <button class="skill-tab-btn active" data-tab="all">All Skills</button>
-                            <button class="skill-tab-btn" data-tab="languages">Languages & OS</button>
+                            <button class="skill-tab-btn" data-tab="languages">Programming & OS</button>
+                            <button class="skill-tab-btn" data-tab="spoken-languages">Languages</button>
                             <button class="skill-tab-btn" data-tab="iot">IoT & Hardware</button>
                             <button class="skill-tab-btn" data-tab="ai">AI / ML & Data</button>
                             <button class="skill-tab-btn" data-tab="creative">Creative & Other</button>
@@ -326,6 +364,9 @@
                                 <div class="skill-os-item" data-category="languages"><span>🐚 Bash Scripting</span></div>
                                 <div class="skill-os-item" data-category="languages"><span>🌐 HTML/CSS</span></div>
                                 <div class="skill-os-item" data-category="languages"><span>🐧 Linux OS</span></div>
+                                <div class="skill-os-item" data-category="spoken-languages"><span>🗣️ English</span></div>
+                                <div class="skill-os-item" data-category="spoken-languages"><span>🗣️ Malayalam</span></div>
+                                <div class="skill-os-item" data-category="spoken-languages"><span>🗣️ Hindi</span></div>
                                 
                                 <!-- Group: IoT -->
                                 <div class="skill-os-item" data-category="iot"><span>🔌 ESP32 Dev</span></div>
@@ -349,7 +390,68 @@
                                 <div class="skill-os-item" data-category="creative"><span>🎥 Videography</span></div>
                                 <div class="skill-os-item" data-category="creative"><span>📝 LaTeX Typing</span></div>
                                 <div class="skill-os-item" data-category="creative"><span>🏢 MS Office</span></div>
-                                <div class="skill-os-item" data-category="creative"><span>🗣️ English / Malayalam / Hindi</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Creative (My Creativity) -->
+            <div class="window glass-card" id="window-creative" data-window="creative" style="width: 820px; height: 550px; top: 14%; left: 22%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">🎨 Creative.app - Portfolio of Creativity</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0; background: #07090e; display: flex; flex-direction: column; overflow: hidden; height: calc(100% - 38px);">
+                    <!-- Tab controls inside app -->
+                    <div class="creative-toolbar" style="display: flex; gap: 10px; padding: 10px; background: rgba(13, 20, 33, 0.4); border-bottom: 1px solid rgba(0, 242, 254, 0.15); align-items: center;">
+                        <button class="creative-tab-btn active-creative-tab" data-creative-tab="photography" style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.35); border-radius: 4px; padding: 6px 16px; color: var(--color-cyan); font-family: 'Fira Code', monospace; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">📸 PHOTOGRAPHY</button>
+                        <button class="creative-tab-btn" data-creative-tab="videography" style="background: transparent; border: 1px solid transparent; border-radius: 4px; padding: 6px 16px; color: #94a3b8; font-family: 'Fira Code', monospace; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">🎥 VIDEOGRAPHY</button>
+                        <button class="creative-tab-btn" data-creative-tab="figma" style="background: transparent; border: 1px solid transparent; border-radius: 4px; padding: 6px 16px; color: #94a3b8; font-family: 'Fira Code', monospace; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">🎨 FIGMA DESIGNS</button>
+                    </div>
+                    <!-- Viewport containing panels -->
+                    <div class="creative-viewport" style="flex: 1; padding: 20px; overflow-y: auto; position: relative;">
+                        <!-- Photography Panel -->
+                        <div class="creative-panel active-creative-panel" id="creative-panel-photography" style="display: flex; flex-direction: column; gap: 15px;">
+                            <div class="creative-showcase-card" style="background: rgba(13, 20, 33, 0.3); border: 1px solid rgba(0, 242, 254, 0.1); border-radius: 8px; padding: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                                <img src="/assets/creative_photography.png" alt="Photography Showcase" style="width: 320px; height: 200px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(0, 242, 254, 0.2);">
+                                <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h4 style="margin: 0 0 10px 0; color: #fff; font-size: 1.2rem; font-family: 'Space Grotesk', sans-serif;">Street & Neon Lightscapes</h4>
+                                    <p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #94a3b8; line-height: 1.5;">Capturing the vivid interaction of rain, high-contrast reflections, and vibrant neon signs in urban environments. A study in cyberpunk-inspired nocturnal lighting and framing.</p>
+                                    <span style="font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--color-cyan);">EXIF: ISO 400 | f/1.8 | 1/60s | 50mm lens</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Videography Panel -->
+                        <div class="creative-panel" id="creative-panel-videography" style="display: none; flex-direction: column; gap: 15px;">
+                            <div class="creative-showcase-card" style="background: rgba(13, 20, 33, 0.3); border: 1px solid rgba(0, 242, 254, 0.1); border-radius: 8px; padding: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                                <div style="position: relative; width: 320px; height: 200px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(0, 242, 254, 0.2);">
+                                    <img src="/assets/creative_videography.png" alt="Videography Thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+                                        <button style="width: 50px; height: 50px; border-radius: 50%; background: rgba(0, 242, 254, 0.8); border: none; color: #000; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; padding-left: 4px; box-shadow: 0 0 15px var(--color-cyan); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">▶</button>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h4 style="margin: 0 0 10px 0; color: #fff; font-size: 1.2rem; font-family: 'Space Grotesk', sans-serif;">Cinematographic Focus & Reflections</h4>
+                                    <p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #94a3b8; line-height: 1.5;">Short-form cinematic sequencing analyzing the sunset refractions on professional camera optics. Visual storytelling using shallow depth of field and premium color grading presets.</p>
+                                    <span style="font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--color-cyan);">RESOLUTION: 4K 10-bit | HLG Profile | 24fps</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Figma Panel -->
+                        <div class="creative-panel" id="creative-panel-figma" style="display: none; flex-direction: column; gap: 15px;">
+                            <div class="creative-showcase-card" style="background: rgba(13, 20, 33, 0.3); border: 1px solid rgba(0, 242, 254, 0.1); border-radius: 8px; padding: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                                <img src="/assets/creative_design.png" alt="Figma Design Mockup" style="width: 320px; height: 200px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(0, 242, 254, 0.2);">
+                                <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h4 style="margin: 0 0 10px 0; color: #fff; font-size: 1.2rem; font-family: 'Space Grotesk', sans-serif;">Glassmorphic Telemetry Dashboard Mockup</h4>
+                                    <p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #94a3b8; line-height: 1.5;">High-fidelity mockup designed in Figma for real-time telemetry systems. Combines glassmorphism, glowing charts, vibrant gradient shadows, and customized iconography for premium dark-mode products.</p>
+                                    <span style="font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--color-cyan);">STYLE: Cyberpunk Glassmorphism | Figma Vector Component Layout</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -790,6 +892,11 @@
                     <span class="dock-tooltip">Snake Game</span>
                     <span class="dock-dot"></span>
                 </button>
+                <button class="dock-item" data-app="creative" aria-label="Creative App">
+                    <span class="dock-icon">🎨</span>
+                    <span class="dock-tooltip">Creativity</span>
+                    <span class="dock-dot"></span>
+                </button>
                 
                 <div class="dock-divider"></div>
                 
@@ -831,6 +938,7 @@
                     <button class="start-shortcut-item" data-app="mail">✉️ Mail.app (Contact Form)</button>
                     <button class="start-shortcut-item" data-app="vscode">📝 VS Code (Editor)</button>
                     <button class="start-shortcut-item" data-app="snake">🐍 Classic Snake Game</button>
+                    <button class="start-shortcut-item" data-app="creative">🎨 Creative (My Creativity)</button>
                 </div>
                 <div class="start-actions">
                     <h5>System Options</h5>
@@ -856,6 +964,7 @@
   <span class="code-keyword">"summary"</span>: <span class="code-string">"Computer Science undergraduate specializing in IoT development, artificial intelligence, and machine learning. Experienced with hardware prototyping (ESP32, Raspberry Pi, Arduino), edge AI, facial recognition, and telecom data analytics."</span>,
   <span class="code-keyword">"skills"</span>: {
     <span class="code-keyword">"languages"</span>: [<span class="code-string">"Python"</span>, <span class="code-string">"C++"</span>, <span class="code-string">"C"</span>, <span class="code-string">"Bash"</span>, <span class="code-string">"HTML/CSS"</span>, <span class="code-string">"LaTeX"</span>],
+    <span class="code-keyword">"spoken_languages"</span>: [<span class="code-string">"English"</span>, <span class="code-string">"Malayalam"</span>, <span class="code-string">"Hindi"</span>],
     <span class="code-keyword">"iot_hardware"</span>: [<span class="code-string">"ESP32"</span>, <span class="code-string">"Raspberry Pi"</span>, <span class="code-string">"MQTT"</span>, <span class="code-string">"Prototyping"</span>],
     <span class="code-keyword">"ai_ml"</span>: [<span class="code-string">"Machine Learning"</span>, <span class="code-string">"Facial Recognition"</span>, <span class="code-string">"Edge AI"</span>, <span class="code-string">"Analytics"</span>]
   },
@@ -870,6 +979,23 @@
       <span class="code-keyword">"degree"</span>: <span class="code-string">"Higher Secondary Education"</span>,
       <span class="code-keyword">"college"</span>: <span class="code-string">"Jyoti Nilayam Higher Secondary School"</span>,
       <span class="code-keyword">"tenure"</span>: <span class="code-string">"2025"</span>
+    }
+  ],
+  <span class="code-keyword">"experience"</span>: [
+    {
+      <span class="code-keyword">"role"</span>: <span class="code-string">"MEDIA"</span>,
+      <span class="code-keyword">"organization"</span>: <span class="code-string">"IEEE SB CEAL"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"2025 - Present"</span>
+    },
+    {
+      <span class="code-keyword">"role"</span>: <span class="code-string">"MEDIA"</span>,
+      <span class="code-keyword">"organization"</span>: <span class="code-string">"FOSS CEAL"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"2025 - Present"</span>
+    },
+    {
+      <span class="code-keyword">"role"</span>: <span class="code-string">"MEDIA LEAD"</span>,
+      <span class="code-keyword">"organization"</span>: <span class="code-string">"ISTE CEAL"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"2025 - Present"</span>
     }
   ]
 }</template>

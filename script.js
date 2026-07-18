@@ -957,7 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (snakeStartBtn) snakeStartBtn.style.display = 'none';
 
         if (gameInterval) clearInterval(gameInterval);
-        gameInterval = setInterval(updateSnakeGame, 140);
+        gameInterval = setInterval(updateSnakeGame, 200);
     }
 
     function spawnInitialFoods() {
@@ -1044,7 +1044,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (slowIndicator) slowIndicator.style.display = 'inline';
                 
                 clearInterval(gameInterval);
-                gameInterval = setInterval(updateSnakeGame, 200);
+                gameInterval = setInterval(updateSnakeGame, 280);
             }
             
             if (snakeScoreVal) snakeScoreVal.textContent = score;
@@ -1064,7 +1064,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (slowTicks === 0) {
                 if (slowIndicator) slowIndicator.style.display = 'none';
                 clearInterval(gameInterval);
-                gameInterval = setInterval(updateSnakeGame, 140);
+                gameInterval = setInterval(updateSnakeGame, 200);
             }
         }
 

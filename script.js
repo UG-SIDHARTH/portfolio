@@ -897,17 +897,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const snakeScoreVal = document.getElementById('snake-score');
     const snakeHighscoreVal = document.getElementById('snake-highscore');
     const snakeStartBtn = document.getElementById('snake-start-btn');
+    const slowIndicator = document.getElementById('slow-indicator');
 
     let snakeCtx = snakeCanvas ? snakeCanvas.getContext('2d') : null;
     let snake = [];
-    let food = {};
-    let dx = 16;
+    let foods = [];
+    let obstacles = [];
+    let dx = 20;
     let dy = 0;
     let score = 0;
     let highscore = localStorage.getItem('snake_highscore') || 0;
     let gameInterval = null;
     let gameRunning = false;
-    const gridSize = 16;
+    let slowTicks = 0;
+    const gridSize = 20;
+
+    const obstacleCoords = [
+        { x: 1, y: 4 }, { x: 1, y: 5 }, { x: 2, y: 5 },
+        { x: 1, y: 11 }, { x: 1, y: 12 }, { x: 2, y: 11 },
+        { x: 6, y: 1 }, { x: 6, y: 2 }, { x: 6, y: 3 },
+        { x: 6, y: 13 }, { x: 6, y: 14 }, { x: 6, y: 15 },
+        { x: 4, y: 8 }, { x: 9, y: 3 }, { x: 9, y: 13 }, { x: 9, y: 8 },
+        { x: 7, y: 6 }, { x: 7, y: 7 }, { x: 8, y: 6 },
+        { x: 11, y: 6 }, { x: 12, y: 6 }, { x: 12, y: 7 },
+        { x: 7, y: 10 }, { x: 7, y: 9 }, { x: 8, y: 10 },
+        { x: 11, y: 10 }, { x: 12, y: 10 }, { x: 12, y: 9 },
+        { x: 15, y: 8 },
+        { x: 18, y: 4 }, { x: 18, y: 5 }, { x: 17, y: 5 },
+        { x: 18, y: 12 }, { x: 18, y: 11 }, { x: 17, y: 11 },
+        { x: 23, y: 2 }, { x: 23, y: 3 }, { x: 23, y: 4 }, { x: 24, y: 4 }, { x: 25, y: 4 }, { x: 26, y: 4 },
+        { x: 23, y: 14 }, { x: 23, y: 13 }, { x: 23, y: 12 }, { x: 24, y: 12 }, { x: 25, y: 12 }, { x: 26, y: 12 },
+        { x: 23, y: 6 }, { x: 23, y: 7 }, { x: 23, y: 8 }, { x: 23, y: 9 }, { x: 23, y: 10 },
+        { x: 21, y: 8 }, { x: 22, y: 8 }, { x: 24, y: 8 }, { x: 25, y: 8 },
+        { x: 28, y: 5 }, { x: 28, y: 6 }, { x: 28, y: 7 }, { x: 28, y: 8 }, { x: 28, y: 9 }, { x: 28, y: 10 }, { x: 28, y: 11 }
+    ];
 
     if (snakeHighscoreVal) snakeHighscoreVal.textContent = highscore;
 
@@ -915,31 +938,65 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameRunning) return;
         gameRunning = true;
         score = 0;
+        slowTicks = 0;
+        if (slowIndicator) slowIndicator.style.display = 'none';
         if (snakeScoreVal) snakeScoreVal.textContent = score;
         dx = gridSize;
         dy = 0;
         snake = [
-            { x: gridSize * 5, y: gridSize * 5 },
-            { x: gridSize * 4, y: gridSize * 5 },
-            { x: gridSize * 3, y: gridSize * 5 }
+            { x: gridSize * 13, y: gridSize * 12 },
+            { x: gridSize * 12, y: gridSize * 12 },
+            { x: gridSize * 11, y: gridSize * 12 }
         ];
-        createFood();
+        
+        obstacles = obstacleCoords.map(o => ({ x: o.x * gridSize, y: o.y * gridSize }));
+        
+        foods = [];
+        spawnInitialFoods();
+        
         if (snakeStartBtn) snakeStartBtn.style.display = 'none';
 
         if (gameInterval) clearInterval(gameInterval);
-        gameInterval = setInterval(updateSnakeGame, 100);
+        gameInterval = setInterval(updateSnakeGame, 140);
     }
 
-    function createFood() {
+    function spawnInitialFoods() {
+        for (let i = 0; i < 3; i++) spawnFoodItem('red');
+        for (let i = 0; i < 2; i++) spawnFoodItem('blue');
+        spawnFoodItem('powerup');
+    }
+
+    function spawnFoodItem(type) {
         if (!snakeCanvas) return;
-        food.x = Math.floor(Math.random() * (snakeCanvas.width / gridSize)) * gridSize;
-        food.y = Math.floor(Math.random() * (snakeCanvas.height / gridSize)) * gridSize;
+        let foundPos = false;
+        let fx = 0, fy = 0;
         
-        let foodOnSnake = false;
-        snake.forEach(part => {
-            if (part.x === food.x && part.y === food.y) foodOnSnake = true;
-        });
-        if (foodOnSnake) createFood();
+        while (!foundPos) {
+            fx = (Math.floor(Math.random() * 30) + 1) * gridSize;
+            fy = (Math.floor(Math.random() * 15) + 1) * gridSize;
+            
+            let overlap = false;
+            snake.forEach(part => {
+                if (part.x === fx && part.y === fy) overlap = true;
+            });
+            obstacles.forEach(obs => {
+                if (obs.x === fx && obs.y === fy) overlap = true;
+            });
+            foods.forEach(f => {
+                if (f.x === fx && f.y === fy) overlap = true;
+            });
+            
+            if (!overlap) foundPos = true;
+        }
+        
+        foods.push({ x: fx, y: fy, type: type });
+    }
+
+    function checkSelfCollision(head) {
+        for (let i = 1; i < snake.length; i++) {
+            if (snake[i].x === head.x && snake[i].y === head.y) return true;
+        }
+        return false;
     }
 
     function updateSnakeGame() {
@@ -947,82 +1004,177 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
-        if (head.x < 0 || head.x >= snakeCanvas.width || head.y < 0 || head.y >= snakeCanvas.height || checkSelfCollision(head)) {
+        let borderCollision = false;
+        if (head.x < gridSize || head.x >= snakeCanvas.width - gridSize || 
+            head.y < gridSize || head.y >= snakeCanvas.height - gridSize) {
+            borderCollision = true;
+        }
+
+        let hitObstacle = false;
+        obstacles.forEach(obs => {
+            if (head.x === obs.x && head.y === obs.y) hitObstacle = true;
+        });
+
+        if (borderCollision || checkSelfCollision(head) || hitObstacle) {
             endSnakeGame();
             return;
         }
 
         snake.unshift(head);
 
-        if (head.x === food.x && head.y === food.y) {
-            score += 10;
+        let eatenIdx = -1;
+        for (let i = 0; i < foods.length; i++) {
+            if (head.x === foods[i].x && head.y === foods[i].y) {
+                eatenIdx = i;
+                break;
+            }
+        }
+
+        if (eatenIdx > -1) {
+            const eatenFood = foods[eatenIdx];
+            foods.splice(eatenIdx, 1);
+            
+            if (eatenFood.type === 'red') {
+                score += 10;
+            } else if (eatenFood.type === 'blue') {
+                score += 20;
+            } else if (eatenFood.type === 'powerup') {
+                score += 30;
+                slowTicks = 40;
+                if (slowIndicator) slowIndicator.style.display = 'inline';
+                
+                clearInterval(gameInterval);
+                gameInterval = setInterval(updateSnakeGame, 200);
+            }
+            
             if (snakeScoreVal) snakeScoreVal.textContent = score;
             if (score > highscore) {
                 highscore = score;
                 localStorage.setItem('snake_highscore', highscore);
                 if (snakeHighscoreVal) snakeHighscoreVal.textContent = highscore;
             }
-            createFood();
+            
+            spawnFoodItem(eatenFood.type);
         } else {
             snake.pop();
         }
 
-        // Draw green checkered board
-        for (let row = 0; row < snakeCanvas.height / gridSize; row++) {
-            for (let col = 0; col < snakeCanvas.width / gridSize; col++) {
-                const isEven = (col + row) % 2 === 0;
-                snakeCtx.fillStyle = isEven ? '#aad751' : '#a2d149';
-                snakeCtx.fillRect(col * gridSize, row * gridSize, gridSize, gridSize);
+        if (slowTicks > 0) {
+            slowTicks--;
+            if (slowTicks === 0) {
+                if (slowIndicator) slowIndicator.style.display = 'none';
+                clearInterval(gameInterval);
+                gameInterval = setInterval(updateSnakeGame, 140);
             }
         }
 
-        // Draw Food (detailed Red Apple)
-        const centerX = food.x + gridSize / 2;
-        const centerY = food.y + gridSize / 2;
-        const appleRadius = 6;
-        
-        snakeCtx.fillStyle = '#e83a14';
-        snakeCtx.beginPath();
-        snakeCtx.arc(centerX, centerY, appleRadius, 0, Math.PI * 2);
-        snakeCtx.fill();
-        
-        snakeCtx.strokeStyle = '#8b4513';
-        snakeCtx.lineWidth = 1.5;
-        snakeCtx.beginPath();
-        snakeCtx.moveTo(centerX, centerY - appleRadius);
-        snakeCtx.quadraticCurveTo(centerX - 2, centerY - appleRadius - 4, centerX - 1, centerY - appleRadius - 5);
-        snakeCtx.stroke();
-        
-        snakeCtx.fillStyle = '#2e8b57';
-        snakeCtx.beginPath();
-        snakeCtx.ellipse(centerX + 2, centerY - appleRadius - 3, 2, 1.2, Math.PI / 4, 0, Math.PI * 2);
-        snakeCtx.fill();
+        // Draw Checkerboard
+        for (let row = 0; row < snakeCanvas.height / gridSize; row++) {
+            for (let col = 0; col < snakeCanvas.width / gridSize; col++) {
+                const px = col * gridSize;
+                const py = row * gridSize;
+                
+                if (row === 0 || row === 16 || col === 0) {
+                    snakeCtx.fillStyle = '#2d2f35';
+                    snakeCtx.fillRect(px, py, gridSize, gridSize);
+                    snakeCtx.strokeStyle = '#1b1c20';
+                    snakeCtx.lineWidth = 0.5;
+                    snakeCtx.strokeRect(px, py, gridSize, gridSize);
+                } else if (col === 31) {
+                    snakeCtx.fillStyle = '#b32b2b';
+                    snakeCtx.fillRect(px, py, gridSize, gridSize);
+                    snakeCtx.strokeStyle = '#7c1c1c';
+                    snakeCtx.lineWidth = 0.5;
+                    snakeCtx.strokeRect(px, py, gridSize, gridSize);
+                } else {
+                    const isEven = (col + row) % 2 === 0;
+                    snakeCtx.fillStyle = isEven ? '#aad751' : '#a2d149';
+                    snakeCtx.fillRect(px, py, gridSize, gridSize);
+                }
+            }
+        }
 
-        // Draw Snake (Classic blue with direction-aware eyes on the head)
+        // Draw Obstacles
+        obstacles.forEach(obs => {
+            snakeCtx.fillStyle = '#383838';
+            snakeCtx.fillRect(obs.x, obs.y, gridSize, gridSize);
+            snakeCtx.strokeStyle = '#222';
+            snakeCtx.lineWidth = 1;
+            snakeCtx.strokeRect(obs.x, obs.y, gridSize, gridSize);
+        });
+
+        // Draw Food
+        foods.forEach(f => {
+            const centerX = f.x + gridSize / 2;
+            const centerY = f.y + gridSize / 2;
+            
+            if (f.type === 'red' || f.type === 'blue') {
+                const appleRadius = 7;
+                snakeCtx.fillStyle = f.type === 'red' ? '#e83a14' : '#00f2fe';
+                snakeCtx.beginPath();
+                snakeCtx.arc(centerX, centerY, appleRadius, 0, Math.PI * 2);
+                snakeCtx.fill();
+                
+                snakeCtx.strokeStyle = '#8b4513';
+                snakeCtx.lineWidth = 1.5;
+                snakeCtx.beginPath();
+                snakeCtx.moveTo(centerX, centerY - appleRadius);
+                snakeCtx.quadraticCurveTo(centerX - 2, centerY - appleRadius - 4, centerX - 1, centerY - appleRadius - 5);
+                snakeCtx.stroke();
+                
+                snakeCtx.fillStyle = '#578a34';
+                snakeCtx.beginPath();
+                snakeCtx.ellipse(centerX + 2, centerY - appleRadius - 3, 2.5, 1.5, Math.PI / 4, 0, Math.PI * 2);
+                snakeCtx.fill();
+            } else if (f.type === 'powerup') {
+                snakeCtx.fillStyle = '#4c52e0';
+                snakeCtx.beginPath();
+                snakeCtx.arc(centerX, centerY, 8, 0, Math.PI * 2);
+                snakeCtx.fill();
+                snakeCtx.strokeStyle = '#ffffff';
+                snakeCtx.lineWidth = 1;
+                snakeCtx.stroke();
+                
+                snakeCtx.fillStyle = '#ffffff';
+                snakeCtx.beginPath();
+                snakeCtx.moveTo(centerX, centerY - 4);
+                snakeCtx.lineTo(centerX - 4, centerY + 2);
+                snakeCtx.lineTo(centerX + 4, centerY + 2);
+                snakeCtx.closePath();
+                snakeCtx.fill();
+            }
+        });
+
+        // Draw Snake
         snake.forEach((part, idx) => {
+            const cx = part.x + gridSize / 2;
+            const cy = part.y + gridSize / 2;
+            
             if (idx === 0) {
-                snakeCtx.fillStyle = '#3f61d8';
-                snakeCtx.fillRect(part.x, part.y, gridSize, gridSize);
-
+                snakeCtx.fillStyle = '#467528';
+                snakeCtx.beginPath();
+                snakeCtx.arc(cx, cy, 9.5, 0, Math.PI * 2);
+                snakeCtx.fill();
+                
                 snakeCtx.fillStyle = '#ffffff';
                 let eye1 = {}, eye2 = {};
                 if (dx > 0) {
-                    eye1 = { x: part.x + 11, y: part.y + 4 };
-                    eye2 = { x: part.x + 11, y: part.y + 12 };
+                    eye1 = { x: cx + 4, y: cy - 4 };
+                    eye2 = { x: cx + 4, y: cy + 4 };
                 } else if (dx < 0) {
-                    eye1 = { x: part.x + 5, y: part.y + 4 };
-                    eye2 = { x: part.x + 5, y: part.y + 12 };
+                    eye1 = { x: cx - 4, y: cy - 4 };
+                    eye2 = { x: cx - 4, y: cy + 4 };
                 } else if (dy > 0) {
-                    eye1 = { x: part.x + 4, y: part.y + 11 };
-                    eye2 = { x: part.x + 12, y: part.y + 11 };
+                    eye1 = { x: cx - 4, y: cy + 4 };
+                    eye2 = { x: cx + 4, y: cy + 4 };
                 } else {
-                    eye1 = { x: part.x + 4, y: part.y + 5 };
-                    eye2 = { x: part.x + 12, y: part.y + 5 };
+                    eye1 = { x: cx - 4, y: cy - 4 };
+                    eye2 = { x: cx + 4, y: cy - 4 };
                 }
 
                 snakeCtx.beginPath();
-                snakeCtx.arc(eye1.x, eye1.y, 2.5, 0, Math.PI * 2);
-                snakeCtx.arc(eye2.x, eye2.y, 2.5, 0, Math.PI * 2);
+                snakeCtx.arc(eye1.x, eye1.y, 2.8, 0, Math.PI * 2);
+                snakeCtx.arc(eye2.x, eye2.y, 2.8, 0, Math.PI * 2);
                 snakeCtx.fill();
 
                 snakeCtx.fillStyle = '#000000';
@@ -1031,8 +1183,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 snakeCtx.arc(eye2.x, eye2.y, 1.2, 0, Math.PI * 2);
                 snakeCtx.fill();
             } else {
-                snakeCtx.fillStyle = '#4e7cf6';
-                snakeCtx.fillRect(part.x + 0.5, part.y + 0.5, gridSize - 1, gridSize - 1);
+                snakeCtx.fillStyle = '#578a34';
+                snakeCtx.beginPath();
+                snakeCtx.arc(cx, cy, 8, 0, Math.PI * 2);
+                snakeCtx.fill();
+                
+                snakeCtx.strokeStyle = '#467528';
+                snakeCtx.lineWidth = 1.2;
+                snakeCtx.stroke();
             }
         });
     }
@@ -1054,13 +1212,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (snakeCtx && snakeCanvas) {
             snakeCtx.fillStyle = 'rgba(0, 0, 0, 0.85)';
             snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
-            snakeCtx.font = '16px "Fira Code", monospace';
+            snakeCtx.font = '24px "Space Grotesk", sans-serif';
             snakeCtx.fillStyle = '#ff5f56';
             snakeCtx.textAlign = 'center';
             snakeCtx.fillText('GAME OVER', snakeCanvas.width / 2, snakeCanvas.height / 2 - 10);
-            snakeCtx.font = '12px "Fira Code", monospace';
+            snakeCtx.font = '14px "Fira Code", monospace';
             snakeCtx.fillStyle = '#94a3b8';
-            snakeCtx.fillText(`SCORE: ${score}`, snakeCanvas.width / 2, snakeCanvas.height / 2 + 20);
+            snakeCtx.fillText(`SCORE: ${score}`, snakeCanvas.width / 2, snakeCanvas.height / 2 + 25);
         }
     }
 

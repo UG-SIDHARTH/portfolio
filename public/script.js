@@ -1,6 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Global API URL Redirection Mapping for decoupled frontend/backend deployment
-    const API_BASE = (window.location.port === '8601' || window.location.port === '3500') ? '' : 'http://localhost:8601';
+    const API_BASE = (window.location.port === '3500' || window.location.port === '8601') ? '' : 'http://localhost:3500';
+
+    // Typewriter effect for Hero section
+    const typewriterEl = document.getElementById('hero-typewriter');
+    if (typewriterEl) {
+        const phrases = [
+            "IoT & AI/ML Engineer",
+            "ESP32 Hardware Specialist",
+            "Cameraman & Media Specialist"
+        ];
+        let pIdx = 0;
+        let cIdx = 0;
+        let isDeleting = false;
+
+        function typeLoop() {
+            const currentPhrase = phrases[pIdx];
+            if (isDeleting) {
+                typewriterEl.textContent = currentPhrase.substring(0, cIdx - 1);
+                cIdx--;
+            } else {
+                typewriterEl.textContent = currentPhrase.substring(0, cIdx + 1);
+                cIdx++;
+            }
+
+            let typeSpeed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && cIdx === currentPhrase.length) {
+                typeSpeed = 1800;
+                isDeleting = true;
+            } else if (isDeleting && cIdx === 0) {
+                isDeleting = false;
+                pIdx = (pIdx + 1) % phrases.length;
+                typeSpeed = 400;
+            }
+
+            setTimeout(typeLoop, typeSpeed);
+        }
+        typeLoop();
+    }
 
     // BIOS Boot Up Simulation sequence
     const bootScreen = document.getElementById('boot-screen');
@@ -1274,11 +1312,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">experience</span>: Professional & organization experiences</div>
                     <div>- <span class="term-highlight">timeline</span>: Education and certifications</div>
                     <div>- <span class="term-highlight">contact</span>: Access email and contact details</div>
-                    <div>- <span class="term-highlight">game</span>: Launch Full-Viewport Canvas Space Invaders Game 👾</div>
-                    <div>- <span class="term-highlight">fullscreen / immersive</span>: Toggle Immersive Dark CRT Terminal 📺</div>
                     <div>- <span class="term-highlight">theme [light|dark|toggle]</span>: Switch UI light/dark mode ☀️🌙</div>
                     <div>- <span class="term-highlight">snake</span>: Play Classic Snake game</div>
-                    <div>- <span class="term-highlight">neofetch</span>: System summary report</div>
                     <div>- <span class="term-highlight">clear</span>: Clear terminal console screen</div>
                     <div>- <span class="term-highlight">sudo [command]</span>: Request superuser elevation</div>
                 `);
@@ -1421,24 +1456,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (terminalOutput) {
                     terminalOutput.innerHTML = '';
                 }
-                break;
-            case 'neofetch':
-                const screenRes = `${window.innerWidth}x${window.innerHeight}`;
-                appendTermLine(`
-                    <pre style="color: #00ff55; font-family: monospace; font-size: 0.8rem; line-height: 1.25;">
-      .---.       visitor@os-portfolio
-     /     \\      --------------------------
-     \\   _./      OS: OS v1.0.6 x86_64
-      \`-'-'       Host: WebOS Desktop Environment
-     /|\\ | /|\\    Kernel: Javascript ES6 Engine
-    / | \\|/ | \\   Uptime: 4 mins
-   /  |  |  |  \\  Resolution: ${screenRes}
-                 Shell: custom-bash-sh
-                 Theme: Glassmorphism Dark Mesh
-                 CPU: ESP32 Hardware Emulator
-                 RAM: 512 MB (Simulated)
-                    </pre>
-                `);
                 break;
             case 'sudo':
                 appendTermLine(`<div><span style="color: red;">[sudo] password for visitor:</span> </div>`);

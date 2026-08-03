@@ -4,9 +4,14 @@ services:
     container_name: sidharth-portfolio
     restart: always
     ports:
-      - "8601:8601"
+      - "3500:3500"
     volumes:
       - ./data/messages.json:/usr/src/app/data/messages.json
     environment:
-      - PORT=8601
+      - PORT=3500
       - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3500/').then(r => r.ok ? process.exit(0) : process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

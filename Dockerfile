@@ -1,23 +1,30 @@
-# Use lightweight Node.js base image
+# Lightweight Node.js 20 Alpine Base Image
 FROM node:20-alpine
 
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy dependency files
+# Copy dependency manifests
 COPY package*.json ./
 
-# Install production dependencies
+# Install production-only dependencies
 RUN npm ci --only=production
 
-# Copy application source files
+# Ensure data directory exists with non-root ownership
+RUN mkdir -p /usr/src/app/data && chown -R node:node /usr/src/app
+
+# Copy application source files with node user permissions
 COPY --chown=node:node . .
 
-# Set ownership and switch to non-root user for security
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3500
+
+# Run container under unprivileged user 'node' for security
 USER node
 
-# Expose server port
-EXPOSE 8601
+# Expose backend application port
+EXPOSE 3500
 
-# Start Express backend
+# Start Express backend server
 CMD ["npm", "start"]

@@ -6,7 +6,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
-const PORT = process.env.PORT || 8601;
+const PORT = process.env.PORT || 3500;
 
 // Data directory & file storage outside public web root
 const DATA_DIR = path.join(__dirname, 'data');

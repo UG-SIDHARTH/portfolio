@@ -6,7 +6,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.PORT || 8601;
 
 // Data directory & file storage outside public web root
 const DATA_DIR = path.join(__dirname, 'data');
@@ -30,6 +30,8 @@ app.use(
 const allowedOrigins = [
     'https://ugsidharth.in',
     'https://www.ugsidharth.in',
+    'http://localhost:8601',
+    'http://127.0.0.1:8601',
     'http://localhost:3500',
     'http://localhost:8500',
     'http://127.0.0.1:3500',

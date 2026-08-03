@@ -17,7 +17,7 @@ COPY --chown=node:node . .
 USER node
 
 # Expose server port
-EXPOSE 3500
+EXPOSE 8601
 
 # Start Express backend
 CMD ["npm", "start"]

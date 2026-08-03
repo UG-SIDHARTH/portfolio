@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive OS-style portfolio of Sidharth D. Computer Science undergraduate specializing in IoT development, Artificial Intelligence, and Machine Learning.">
+    <meta name="keywords" content="Sidharth D, portfolio, OS portfolio, web OS, IoT, Artificial Intelligence, Machine Learning, ESP32, Raspberry Pi, Arduino, Edge AI, Python, B.Tech CSE, CEAL">
+    <meta name="author" content="Sidharth D">
+    <title>Sidharth D | Interactive Web OS Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- BIOS / System Boot Simulator Overlay -->
+    <div id="boot-screen">
+        <div class="crt-overlay"></div>
+        <div class="boot-loader-container">
+            <div class="boot-logo">👾</div>
+            <div class="boot-terminal-log" id="boot-log"></div>
+            <div class="boot-progress-bar">
+                <div class="boot-progress-fill" id="boot-progress"></div>
+            </div>
+            <div class="boot-skip-hint">Press <span class="key-hint">ESC</span> or click anywhere to skip boot sequence</div>
+        </div>
+    </div>
+
+    <!-- Background Particle Canvas (Desktop Wallpaper) -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Main OS Desktop Environment -->
+    <div id="desktop">
+        <!-- 1. Desktop Icon Grid -->
+        <div class="desktop-icons">
+            <div class="desktop-icon" data-app="profile" id="icon-profile">
+                <div class="icon-visual">👤</div>
+                <span class="icon-label">Profile.app</span>
+            </div>
+            <div class="desktop-icon" data-app="skills" id="icon-skills">
+                <div class="icon-visual">🛠️</div>
+                <span class="icon-label">Skills.app</span>
+            </div>
+            <div class="desktop-icon" data-app="projects" id="icon-projects">
+                <div class="icon-visual">📂</div>
+                <span class="icon-label">Projects.app</span>
+            </div>
+            <div class="desktop-icon" data-app="resume" id="icon-resume">
+                <div class="icon-visual">📄</div>
+                <span class="icon-label">Resume.app</span>
+            </div>
+            <div class="desktop-icon" data-app="browser" id="icon-browser">
+                <div class="icon-visual">🌐</div>
+                <span class="icon-label">Browser.app</span>
+            </div>
+
+            <div class="desktop-icon" data-app="terminal" id="icon-terminal">
+                <div class="icon-visual">💻</div>
+                <span class="icon-label">Terminal.app</span>
+            </div>
+            <div class="desktop-icon" data-app="mail" id="icon-mail">
+                <div class="icon-visual">✉️</div>
+                <span class="icon-label">Mail.app</span>
+            </div>
+            <div class="desktop-icon" data-app="vscode" id="icon-vscode">
+                <div class="icon-visual">📝</div>
+                <span class="icon-label">VS_Code.app</span>
+            </div>
+            <div class="desktop-icon" data-app="snake" id="icon-snake">
+                <div class="icon-visual">🐍</div>
+                <span class="icon-label">Snake.app</span>
+            </div>
+            <div class="desktop-icon" data-app="creative" id="icon-creative">
+                <div class="icon-visual">🎨</div>
+                <span class="icon-label">Creative.app</span>
+            </div>
+        </div>
+
+        <!-- 2. Windows Workspace Container -->
+        <div id="windows-workspace">
+            
+            <!-- APPLICATION WINDOW: Resume PDF Viewer -->
+            <div class="window glass-card" id="window-resume" data-window="resume" style="width: 800px; height: 580px; top: 5%; left: 15%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">📄 Resume.app - CV</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0; background: #07090e;">
+                    <div class="resume-container">
+                        <!-- Resume Header -->
+                        <div class="resume-header">
+                            <div class="resume-title-section">
+                                <h1 class="resume-name">SIDHARTH D</h1>
+                                <span class="resume-subtitle">DEVELOPER &bull; IOT ENGINEER &bull; ML ENTHUSIAST</span>
+                            </div>
+                            <div class="resume-contact">
+                                <div class="contact-row">
+                                    <span class="contact-label">EMAIL</span>
+                                    <span class="contact-val">ugsidharth@icloud.com</span>
+                                </div>
+                                <div class="contact-row">
+                                    <span class="contact-label">PHONE</span>
+                                    <span class="contact-val">+91 9846524801</span>
+                                </div>
+                                <div class="contact-row">
+                                    <span class="contact-label">LOCATION</span>
+                                    <span class="contact-val">Kazhakkoottam, Kerala</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="resume-divider"></div>
+
+                        <!-- Two Column Grid for Resume Body -->
+                        <div class="resume-grid">
+                            
+                            <!-- Left Column: Experience, Focus Areas, Education -->
+                            <div class="resume-left-col">
+                                <!-- 01. EXPERIENCE -->
+                                <div class="resume-section">
+                                    <div class="resume-section-title">
+                                        <span>01.</span> EXPERIENCE
+                                    </div>
+                                    <div class="resume-timeline">
+                                        <div class="timeline-item">
+                                            <div class="timeline-badge active"></div>
+                                            <div class="timeline-header">
+                                                <span class="timeline-role active">MEDIA TEAM</span>
+                                                <span class="timeline-date">APR 2026 - PRESENT</span>
+                                            </div>
+                                            <div class="timeline-company active">IEEE SB CEAL</div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-badge active"></div>
+                                            <div class="timeline-header">
+                                                <span class="timeline-role active">MEDIA TEAM</span>
+                                                <span class="timeline-date">JUN 2026 - PRESENT</span>
+                                            </div>
+                                            <div class="timeline-company active">FOSS SB CEAL</div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-badge active"></div>
+                                            <div class="timeline-header">
+                                                <span class="timeline-role active">MEDIA LEAD</span>
+                                                <span class="timeline-date">JUL 2026 - PRESENT</span>
+                                            </div>
+                                            <div class="timeline-company active">ISTE</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 02. FOCUS AREAS -->
+                                <div class="resume-section">
+                                    <div class="resume-section-title">
+                                        <span>02.</span> FOCUS AREAS
+                                    </div>
+                                    <div class="resume-timeline" style="border-left: none; padding-left: 0.6rem; margin-left: 0;">
+                                        <div style="margin-bottom: 1.2rem;">
+                                            <h4 style="font-family: var(--ff-heading); font-size: 0.95rem; color: var(--color-cyan); font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase;">IoT DEVELOPMENT & PROTOTYPING</h4>
+                                            <ul class="timeline-desc">
+                                                <li>Built and prototyped IoT systems using ESP32 and Arduino IDE</li>
+                                                <li>Worked with MQTT for device communication and hardware prototyping</li>
+                                            </ul>
+                                        </div>
+                                        <div style="margin-bottom: 1.2rem;">
+                                            <h4 style="font-family: var(--ff-heading); font-size: 0.95rem; color: var(--color-cyan); font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase;">AI & MACHINE LEARNING</h4>
+                                            <ul class="timeline-desc">
+                                                <li>Coursework and hands-on projects in machine learning and edge AI</li>
+                                                <li>Built facial recognition systems and telecom analytics models</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 style="font-family: var(--ff-heading); font-size: 0.95rem; color: var(--color-cyan); font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase;">SYSTEM DEBUGGING & DOCUMENTATION</h4>
+                                            <ul class="timeline-desc">
+                                                <li>Debugged hardware/software systems during prototyping</li>
+                                                <li>Maintained clear technical documentation for projects</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 03. EDUCATION -->
+                                <div class="resume-section" style="margin-bottom: 0;">
+                                    <div class="resume-section-title">
+                                        <span>03.</span> EDUCATION
+                                    </div>
+                                    <div class="resume-timeline">
+                                        <div class="timeline-item">
+                                            <div class="timeline-badge active"></div>
+                                            <div class="timeline-header">
+                                                <span class="timeline-role active">B.TECH IN COMPUTER SCIENCE & ENGINEERING</span>
+                                                <span class="timeline-date">2025 - 2029 (EXPECTED)</span>
+                                            </div>
+                                            <div class="timeline-company active">College of Engineering, Attingal (CEAL)</div>
+                                            <div style="font-size: 0.82rem; color: var(--text-secondary); margin-left: 0.2rem;">Thiruvananthapuram, Kerala</div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-badge muted"></div>
+                                            <div class="timeline-header">
+                                                <span class="timeline-role muted" style="color: #fff;">HIGHER SECONDARY EDUCATION</span>
+                                                <span class="timeline-date" style="color: var(--text-muted);">UP TO 2025 (12TH CLASS)</span>
+                                            </div>
+                                            <div class="timeline-company muted" style="color: var(--text-muted);">Jyoti Nilayam Higher Secondary School</div>
+                                            <div style="font-size: 0.82rem; color: var(--text-muted); margin-left: 0.2rem;">St Andrews Rd, Thiruvananthapuram, Kerala 695586</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column: Skills, Languages -->
+                            <div class="resume-right-col" style="border-left: 1px solid rgba(255, 255, 255, 0.05); padding-left: 1.5rem;">
+                                <!-- 04. SKILLS -->
+                                <div class="resume-section">
+                                    <div class="resume-section-title">
+                                        <span>04.</span> SKILLS
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 1.2rem;">
+                                        <h5 style="font-family: var(--ff-heading); font-size: 0.76rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Programming</h5>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Python</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">C++</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">C</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Bash</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">HTML/CSS</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">LaTeX</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Arduino IDE</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">ANSYS</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 1.2rem;">
+                                        <h5 style="font-family: var(--ff-heading); font-size: 0.76rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">IoT & Hardware</h5>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">ESP32</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">MQTT</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Hardware Prototyping</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 1.2rem;">
+                                        <h5 style="font-family: var(--ff-heading); font-size: 0.76rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">AI / Machine Learning</h5>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Machine Learning</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Facial Recognition</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Edge AI</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Data Analysis</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Telecom Analytics</span>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 1.2rem;">
+                                        <h5 style="font-family: var(--ff-heading); font-size: 0.76rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Design & Creative</h5>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Figma</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Photography</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Videography</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h5 style="font-family: var(--ff-heading); font-size: 0.76rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Tools & OS</h5>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Linux</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Windows</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Microsoft Office</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">NumPy</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">SciPy</span>
+                                            <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.78rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Pandas</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 05. LANGUAGES -->
+                                <div class="resume-section" style="margin-bottom: 0;">
+                                    <div class="resume-section-title">
+                                        <span>05.</span> LANGUAGES
+                                    </div>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                        <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.25rem 0.6rem; font-size: 0.8rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Malayalam</span>
+                                        <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.25rem 0.6rem; font-size: 0.8rem; color: var(--color-cyan); font-family: var(--ff-terminal);">English</span>
+                                        <span style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 4px; padding: 0.25rem 0.6rem; font-size: 0.8rem; color: var(--color-cyan); font-family: var(--ff-terminal);">Hindi</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- APPLICATION WINDOW: Browser / Google Search -->
+            <div class="window glass-card" id="window-browser" data-window="browser" style="width: 800px; height: 550px; top: 8%; left: 18%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">🌐 Browser.app - Web Explorer</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0; display: flex; flex-direction: column; overflow: hidden; background: #12131a; height: calc(100% - 38px);">
+                    <!-- Browser toolbar -->
+                    <div class="browser-toolbar">
+                        <button class="browser-tool-btn" id="browser-back-btn" title="Back to Home">←</button>
+                        <button class="browser-tool-btn" id="browser-home-btn" title="Home">🏠</button>
+                        <input type="text" class="browser-address-bar" id="browser-address" value="https://google.com">
+                        <button class="browser-tool-btn" id="browser-go-btn">Go</button>
+                    </div>
+                    
+                    <!-- Browser viewport -->
+                    <div class="browser-viewport" id="browser-view" style="padding: 0;">
+                        <!-- Google Search homepage -->
+                        <div class="google-homepage" id="google-home" style="display: flex;">
+                            <div class="google-logo">
+                                <span style="color: #4285F4">G</span>
+                                <span style="color: #EA4335">o</span>
+                                <span style="color: #FBBC05">o</span>
+                                <span style="color: #4285F4">g</span>
+                                <span style="color: #34A853">l</span>
+                                <span style="color: #EA4335">e</span>
+                            </div>
+                            <div class="google-search-container">
+                                <div class="google-input-wrapper">
+                                    <span class="search-icon">🔍</span>
+                                    <input type="text" class="google-search-input" id="google-search-query" placeholder="Search Google..." autocomplete="off">
+                                </div>
+                                <div class="google-btn-row">
+                                    <button class="google-btn" id="google-search-btn">Google Search</button>
+                                    <button class="google-btn" id="google-lucky-btn">I'm Feeling Lucky</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Iframe for direct pages (if iframe supports it) -->
+                        <iframe id="browser-iframe" src="" style="display: none; width: 100%; height: 100%; border: none; background: white;"></iframe>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- APPLICATION WINDOW: Profile (About Me) -->
+            <div class="window glass-card" id="window-profile" data-window="profile" style="width: 780px; height: 500px; top: 10%; left: 15%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">👤 Profile.app - About Me</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body">
+                    <div class="profile-layout">
+                        <div class="profile-left">
+                            <div class="profile-avatar">SD</div>
+                            <h2 class="profile-name">Sidharth D</h2>
+                            <p class="profile-tagline">IoT & AI/ML Developer</p>
+                            <div class="profile-meta">
+                                <div class="meta-line">📍 Kazhakkoottam, Kerala</div>
+                                <div class="meta-line">📧 mail@ugsidharth.in</div>
+                            </div>
+                            <div class="profile-socials">
+                                <a href="https://github.com/ugsidharth" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="GitHub">GitHub</a>
+                                <a href="https://linkedin.com/in/sidharth-d" target="_blank" rel="noopener noreferrer" class="social-link-btn" aria-label="LinkedIn">LinkedIn</a>
+                            </div>
+                        </div>
+                        <div class="profile-right">
+                            <h3>Overview</h3>
+                            <p>
+                                I am a Computer Science undergraduate specializing in IoT development, artificial intelligence, and machine learning. I enjoy bridging the gap between hardware prototyping (ESP32, Raspberry Pi, Arduino) and AI pathways (edge AI, facial recognition).
+                            </p>
+                            <p>
+                                Currently pursuing a B.Tech in CSE at College of Engineering, Attingal (2025-2029). Skilled in Python-based analysis and telemetry debugging.
+                            </p>
+                            <h3 style="margin-top: 1.5rem;">Areas of Focus</h3>
+                            <div class="focus-tags">
+                                <span class="focus-tag">IoT Development</span>
+                                <span class="focus-tag">Edge AI Systems</span>
+                                <span class="focus-tag">System Debugging</span>
+                                <span class="focus-tag">Telecom Data Analytics</span>
+                                <span class="focus-tag">Technical Writing</span>
+                                <span class="focus-tag">Photography</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Skills -->
+            <div class="window glass-card" id="window-skills" data-window="skills" style="width: 720px; height: 480px; top: 15%; left: 20%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">🛠️ Skills.app - Inventory</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body">
+                    <div class="skills-window-layout">
+                        <div class="skills-sidebar">
+                            <button class="skill-tab-btn active" data-tab="all">All Skills</button>
+                            <button class="skill-tab-btn" data-tab="languages">Programming & OS</button>
+                            <button class="skill-tab-btn" data-tab="spoken-languages">Languages</button>
+                            <button class="skill-tab-btn" data-tab="iot">IoT & Hardware</button>
+                            <button class="skill-tab-btn" data-tab="ai">AI / ML & Data</button>
+                            <button class="skill-tab-btn" data-tab="creative">Creative & Other</button>
+                        </div>
+                        <div class="skills-content-area">
+                            <div class="skills-os-grid" id="skills-os-grid">
+                                <!-- Group: Languages -->
+                                <div class="skill-os-item" data-category="languages"><span>🐍 Python</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>⚙️ C++</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>🔧 C</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>🐚 Bash Scripting</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>🌐 HTML/CSS</span></div>
+                                <div class="skill-os-item" data-category="languages"><span>🐧 Linux OS</span></div>
+                                <div class="skill-os-item" data-category="spoken-languages"><span>🗣️ English</span></div>
+                                <div class="skill-os-item" data-category="spoken-languages"><span>🗣️ Malayalam</span></div>
+                                <div class="skill-os-item" data-category="spoken-languages"><span>🗣️ Hindi</span></div>
+                                
+                                <!-- Group: IoT -->
+                                <div class="skill-os-item" data-category="iot"><span>🔌 ESP32 Dev</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>🍓 Raspberry Pi</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>📟 Arduino IDE</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>🛰️ MQTT Protocol</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>🎛️ Prototyping</span></div>
+                                <div class="skill-os-item" data-category="iot"><span>⚡ ANSYS Simulation</span></div>
+                                
+                                <!-- Group: AI -->
+                                <div class="skill-os-item" data-category="ai"><span>🤖 Machine Learning</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>👁️ Face Recognition</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>🧠 Edge AI</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>📊 Data Analysis</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>📈 NumPy & Pandas</span></div>
+                                <div class="skill-os-item" data-category="ai"><span>📡 Telecom Analytics</span></div>
+                                
+                                <!-- Group: Creative/Other -->
+                                <div class="skill-os-item" data-category="creative"><span>🎨 Figma Design</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>📷 Photography</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>🎥 Videography</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>📝 LaTeX Typing</span></div>
+                                <div class="skill-os-item" data-category="creative"><span>🏢 MS Office</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Creative (My Creativity) -->
+            <div class="window glass-card" id="window-creative" data-window="creative" style="width: 820px; height: 550px; top: 14%; left: 22%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">🎨 Creative.app - Portfolio of Creativity</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0; background: #07090e; display: flex; flex-direction: column; overflow: hidden; height: calc(100% - 38px);">
+                    <!-- Tab controls inside app -->
+                    <div class="creative-toolbar" style="display: flex; gap: 10px; padding: 10px; background: rgba(13, 20, 33, 0.4); border-bottom: 1px solid rgba(0, 242, 254, 0.15); align-items: center;">
+                        <button class="creative-tab-btn active-creative-tab" data-creative-tab="photography" style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.35); border-radius: 4px; padding: 6px 16px; color: var(--color-cyan); font-family: 'Fira Code', monospace; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">📸 PHOTOGRAPHY</button>
+                        <button class="creative-tab-btn" data-creative-tab="videography" style="background: transparent; border: 1px solid transparent; border-radius: 4px; padding: 6px 16px; color: #94a3b8; font-family: 'Fira Code', monospace; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">🎥 VIDEOGRAPHY</button>
+                        <button class="creative-tab-btn" data-creative-tab="figma" style="background: transparent; border: 1px solid transparent; border-radius: 4px; padding: 6px 16px; color: #94a3b8; font-family: 'Fira Code', monospace; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">🎨 FIGMA DESIGNS</button>
+                    </div>
+                    <!-- Viewport containing panels -->
+                    <div class="creative-viewport" style="flex: 1; padding: 20px; overflow-y: auto; position: relative;">
+                        <!-- Photography Panel -->
+                        <div class="creative-panel active-creative-panel" id="creative-panel-photography" style="display: flex; flex-direction: column; gap: 15px;">
+                            <div class="creative-showcase-card" style="background: rgba(13, 20, 33, 0.3); border: 1px solid rgba(0, 242, 254, 0.1); border-radius: 8px; padding: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                                <img src="/assets/creative_photography.png" alt="Photography Showcase" style="width: 320px; height: 200px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(0, 242, 254, 0.2);">
+                                <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h4 style="margin: 0 0 10px 0; color: #fff; font-size: 1.2rem; font-family: 'Space Grotesk', sans-serif;">Street & Neon Lightscapes</h4>
+                                    <p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #94a3b8; line-height: 1.5;">Capturing the vivid interaction of rain, high-contrast reflections, and vibrant neon signs in urban environments. A study in cyberpunk-inspired nocturnal lighting and framing.</p>
+                                    <span style="font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--color-cyan);">EXIF: ISO 400 | f/1.8 | 1/60s | 50mm lens</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Videography Panel -->
+                        <div class="creative-panel" id="creative-panel-videography" style="display: none; flex-direction: column; gap: 15px;">
+                            <div class="creative-showcase-card" style="background: rgba(13, 20, 33, 0.3); border: 1px solid rgba(0, 242, 254, 0.1); border-radius: 8px; padding: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                                <div style="position: relative; width: 320px; height: 200px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(0, 242, 254, 0.2);">
+                                    <img src="/assets/creative_videography.png" alt="Videography Thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+                                        <button style="width: 50px; height: 50px; border-radius: 50%; background: rgba(0, 242, 254, 0.8); border: none; color: #000; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; padding-left: 4px; box-shadow: 0 0 15px var(--color-cyan); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">▶</button>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h4 style="margin: 0 0 10px 0; color: #fff; font-size: 1.2rem; font-family: 'Space Grotesk', sans-serif;">Cinematographic Focus & Reflections</h4>
+                                    <p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #94a3b8; line-height: 1.5;">Short-form cinematic sequencing analyzing the sunset refractions on professional camera optics. Visual storytelling using shallow depth of field and premium color grading presets.</p>
+                                    <span style="font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--color-cyan);">RESOLUTION: 4K 10-bit | HLG Profile | 24fps</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Figma Panel -->
+                        <div class="creative-panel" id="creative-panel-figma" style="display: none; flex-direction: column; gap: 15px;">
+                            <div class="creative-showcase-card" style="background: rgba(13, 20, 33, 0.3); border: 1px solid rgba(0, 242, 254, 0.1); border-radius: 8px; padding: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                                <img src="/assets/creative_design.png" alt="Figma Design Mockup" style="width: 320px; height: 200px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(0, 242, 254, 0.2);">
+                                <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h4 style="margin: 0 0 10px 0; color: #fff; font-size: 1.2rem; font-family: 'Space Grotesk', sans-serif;">Glassmorphic Telemetry Dashboard Mockup</h4>
+                                    <p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #94a3b8; line-height: 1.5;">High-fidelity mockup designed in Figma for real-time telemetry systems. Combines glassmorphism, glowing charts, vibrant gradient shadows, and customized iconography for premium dark-mode products.</p>
+                                    <span style="font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--color-cyan);">STYLE: Cyberpunk Glassmorphism | Figma Vector Component Layout</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Projects -->
+            <div class="window glass-card" id="window-projects" data-window="projects" style="width: 840px; height: 540px; top: 12%; left: 16%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">📂 Projects.app - Showcase</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0;">
+                    <div class="projects-window-container">
+                        <div class="projects-os-header">
+                            <div class="projects-os-title-group">
+                                <h1>PROJECTS <span class="blink-cursor">_</span></h1>
+                                <p>Select a module to view details</p>
+                            </div>
+                            <div class="projects-os-actions">
+                                <label class="projects-live-only">
+                                    <input type="checkbox" id="live-only-check"> LIVE ONLY
+                                </label>
+                                <button class="projects-action-btn" id="projects-refresh-btn">
+                                    <span class="refresh-icon" style="display: inline-block; transition: transform 0.4s ease;">🔄</span> REFRESH
+                                </button>
+                                <span class="projects-count-badge">5 MODULES DETECTED</span>
+                            </div>
+                        </div>
+
+                        <div class="projects-tech-grid">
+                            <!-- Card 01: Grabster -->
+                            <div class="tech-card" data-live="true">
+                                <div class="tech-card-ticks"></div>
+                                <div class="tech-card-header">
+                                    <div class="tech-card-title-row">
+                                        <h3><span class="tech-card-num">01</span> GRABSTER</h3>
+                                        <div class="tech-card-actions">
+                                            <a href="https://github.com/UG-SIDHARTH/Grabster-5.0" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
+                                            <a href="https://novara.ugsidharth.in/" target="_blank" rel="noopener noreferrer" class="tech-btn btn-run">[RUN]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tech-card-body">
+                                    <p class="tech-card-desc">Production-ready self-hosted media downloader. Bypasses download restrictions using Netscape cookies session streams.</p>
+                                    
+                                    <div class="tech-lang-bar">
+                                        <div class="lang-seg" style="width: 48.2%; background: #f1e05a;"></div> <!-- JavaScript (Yellow) -->
+                                        <div class="lang-seg" style="width: 24.1%; background: #563d7c;"></div> <!-- CSS (Purple) -->
+                                        <div class="lang-seg" style="width: 15.3%; background: #e34c26;"></div> <!-- HTML (Red) -->
+                                        <div class="lang-seg" style="width: 12.4%; background: #384d54;"></div> <!-- Docker (Blue-Grey) -->
+                                    </div>
+                                    
+                                    <div class="tech-lang-legend">
+                                        <span class="legend-item"><span class="dot" style="background: #f1e05a;"></span> JavaScript <strong>48.2%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #563d7c;"></span> CSS <strong>24.1%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #e34c26;"></span> HTML <strong>15.3%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #384d54;"></span> Dockerfile <strong>12.4%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="tech-card-footer">
+                                    <div class="dash-separator"></div>
+                                    <span class="footer-meta">NO_TAG_METADATA_DETECTED</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 02: OS -->
+                            <div class="tech-card" data-live="true">
+                                <div class="tech-card-ticks"></div>
+                                <div class="tech-card-header">
+                                    <div class="tech-card-title-row">
+                                        <h3><span class="tech-card-num">02</span> OS</h3>
+                                        <div class="tech-card-actions">
+                                            <a href="https://github.com/UG-SIDHARTH/portfolio" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
+                                            <a href="https://ug-sidharth.github.io/portfolio" target="_blank" rel="noopener noreferrer" class="tech-btn btn-run">[RUN]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tech-card-body">
+                                    <p class="tech-card-desc">Interactive glassmorphic desktop environment designed to display profile metrics and timeline data feeds.</p>
+                                    
+                                    <div class="tech-lang-bar">
+                                        <div class="lang-seg" style="width: 45.0%; background: #e34c26;"></div> <!-- HTML (Red) -->
+                                        <div class="lang-seg" style="width: 35.0%; background: #563d7c;"></div> <!-- CSS (Purple) -->
+                                        <div class="lang-seg" style="width: 20.0%; background: #f1e05a;"></div> <!-- JavaScript (Yellow) -->
+                                    </div>
+                                    
+                                    <div class="tech-lang-legend">
+                                        <span class="legend-item"><span class="dot" style="background: #e34c26;"></span> HTML <strong>45.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #563d7c;"></span> CSS <strong>35.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #f1e05a;"></span> JavaScript <strong>20.0%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="tech-card-footer">
+                                    <div class="dash-separator"></div>
+                                    <span class="footer-meta">NO_TAG_METADATA_DETECTED</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 03: Smart Monitor Backend -->
+                            <div class="tech-card" data-live="false">
+                                <div class="tech-card-ticks"></div>
+                                <div class="tech-card-header">
+                                    <div class="tech-card-title-row">
+                                        <h3><span class="tech-card-num">03</span> SMART MONITOR BACKEND</h3>
+                                        <div class="tech-card-actions">
+                                            <a href="https://github.com/UG-SIDHARTH/project" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tech-card-body">
+                                    <p class="tech-card-desc">Robust backend service for the Smart Monitor ecosystem. Implements real-time telemetry processing, database persistence, and system alert routing.</p>
+                                    
+                                    <div class="tech-lang-bar">
+                                        <div class="lang-seg" style="width: 70.0%; background: #3572A5;"></div> <!-- Python (Blue) -->
+                                        <div class="lang-seg" style="width: 20.0%; background: #89e051;"></div> <!-- Shell (Green) -->
+                                        <div class="lang-seg" style="width: 10.0%; background: #384d54;"></div> <!-- Docker (Blue-Grey) -->
+                                    </div>
+                                    
+                                    <div class="tech-lang-legend">
+                                        <span class="legend-item"><span class="dot" style="background: #3572A5;"></span> Python <strong>70.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #89e051;"></span> Shell <strong>20.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #384d54;"></span> Dockerfile <strong>10.0%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="tech-card-footer">
+                                    <div class="dash-separator"></div>
+                                    <span class="footer-meta">OFFLINE_BACKEND_MODULE</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 04: Football Match Outcome Predictor -->
+                            <div class="tech-card" data-live="false">
+                                <div class="tech-card-ticks"></div>
+                                <div class="tech-card-header">
+                                    <div class="tech-card-title-row">
+                                        <h3><span class="tech-card-num">04</span> FOOTBALL MATCH OUTCOME PREDICTOR</h3>
+                                        <div class="tech-card-actions">
+                                            <a href="https://github.com/UG-SIDHARTH/Football-Match-Outcome-Predictor/tree/main" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tech-card-body">
+                                    <p class="tech-card-desc">Machine learning system that predicts football match outcomes based on historical team statistics, player performance, and real-time feeds.</p>
+                                    
+                                    <div class="tech-lang-bar">
+                                        <div class="lang-seg" style="width: 65.0%; background: #3572A5;"></div> <!-- Python (Blue) -->
+                                        <div class="lang-seg" style="width: 25.0%; background: #DA5B0B;"></div> <!-- Jupyter Notebook (Orange) -->
+                                        <div class="lang-seg" style="width: 10.0%; background: #89e051;"></div> <!-- Shell (Green) -->
+                                    </div>
+                                    
+                                    <div class="tech-lang-legend">
+                                        <span class="legend-item"><span class="dot" style="background: #3572A5;"></span> Python <strong>65.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #DA5B0B;"></span> Jupyter <strong>25.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #89e051;"></span> Shell <strong>10.0%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="tech-card-footer">
+                                    <div class="dash-separator"></div>
+                                    <span class="footer-meta">PREDICTION_MODEL_OFFLINE</span>
+                                </div>
+                            </div>
+
+                            <!-- Card 05: Project Front-End -->
+                            <div class="tech-card" data-live="false">
+                                <div class="tech-card-ticks"></div>
+                                <div class="tech-card-header">
+                                    <div class="tech-card-title-row">
+                                        <h3><span class="tech-card-num">05</span> PROJECT FRONT-END</h3>
+                                        <div class="tech-card-actions">
+                                            <a href="https://github.com/UG-SIDHARTH/PROJECT-FRONT-END/tree/main" target="_blank" rel="noopener noreferrer" class="tech-btn btn-code">[CODE]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tech-card-body">
+                                    <p class="tech-card-desc">Responsive modern web application front-end built for device telemetry monitoring and real-time dashboard control interfaces.</p>
+                                    
+                                    <div class="tech-lang-bar">
+                                        <div class="lang-seg" style="width: 40.0%; background: #e34c26;"></div> <!-- HTML (Red) -->
+                                        <div class="lang-seg" style="width: 35.0%; background: #f1e05a;"></div> <!-- JavaScript (Yellow) -->
+                                        <div class="lang-seg" style="width: 25.0%; background: #563d7c;"></div> <!-- CSS (Purple) -->
+                                    </div>
+                                    
+                                    <div class="tech-lang-legend">
+                                        <span class="legend-item"><span class="dot" style="background: #e34c26;"></span> HTML <strong>40.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #f1e05a;"></span> JavaScript <strong>35.0%</strong></span>
+                                        <span class="legend-item"><span class="dot" style="background: #563d7c;"></span> CSS <strong>25.0%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="tech-card-footer">
+                                    <div class="dash-separator"></div>
+                                    <span class="footer-meta">CLIENT_INTERFACE_OFFLINE</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Embedded Projects Live Browser View -->
+                    <div class="projects-iframe-container">
+                        <div class="projects-iframe-header">
+                            <div class="iframe-nav-left">
+                                <button id="btn-iframe-back">
+                                    ← BACK_TO_MODULES
+                                </button>
+                                <span id="iframe-current-url">https://novara.ugsidharth.in</span>
+                            </div>
+                            <a id="iframe-external-link" href="https://novara.ugsidharth.in" target="_blank" rel="noopener noreferrer" title="Open in new tab">
+                                ↗
+                            </a>
+                        </div>
+                        <iframe id="projects-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Terminal -->
+            <div class="window glass-card" id="window-terminal" data-window="terminal" style="width: 680px; height: 420px; top: 22%; left: 24%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn immersive-btn" id="terminal-immersive-btn" title="Toggle Immersive Fullscreen Dark Mode" aria-label="Toggle Immersive Terminal">📺</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">💻 Terminal.app - bash</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body terminal-body" style="position: relative;">
+                    <div class="crt-scanline-overlay"></div>
+                    <div id="terminal-game-container" style="display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 10; background: #07090e; flex-direction: column; align-items: center; justify-content: center;">
+                        <div id="terminal-game-hud" style="width: 100%; padding: 6px 12px; display: flex; justify-content: space-between; font-family: var(--ff-terminal); font-size: 0.8rem; background: rgba(0,242,254,0.08); border-bottom: 1px solid rgba(0,242,254,0.2); color: var(--color-cyan);">
+                            <div class="hud-left">SCORE: <span id="term-game-score" style="color: #fff; font-weight: bold;">0</span> | WAVE: <span id="term-game-wave" style="color: #ffbd2e; font-weight: bold;">1</span></div>
+                            <div class="hud-right">LIVES: <span id="term-game-lives" style="letter-spacing: 2px;">❤️❤️❤️</span> | <span style="color: #94a3b8; font-size: 0.75rem;">[ESC / 'quit' to exit]</span></div>
+                        </div>
+                        <canvas id="terminal-game-canvas" width="650" height="320" style="width: 100%; height: calc(100% - 32px); display: block; cursor: crosshair;"></canvas>
+                    </div>
+                    <div class="terminal-output" id="terminal-output">
+                        <div>OS v1.0.6 (tty1) - Interactive shell</div>
+                        <div>Logged in as visitor@os-portfolio</div>
+                        <div>Type <span class="term-highlight">'help'</span> to see a list of commands, or try <span class="term-highlight">'neofetch'</span>.</div>
+                        <br>
+                    </div>
+                    <div class="terminal-line-input">
+                        <span class="terminal-prompt">visitor@os:~$</span>
+                        <input type="text" id="terminal-input" autocomplete="off" autofocus>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Mail (Contact Form) -->
+            <div class="window glass-card" id="window-mail" data-window="mail" style="width: 650px; height: 470px; top: 20%; left: 26%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">✉️ Mail.app - Send Message</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body">
+                    <form id="mail-form" class="os-form">
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="mail-name">Your Name</label>
+                                <input type="text" id="mail-name" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-col">
+                                <label for="mail-email">Your Email</label>
+                                <input type="email" id="mail-email" placeholder="john@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="mail-subject">Subject</label>
+                                <input type="text" id="mail-subject" placeholder="Project Collaboration" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="mail-message">Message Content</label>
+                                <textarea id="mail-message" rows="5" placeholder="Hi Sidharth, let's connect..." required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="mail-submit-btn">Send Transmission</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: VS Code Mock Editor -->
+            <div class="window glass-card" id="window-vscode" data-window="vscode" style="width: 820px; height: 530px; top: 8%; left: 12%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">📝 VS_Code.app - Portfolio Editor</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 0; display: flex; flex-direction: column;">
+                    <div class="vscode-layout">
+                        <div class="vscode-sidebar">
+                            <div class="vscode-sidebar-title">Explorer: Portfolio</div>
+                            <div class="vscode-files-list">
+                                <div class="vscode-file-item active-file" data-file="resume"><span>📄 resume.json</span></div>
+                                <div class="vscode-file-item" data-file="index"><span>🌐 index.html</span></div>
+                                <div class="vscode-file-item" data-file="script"><span>⚙️ script.js</span></div>
+                                <div class="vscode-file-item" data-file="styles"><span>🎨 styles.css</span></div>
+                            </div>
+                        </div>
+                        <div class="vscode-editor-pane">
+                            <div class="vscode-tabs-header">
+                                <div class="vscode-tab active-tab" id="vscode-active-tab"><span>resume.json</span></div>
+                            </div>
+                            <div class="vscode-code-area">
+                                <pre><code id="vscode-code-display"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Snake Game (Easter Egg) -->
+            <div class="window glass-card" id="window-snake" data-window="snake" style="width: 710px; height: 600px; top: 10%; left: 20%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">🐍 Snake.app - Game</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 1.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #07090e; overflow: hidden;">
+                    <div class="game-container">
+                        <div class="game-stats" style="width: 640px; display: flex; justify-content: space-between;">
+                            <span>SCORE: <span id="snake-score">0</span></span>
+                            <span id="slow-indicator" style="display: none; color: #ffbd2e; animation: pulse 1s infinite alternate;">SLOW POWER-UP ACTIVE ⚡</span>
+                            <span>HIGH SCORE: <span id="snake-highscore">0</span></span>
+                        </div>
+                        <canvas id="snake-canvas" width="640" height="340"></canvas>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; width: 640px; margin-top: 0.8rem;">
+                            <button id="snake-start-btn" style="margin-top: 0;">START</button>
+                            
+                            <!-- Virtual controller D-pad -->
+                            <div class="dpad-container">
+                                <button class="dpad-btn" id="snake-dpad-up">▲</button>
+                                <div class="dpad-row">
+                                    <button class="dpad-btn" id="snake-dpad-left">◀</button>
+                                    <button class="dpad-btn" id="snake-dpad-right">▶</button>
+                                </div>
+                                <button class="dpad-btn" id="snake-dpad-down">▼</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLICATION WINDOW: Shooter Game (Fight.app) -->
+            <div class="window glass-card" id="window-fight" data-window="fight" style="width: 450px; height: 580px; top: 12%; left: 22%;">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
+                        <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
+                    </div>
+                    <div class="window-title">👾 Fight.app - Space Battle</div>
+                    <div class="window-spacer"></div>
+                </div>
+                <div class="window-body" style="padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #05070a; overflow: hidden;">
+                    <div class="game-container">
+                        <div class="game-stats" style="color: #ff5f56; text-shadow: 0 0 4px rgba(255, 95, 86, 0.4);">
+                            <span>SCORE: <span id="fight-score">0</span></span>
+                            <span>HIGH SCORE: <span id="fight-highscore">0</span></span>
+                        </div>
+                        <canvas id="fight-canvas" width="320" height="320" style="background: #020305; border: 2px solid rgba(255, 95, 86, 0.25); box-shadow: 0 0 15px rgba(255, 95, 86, 0.1); border-radius: 6px;"></canvas>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; width: 320px; margin-top: 0.8rem;">
+                            <button id="fight-start-btn" style="margin-top: 0; color: #ff5f56; border: 1px solid rgba(255, 95, 86, 0.35); background: rgba(255, 95, 86, 0.08); padding: 0.5rem 1.5rem; font-family: var(--ff-terminal); font-size: 0.85rem; font-weight: 600; border-radius: 4px; cursor: pointer; transition: all 0.2s ease;">START</button>
+                            
+                            <!-- Virtual controller for mobile shooter -->
+                            <div class="dpad-container" style="flex-direction: row; gap: 8px;">
+                                <button class="dpad-btn" id="fight-ctrl-left" style="color: #ff5f56; border-color: rgba(255, 95, 86, 0.3); width: 36px; height: 36px;">◀</button>
+                                <button class="dpad-btn" id="fight-ctrl-fire" style="color: #ff5f56; border-color: rgba(255, 95, 86, 0.3); font-weight: bold; width: 50px; height: 36px; font-size: 0.75rem;">FIRE</button>
+                                <button class="dpad-btn" id="fight-ctrl-right" style="color: #ff5f56; border-color: rgba(255, 95, 86, 0.3); width: 36px; height: 36px;">▶</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3. Bottom OS Taskbar Dock -->
+        <div id="dock-container">
+            <div id="dock" class="glass-card">
+                <!-- App shortcuts -->
+                <button class="dock-item" data-app="profile" aria-label="Profile App">
+                    <span class="dock-icon">👤</span>
+                    <span class="dock-tooltip">Profile</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="skills" aria-label="Skills App">
+                    <span class="dock-icon">🛠️</span>
+                    <span class="dock-tooltip">Skills</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="projects" aria-label="Projects App">
+                    <span class="dock-icon">📂</span>
+                    <span class="dock-tooltip">Projects</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="resume" aria-label="Resume App">
+                    <span class="dock-icon">📄</span>
+                    <span class="dock-tooltip">Resume</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="browser" aria-label="Browser App">
+                    <span class="dock-icon">🌐</span>
+                    <span class="dock-tooltip">Browser</span>
+                    <span class="dock-dot"></span>
+                </button>
+
+                <button class="dock-item" data-app="terminal" aria-label="Terminal App">
+                    <span class="dock-icon">💻</span>
+                    <span class="dock-tooltip">Terminal</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="mail" aria-label="Mail App">
+                    <span class="dock-icon">✉️</span>
+                    <span class="dock-tooltip">Contact Mail</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="vscode" aria-label="VS Code App">
+                    <span class="dock-icon">📝</span>
+                    <span class="dock-tooltip">VS Code</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="snake" aria-label="Snake Game App">
+                    <span class="dock-icon">🐍</span>
+                    <span class="dock-tooltip">Snake Game</span>
+                    <span class="dock-dot"></span>
+                </button>
+                <button class="dock-item" data-app="creative" aria-label="Creative App">
+                    <span class="dock-icon">🎨</span>
+                    <span class="dock-tooltip">Creativity</span>
+                    <span class="dock-dot"></span>
+                </button>
+                
+                <div class="dock-divider"></div>
+                
+                <!-- Start / Menu icon -->
+                <button class="dock-item" id="start-btn" aria-label="Start Menu">
+                    <span class="dock-icon">👾</span>
+                    <span class="dock-tooltip">Start Menu</span>
+                </button>
+            </div>
+            
+            <!-- System tray on the right corner -->
+            <div id="system-tray" class="glass-card">
+                <button class="tray-theme-btn" id="tray-theme-toggle" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
+                    <span class="theme-icon" id="tray-theme-icon">🌙</span>
+                </button>
+                <span class="tray-divider">|</span>
+                <span class="tray-telemetry" id="tray-stats">CPU: 1.5% | ONLINE</span>
+                <span class="tray-divider">|</span>
+                <span class="tray-clock" id="tray-clock">10:00:00 PM</span>
+            </div>
+        </div>
+
+        <!-- 4. Interactive Start Menu Popover -->
+        <div id="start-menu" class="glass-card">
+            <div class="start-header">
+                <div class="start-avatar">SD</div>
+                <div class="start-user-info">
+                    <h4>Sidharth D</h4>
+                    <p>visitor@os</p>
+                </div>
+            </div>
+            <div class="start-body">
+                <div class="start-shortcuts">
+                    <h5>Applications</h5>
+                    <button class="start-shortcut-item" data-app="profile">👤 Profile (About Me)</button>
+                    <button class="start-shortcut-item" data-app="skills">🛠️ Skills & Technologies</button>
+                    <button class="start-shortcut-item" data-app="projects">📂 Projects Showcase</button>
+                    <button class="start-shortcut-item" data-app="resume">📄 Resume (PDF Viewer)</button>
+                    <button class="start-shortcut-item" data-app="browser">🌐 Web Browser (Google)</button>
+
+
+                    <button class="start-shortcut-item" data-app="terminal">💻 Terminal Command Line</button>
+                    <button class="start-shortcut-item" data-app="mail">✉️ Mail.app (Contact Form)</button>
+                    <button class="start-shortcut-item" data-app="vscode">📝 VS Code (Editor)</button>
+                    <button class="start-shortcut-item" data-app="snake">🐍 Classic Snake Game</button>
+                    <button class="start-shortcut-item" data-app="creative">🎨 Creative (My Creativity)</button>
+                </div>
+                <div class="start-actions">
+                    <h5>System Options</h5>
+                    <button class="start-action-btn" id="sys-reboot">🔄 Restart OS Wallpapers</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- VS Code Templates for Code Display -->
+    <template id="template-vscode-resume">{
+  <span class="code-keyword">"developer_profile"</span>: {
+    <span class="code-keyword">"name"</span>: <span class="code-string">"Sidharth D"</span>,
+    <span class="code-keyword">"specialization"</span>: <span class="code-string">"Developer, IoT Engineer, ML Enthusiast"</span>,
+    <span class="code-keyword">"location"</span>: <span class="code-string">"Kazhakkoottam, Kerala"</span>,
+    <span class="code-keyword">"email"</span>: <span class="code-string">"mail@ugsidharth.in"</span>,
+    <span class="code-keyword">"phone"</span>: <span class="code-string">"+91 (Protected - Use Mail.app)"</span>,
+    <span class="code-keyword">"github"</span>: <span class="code-string">"github.com/ugsidharth"</span>
+  },
+  <span class="code-keyword">"skills"</span>: {
+    <span class="code-keyword">"languages"</span>: [<span class="code-string">"Python"</span>, <span class="code-string">"C++"</span>, <span class="code-string">"C"</span>, <span class="code-string">"Bash"</span>, <span class="code-string">"HTML/CSS"</span>, <span class="code-string">"LaTeX"</span>, <span class="code-string">"Arduino IDE"</span>, <span class="code-string">"ANSYS"</span>],
+    <span class="code-keyword">"spoken_languages"</span>: [<span class="code-string">"Malayalam"</span>, <span class="code-string">"English"</span>, <span class="code-string">"Hindi"</span>],
+    <span class="code-keyword">"iot_hardware"</span>: [<span class="code-string">"ESP32"</span>, <span class="code-string">"MQTT"</span>, <span class="code-string">"Hardware Prototyping"</span>],
+    <span class="code-keyword">"ai_ml"</span>: [<span class="code-string">"Machine Learning"</span>, <span class="code-string">"Facial Recognition"</span>, <span class="code-string">"Edge AI"</span>, <span class="code-string">"Data Analysis"</span>, <span class="code-string">"Telecom Analytics"</span>],
+    <span class="code-keyword">"design_creative"</span>: [<span class="code-string">"Figma"</span>, <span class="code-string">"Photography"</span>, <span class="code-string">"Videography"</span>],
+    <span class="code-keyword">"tools_os"</span>: [<span class="code-string">"Linux"</span>, <span class="code-string">"Windows"</span>, <span class="code-string">"Microsoft Office"</span>, <span class="code-string">"NumPy"</span>, <span class="code-string">"SciPy"</span>, <span class="code-string">"Pandas"</span>]
+  },
+  <span class="code-keyword">"education"</span>: [
+    {
+      <span class="code-keyword">"degree"</span>: <span class="code-string">"B.Tech in Computer Science and Engineering"</span>,
+      <span class="code-keyword">"college"</span>: <span class="code-string">"College of Engineering, Attingal (CEAL)"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"2025 - 2029 (Expected)"</span>
+    },
+    {
+      <span class="code-keyword">"degree"</span>: <span class="code-string">"Higher Secondary Education"</span>,
+      <span class="code-keyword">"college"</span>: <span class="code-string">"Jyoti Nilayam Higher Secondary School"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"Up to 2025 (12th Class)"</span>
+    }
+  ],
+  <span class="code-keyword">"experience"</span>: [
+    {
+      <span class="code-keyword">"role"</span>: <span class="code-string">"MEDIA TEAM"</span>,
+      <span class="code-keyword">"organization"</span>: <span class="code-string">"IEEE SB CEAL"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"Apr 2026 - Present"</span>
+    },
+    {
+      <span class="code-keyword">"role"</span>: <span class="code-string">"MEDIA TEAM"</span>,
+      <span class="code-keyword">"organization"</span>: <span class="code-string">"FOSS SB CEAL"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"Jun 2026 - Present"</span>
+    },
+    {
+      <span class="code-keyword">"role"</span>: <span class="code-string">"MEDIA LEAD"</span>,
+      <span class="code-keyword">"organization"</span>: <span class="code-string">"ISTE"</span>,
+      <span class="code-keyword">"tenure"</span>: <span class="code-string">"Jul 2026 - Present"</span>
+    }
+  ]
+}</template>
+
+    <template id="template-vscode-index">&lt;<span class="code-tag">div</span> <span class="code-attr">id</span>=<span class="code-string">"desktop"</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"desktop-icons"</span>&gt;
+    &lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-string">"desktop-icon"</span> <span class="code-attr">data-app</span>=<span class="code-string">"vscode"</span>&gt;
+      &lt;<span class="code-tag">span</span>&gt;📝 VS_Code.app&lt;/<span class="code-tag">span</span>&gt;
+    &lt;/<span class="code-tag">div</span>&gt;
+  &lt;/<span class="code-tag">div</span>&gt;
+  &lt;<span class="code-tag">div</span> <span class="code-attr">id</span>=<span class="code-string">"windows-workspace"</span>&gt;&lt;/<span class="code-tag">div</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;</template>
+
+    <template id="template-vscode-script"><span class="code-comment">// Active WebOS Window Drag Handler</span>
+<span class="code-keyword">function</span> <span class="code-keyword">initDrag</span>(winEl) {
+  winEl.addEventListener(<span class="code-string">'mousedown'</span>, (e) =&gt; {
+    <span class="code-keyword">let</span> startX = e.clientX;
+    <span class="code-keyword">let</span> startY = e.clientY;
+    <span class="code-comment">// Grab window offset coordinate limits...</span>
+    console.log(<span class="code-string">"Launching App: "</span> + winEl.id);
+  });
+}</template>
+
+    <template id="template-vscode-styles"><span class="code-comment">/* Custom Cyberpunk variables variables */</span>
+<span class="code-tag">:root</span> {
+  <span class="code-attr">--bg-primary</span>: <span class="code-number">#07090e</span>;
+  <span class="code-attr">--color-cyan</span>: <span class="code-number">#00f2fe</span>;
+  <span class="code-attr">--border-glow</span>: <span class="code-string">rgba(0, 242, 254, 0.35)</span>;
+}</template>
+
+    <!-- Full-Viewport Canvas Overlay Space Shooter Game -->
+    <div id="full-game-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999; backdrop-filter: blur(14px); background: rgba(5, 7, 12, 0.88); flex-direction: column; align-items: center; justify-content: center; user-select: none;">
+        <div id="full-game-hud" style="width: 100%; max-width: 1100px; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; font-family: var(--ff-terminal); font-size: 0.95rem; background: rgba(0, 242, 254, 0.08); border-bottom: 1px solid rgba(0, 242, 254, 0.25); color: var(--color-cyan); box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);">
+            <div class="hud-left" style="display: flex; gap: 20px;">
+                <span>SCORE: <strong id="full-game-score" style="color: #fff;">0</strong></span>
+                <span>WAVE: <strong id="full-game-wave" style="color: #ffbd2e;">1</strong></span>
+                <span>HIGH SCORE: <strong id="full-game-highscore" style="color: #27c93f;">0</strong></span>
+            </div>
+            <div class="hud-right" style="display: flex; align-items: center; gap: 20px;">
+                <span>LIVES: <span id="full-game-lives" style="letter-spacing: 3px; font-size: 1.1rem;">❤️❤️❤️</span></span>
+                <button id="full-game-exit-btn" style="background: rgba(255, 95, 86, 0.15); border: 1px solid #ff5f56; color: #ff5f56; padding: 4px 14px; font-family: var(--ff-terminal); font-weight: 600; font-size: 0.85rem; border-radius: 4px; cursor: pointer; transition: all 0.2s ease;">EXIT GAME [ESC]</button>
+            </div>
+        </div>
+        <canvas id="full-game-canvas" width="1200" height="700" style="width: 100%; height: calc(100vh - 60px); display: block; cursor: crosshair;"></canvas>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

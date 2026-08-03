@@ -199,6 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Launch Application
     function openApp(appId) {
+        if (appId === 'game' || appId === 'fight') {
+            startFullWebsiteGame();
+            return;
+        }
         const targetWin = document.getElementById(`window-${appId}`);
         if (targetWin) {
             focusWindow(targetWin);
@@ -811,7 +815,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // Full-Viewport Canvas Space Invaders Game Engine
+    // Full-Viewport Canvas Space Invaders Game Engine + Synthesized Web Audio SFX
     // ==========================================================================
     const fullOverlay = document.getElementById('full-game-overlay');
     const fullCanvas = document.getElementById('full-game-canvas');
@@ -825,7 +829,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let fullGameRunning = false;
     let fullGameAnimId = null;
 
-    let fullPlayer = { x: 500, y: 600, width: 36, height: 22, speed: 8 };
+    let fullPlayer = { x: 500, y: 600, width: 36, height: 22, speed: 9 };
     let fullLasers = [];
     let fullEnemies = [];
     let fullParticles = [];
@@ -838,6 +842,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (fullHighscoreVal) fullHighscoreVal.textContent = fullHighscore;
 
+    // Web Audio API Retro Sound Effects Generator (Zero external dependencies)
+    let audioCtx = null;
+    function getAudioContext() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        return audioCtx;
+    }
+
+    function playLaserSFX() {
+        try {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(880, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.12);
+            gain.gain.setValueAtTime(0.18, ctx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.12);
+        } catch(e) {}
+    }
+
+    function playExplosionSFX() {
+        try {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            const bufferSize = ctx.sampleRate * 0.18;
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            const noise = ctx.createBufferSource();
+            noise.buffer = buffer;
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(0.25, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.18);
+            noise.connect(gain);
+            gain.connect(ctx.destination);
+            noise.start();
+        } catch(e) {}
+    }
+
     function resizeFullCanvas() {
         if (!fullCanvas) return;
         fullCanvas.width = window.innerWidth;
@@ -846,7 +901,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startFullWebsiteGame() {
-        if (!fullOverlay || !fullCanvas) return;
+        if (!fullOverlay || !fullCanvas) {
+            console.error("Space Shooter Canvas elements not found.");
+            return;
+        }
 
         fullGameRunning = true;
         fullScore = 0;
@@ -874,6 +932,9 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast("Full-Screen Space Invaders Launched! [ESC] to Exit", "success");
     }
 
+    // Expose globally so desktop icons, dock, and terminal can invoke it cleanly
+    window.startFullWebsiteGame = startFullWebsiteGame;
+
     function exitFullWebsiteGame() {
         if (!fullGameRunning) return;
         fullGameRunning = false;
@@ -887,6 +948,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appendTermLine(`<div>[<span class="term-highlight">Full-Website Space Invaders</span> closed. Returned to desktop]</div>`);
         if (terminalInput) terminalInput.focus();
     }
+    window.exitFullWebsiteGame = exitFullWebsiteGame;
 
     function spawnFullEnemyWave(wave) {
         fullEnemies = [];
@@ -916,24 +978,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function fireFullLaser() {
         const now = Date.now();
-        if (now - fullLastFire < 160) return;
+        if (now - fullLastFire < 150) return;
         fullLastFire = now;
+        playLaserSFX();
         fullLasers.push({
             x: fullPlayer.x + fullPlayer.width / 2 - 2,
             y: fullPlayer.y,
             width: 5,
-            height: 14,
-            vy: 9
+            height: 15,
+            vy: 10
         });
     }
 
     function createFullExplosion(x, y, color) {
-        for (let i = 0; i < 12; i++) {
+        playExplosionSFX();
+        for (let i = 0; i < 14; i++) {
             fullParticles.push({
                 x, y,
-                vx: (Math.random() - 0.5) * 6,
-                vy: (Math.random() - 0.5) * 6,
-                life: 28,
+                vx: (Math.random() - 0.5) * 7,
+                vy: (Math.random() - 0.5) * 7,
+                life: 30,
                 color: color || '#00f2fe'
             });
         }
@@ -947,8 +1011,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fullCtx.fillRect(0, 0, fullCanvas.width, fullCanvas.height);
 
         // Starfield Particles
-        fullCtx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-        for (let i = 0; i < 35; i++) {
+        fullCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        for (let i = 0; i < 40; i++) {
             const rx = (Math.sin(Date.now() * 0.0008 + i * 19) * 0.5 + 0.5) * fullCanvas.width;
             const ry = (Math.cos(Date.now() * 0.0006 + i * 11) * 0.5 + 0.5) * fullCanvas.height;
             fullCtx.fillRect(rx, ry, 2, 2);
@@ -1005,6 +1069,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = fullEnemies.length - 1; i >= 0; i--) {
             const enemy = fullEnemies[i];
+            if (!enemy) continue;
 
             fullCtx.shadowBlur = 10;
             fullCtx.shadowColor = enemy.color;
@@ -1053,13 +1118,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     fullLives--;
                     updateFullLivesDisplay();
                     createFullExplosion(fullPlayer.x + fullPlayer.width / 2, fullPlayer.y + fullPlayer.height / 2, '#ff5f56');
+                    fullEnemies.splice(i, 1);
 
                     if (fullLives <= 0) {
                         endFullWebsiteGame();
                         return;
-                    } else {
-                        spawnFullEnemyWave(fullWave);
-                        break;
                     }
                 }
             }
@@ -1069,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (initialEnemyCount > 0 && fullEnemies.length === 0) {
             fullWave++;
             if (fullWaveVal) fullWaveVal.textContent = fullWave;
-            showToast(`WAVE ${fullWave} ENGAGED! Enemies Faster!`, 'success');
+            showToast(`WAVE ${fullWave} ENGAGED! Enemies Speed Boosted!`, 'success');
             spawnFullEnemyWave(fullWave);
         }
 
@@ -1144,6 +1207,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 fullKeys[e.key] = true;
                 if (e.key === ' ') fireFullLaser();
+            }
+        }
+    });
+
+    // Global Site-Wide Secret Easter Egg Sequence Listener (Type 'game' anywhere on the website!)
+    let secretKeyBuffer = '';
+    window.addEventListener('keydown', (e) => {
+        if (fullGameRunning) return;
+
+        // Skip if user is actively typing inside an input field or textarea
+        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        if (activeTag === 'input' || activeTag === 'textarea') return;
+
+        if (e.key && e.key.length === 1) {
+            secretKeyBuffer = (secretKeyBuffer + e.key.toLowerCase()).slice(-10);
+
+            if (secretKeyBuffer.endsWith('game') || secretKeyBuffer.endsWith('invader') || secretKeyBuffer.endsWith('space')) {
+                secretKeyBuffer = '';
+                startFullWebsiteGame();
+            } else if (secretKeyBuffer.endsWith('theme')) {
+                secretKeyBuffer = '';
+                toggleTheme();
+            } else if (secretKeyBuffer.endsWith('snake')) {
+                secretKeyBuffer = '';
+                openApp('snake');
             }
         }
     });

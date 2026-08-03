@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global API URL Redirection Mapping for decoupled frontend/backend deployment
     const API_BASE = (window.location.port === '3500' || window.location.port === '8601') ? '' : 'http://localhost:3500';
 
+    // Ensure page opens at top Hero section (unless hash anchor specified)
+    if (!window.location.hash) {
+        window.scrollTo(0, 0);
+    }
+
     // Typewriter effect for Hero section
     const typewriterEl = document.getElementById('hero-typewriter');
     if (typewriterEl) {

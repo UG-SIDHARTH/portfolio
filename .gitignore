@@ -1,0 +1,13 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+
+# Environment and sensitive data files
+.env
+messages.json
+data/messages.json
+data/
+
+# OS metadata
+.DS_Store
+Thumbs.db

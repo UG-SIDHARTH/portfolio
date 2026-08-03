@@ -443,6 +443,721 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast("Downloading Resume PDF...", "success");
     }
 
+    // ==========================================================================
+    // Light Theme System Logic
+    // ==========================================================================
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        const iconEl = document.getElementById('tray-theme-icon');
+        if (iconEl) {
+            iconEl.textContent = theme === 'light' ? '☀️' : '🌙';
+        }
+    }
+
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        const nextTheme = current === 'light' ? 'dark' : 'light';
+        setTheme(nextTheme);
+        showToast(`Switched to ${nextTheme.toUpperCase()} theme`, 'info');
+    }
+
+    setTheme(savedTheme);
+
+    const themeToggleBtn = document.getElementById('tray-theme-toggle');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+
+    // ==========================================================================
+    // In-Terminal Canvas Easter Egg Space Shooter Game Engine
+    // ==========================================================================
+    const termGameContainer = document.getElementById('terminal-game-container');
+    const termGameCanvas = document.getElementById('terminal-game-canvas');
+    const termScoreVal = document.getElementById('term-game-score');
+    const termWaveVal = document.getElementById('term-game-wave');
+    const termLivesVal = document.getElementById('term-game-lives');
+
+    let termCtx = termGameCanvas ? termGameCanvas.getContext('2d') : null;
+    let termGameRunning = false;
+    let termGameAnimId = null;
+
+    let termPlayer = { x: 300, y: 270, width: 28, height: 18, speed: 7 };
+    let termLasers = [];
+    let termEnemies = [];
+    let termParticles = [];
+    let termScore = 0;
+    let termWave = 1;
+    let termLives = 3;
+    let termKeys = {};
+    let termLastFire = 0;
+
+    function initTerminalGameCanvas() {
+        if (!termGameCanvas || !termGameContainer) return;
+        termGameCanvas.width = termGameContainer.clientWidth || 650;
+        termGameCanvas.height = Math.max(260, (termGameContainer.clientHeight || 360) - 32);
+        termPlayer.y = termGameCanvas.height - 30;
+        termPlayer.x = termGameCanvas.width / 2 - termPlayer.width / 2;
+    }
+
+    function startTerminalGame() {
+        if (!termGameContainer || !termGameCanvas) return;
+
+        termGameRunning = true;
+        termScore = 0;
+        termWave = 1;
+        termLives = 3;
+        termLasers = [];
+        termEnemies = [];
+        termParticles = [];
+        termKeys = {};
+
+        if (termScoreVal) termScoreVal.textContent = termScore;
+        if (termWaveVal) termWaveVal.textContent = termWave;
+        if (termLivesVal) termLivesVal.textContent = '❤️❤️❤️';
+
+        termGameContainer.style.display = 'flex';
+        initTerminalGameCanvas();
+        spawnEnemyWave(termWave);
+
+        if (termGameAnimId) cancelAnimationFrame(termGameAnimId);
+        termGameAnimId = requestAnimationFrame(updateTerminalGameLoop);
+
+        showToast("Terminal Game Launched! WASD/Mouse to move, Space/Click to fire", "success");
+    }
+
+    function exitTerminalGame() {
+        if (!termGameRunning) return;
+        termGameRunning = false;
+        if (termGameAnimId) {
+            cancelAnimationFrame(termGameAnimId);
+            termGameAnimId = null;
+        }
+        if (termGameContainer) {
+            termGameContainer.style.display = 'none';
+        }
+        appendTermLine(`<div>[<span class="term-highlight">Terminal Space Invaders</span> closed. Returned to shell]</div>`);
+        if (terminalInput) terminalInput.focus();
+    }
+
+    function spawnEnemyWave(wave) {
+        termEnemies = [];
+        const rows = Math.min(5, 2 + Math.floor(wave / 2));
+        const cols = Math.min(10, 5 + wave);
+        const startX = 35;
+        const startY = 30;
+        const spacingX = Math.min(48, (termGameCanvas.width - 70) / cols);
+        const spacingY = 26;
+
+        const colors = ['#ff5f56', '#00f2fe', '#ffbd2e', '#7f00ff', '#27c93f'];
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                termEnemies.push({
+                    x: startX + c * spacingX,
+                    y: startY + r * spacingY,
+                    width: 22,
+                    height: 16,
+                    color: colors[r % colors.length],
+                    vx: (1 + wave * 0.25),
+                    row: r
+                });
+            }
+        }
+    }
+
+    function fireTerminalLaser() {
+        const now = Date.now();
+        if (now - termLastFire < 180) return;
+        termLastFire = now;
+        termLasers.push({
+            x: termPlayer.x + termPlayer.width / 2 - 2,
+            y: termPlayer.y,
+            width: 4,
+            height: 12,
+            vy: 7
+        });
+    }
+
+    function createTermExplosion(x, y, color) {
+        for (let i = 0; i < 8; i++) {
+            termParticles.push({
+                x, y,
+                vx: (Math.random() - 0.5) * 4.5,
+                vy: (Math.random() - 0.5) * 4.5,
+                life: 22,
+                color: color || '#00f2fe'
+            });
+        }
+    }
+
+    function updateTerminalGameLoop() {
+        if (!termGameRunning || !termCtx || !termGameCanvas) return;
+
+        termCtx.fillStyle = '#07090e';
+        termCtx.fillRect(0, 0, termGameCanvas.width, termGameCanvas.height);
+
+        termCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        for (let i = 0; i < 20; i++) {
+            const rx = (Math.sin(Date.now() * 0.001 + i * 17) * 0.5 + 0.5) * termGameCanvas.width;
+            const ry = (Math.cos(Date.now() * 0.0008 + i * 13) * 0.5 + 0.5) * termGameCanvas.height;
+            termCtx.fillRect(rx, ry, 1.5, 1.5);
+        }
+
+        if (termKeys['ArrowLeft'] || termKeys['a'] || termKeys['A']) {
+            termPlayer.x = Math.max(0, termPlayer.x - termPlayer.speed);
+        }
+        if (termKeys['ArrowRight'] || termKeys['d'] || termKeys['D']) {
+            termPlayer.x = Math.min(termGameCanvas.width - termPlayer.width, termPlayer.x + termPlayer.speed);
+        }
+
+        termCtx.shadowBlur = 10;
+        termCtx.shadowColor = '#00f2fe';
+        termCtx.fillStyle = '#00f2fe';
+        termCtx.beginPath();
+        termCtx.moveTo(termPlayer.x + termPlayer.width / 2, termPlayer.y);
+        termCtx.lineTo(termPlayer.x, termPlayer.y + termPlayer.height);
+        termCtx.lineTo(termPlayer.x + termPlayer.width / 2, termPlayer.y + termPlayer.height - 4);
+        termCtx.lineTo(termPlayer.x + termPlayer.width, termPlayer.y + termPlayer.height);
+        termCtx.closePath();
+        termCtx.fill();
+
+        termCtx.fillStyle = '#00f2fe';
+        for (let i = termLasers.length - 1; i >= 0; i--) {
+            termLasers[i].y -= termLasers[i].vy;
+            termCtx.fillRect(termLasers[i].x, termLasers[i].y, termLasers[i].width, termLasers[i].height);
+
+            if (termLasers[i].y < -10) {
+                termLasers.splice(i, 1);
+            }
+        }
+
+        let hitEdge = false;
+        termEnemies.forEach(e => {
+            e.x += e.vx;
+            if (e.x <= 10 || e.x + e.width >= termGameCanvas.width - 10) {
+                hitEdge = true;
+            }
+        });
+
+        if (hitEdge) {
+            termEnemies.forEach(e => {
+                e.vx = -e.vx;
+                e.y += 12;
+            });
+        }
+
+        const initialEnemyCount = termEnemies.length;
+
+        for (let i = termEnemies.length - 1; i >= 0; i--) {
+            const enemy = termEnemies[i];
+
+            termCtx.shadowBlur = 8;
+            termCtx.shadowColor = enemy.color;
+            termCtx.fillStyle = enemy.color;
+
+            termCtx.fillRect(enemy.x, enemy.y + 4, enemy.width, enemy.height - 8);
+            termCtx.fillRect(enemy.x + 4, enemy.y, enemy.width - 8, enemy.height);
+
+            termCtx.fillStyle = '#000';
+            termCtx.fillRect(enemy.x + 5, enemy.y + 5, 3, 3);
+            termCtx.fillRect(enemy.x + enemy.width - 8, enemy.y + 5, 3, 3);
+
+            for (let j = termLasers.length - 1; j >= 0; j--) {
+                const l = termLasers[j];
+                if (l.x >= enemy.x && l.x <= enemy.x + enemy.width &&
+                    l.y >= enemy.y && l.y <= enemy.y + enemy.height) {
+
+                    createTermExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color);
+                    termEnemies.splice(i, 1);
+                    termLasers.splice(j, 1);
+
+                    termScore += 10 * termWave;
+                    if (termScoreVal) termScoreVal.textContent = termScore;
+                    break;
+                }
+            }
+
+            if (enemy) {
+                const hitsPlayer = (
+                    enemy.x + enemy.width >= termPlayer.x &&
+                    enemy.x <= termPlayer.x + termPlayer.width &&
+                    enemy.y + enemy.height >= termPlayer.y &&
+                    enemy.y <= termPlayer.y + termPlayer.height
+                );
+
+                if (enemy.y + enemy.height >= termGameCanvas.height - 10 || hitsPlayer) {
+                    termLives--;
+                    updateTermLivesDisplay();
+                    createTermExplosion(termPlayer.x + termPlayer.width / 2, termPlayer.y + termPlayer.height / 2, '#ff5f56');
+
+                    if (termLives <= 0) {
+                        endTerminalGame();
+                        return;
+                    } else {
+                        spawnEnemyWave(termWave);
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (initialEnemyCount > 0 && termEnemies.length === 0) {
+            termWave++;
+            if (termWaveVal) termWaveVal.textContent = termWave;
+            showToast(`WAVE ${termWave} ENGAGED!`, 'success');
+            spawnEnemyWave(termWave);
+        }
+
+        for (let i = termParticles.length - 1; i >= 0; i--) {
+            const p = termParticles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life--;
+            termCtx.shadowColor = p.color;
+            termCtx.fillStyle = p.color;
+            termCtx.fillRect(p.x, p.y, 2.5, 2.5);
+
+            if (p.life <= 0) {
+                termParticles.splice(i, 1);
+            }
+        }
+
+        termCtx.shadowBlur = 0;
+        termGameAnimId = requestAnimationFrame(updateTerminalGameLoop);
+    }
+
+    function updateTermLivesDisplay() {
+        if (!termLivesVal) return;
+        if (termLives === 3) termLivesVal.textContent = '❤️❤️❤️';
+        else if (termLives === 2) termLivesVal.textContent = '❤️❤️';
+        else if (termLives === 1) termLivesVal.textContent = '❤️';
+        else termLivesVal.textContent = '💀';
+    }
+
+    function endTerminalGame() {
+        termGameRunning = false;
+        if (termCtx && termGameCanvas) {
+            termCtx.fillStyle = 'rgba(7, 9, 14, 0.9)';
+            termCtx.fillRect(0, 0, termGameCanvas.width, termGameCanvas.height);
+            termCtx.font = 'bold 22px "Space Grotesk", sans-serif';
+            termCtx.fillStyle = '#ff5f56';
+            termCtx.textAlign = 'center';
+            termCtx.fillText('GAME OVER', termGameCanvas.width / 2, termGameCanvas.height / 2 - 15);
+            termCtx.font = '13px "Fira Code", monospace';
+            termCtx.fillStyle = '#00f2fe';
+            termCtx.fillText(`FINAL SCORE: ${termScore} | WAVE REACHED: ${termWave}`, termGameCanvas.width / 2, termGameCanvas.height / 2 + 15);
+            termCtx.fillStyle = '#94a3b8';
+            termCtx.fillText("Press [ESC] or type 'quit' to return to terminal", termGameCanvas.width / 2, termGameCanvas.height / 2 + 45);
+        }
+    }
+
+    if (termGameCanvas) {
+        termGameCanvas.addEventListener('mousemove', (e) => {
+            if (!termGameRunning) return;
+            const rect = termGameCanvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            termPlayer.x = Math.max(0, Math.min(termGameCanvas.width - termPlayer.width, mouseX - termPlayer.width / 2));
+        });
+
+        termGameCanvas.addEventListener('mousedown', () => {
+            if (termGameRunning) fireTerminalLaser();
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+        const termWin = document.getElementById('window-terminal');
+        const termActive = termWin && termWin.classList.contains('focused-window');
+
+        if (termGameRunning) {
+            if (e.key === 'Escape') {
+                exitTerminalGame();
+                return;
+            }
+            if (['ArrowLeft', 'ArrowRight', 'a', 'A', 'd', 'D', ' '].includes(e.key)) {
+                if (termActive) e.preventDefault();
+                termKeys[e.key] = true;
+                if (e.key === ' ') fireTerminalLaser();
+            }
+        }
+    });
+
+    // ==========================================================================
+    // Immersive Dark Terminal Mode Logic
+    // ==========================================================================
+    const termWin = document.getElementById('window-terminal');
+    const termImmersiveBtn = document.getElementById('terminal-immersive-btn');
+
+    function toggleTerminalImmersive(forceState) {
+        if (!termWin) return;
+        const isImmersive = forceState !== undefined ? forceState : !termWin.classList.contains('immersive-terminal');
+        
+        if (isImmersive) {
+            termWin.classList.add('immersive-terminal');
+            showToast('Immersive Dark CRT Terminal Mode Engaged 📺', 'info');
+        } else {
+            termWin.classList.remove('immersive-terminal');
+            showToast('Returned to Windowed Terminal Mode', 'info');
+        }
+    }
+
+    if (termImmersiveBtn) {
+        termImmersiveBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleTerminalImmersive();
+        });
+    }
+
+    // ==========================================================================
+    // Full-Viewport Canvas Space Invaders Game Engine
+    // ==========================================================================
+    const fullOverlay = document.getElementById('full-game-overlay');
+    const fullCanvas = document.getElementById('full-game-canvas');
+    const fullScoreVal = document.getElementById('full-game-score');
+    const fullWaveVal = document.getElementById('full-game-wave');
+    const fullHighscoreVal = document.getElementById('full-game-highscore');
+    const fullLivesVal = document.getElementById('full-game-lives');
+    const fullExitBtn = document.getElementById('full-game-exit-btn');
+
+    let fullCtx = fullCanvas ? fullCanvas.getContext('2d') : null;
+    let fullGameRunning = false;
+    let fullGameAnimId = null;
+
+    let fullPlayer = { x: 500, y: 600, width: 36, height: 22, speed: 8 };
+    let fullLasers = [];
+    let fullEnemies = [];
+    let fullParticles = [];
+    let fullScore = 0;
+    let fullWave = 1;
+    let fullLives = 3;
+    let fullHighscore = localStorage.getItem('full_game_highscore') || 0;
+    let fullKeys = {};
+    let fullLastFire = 0;
+
+    if (fullHighscoreVal) fullHighscoreVal.textContent = fullHighscore;
+
+    function resizeFullCanvas() {
+        if (!fullCanvas) return;
+        fullCanvas.width = window.innerWidth;
+        fullCanvas.height = window.innerHeight - 60;
+        fullPlayer.y = fullCanvas.height - 40;
+    }
+
+    function startFullWebsiteGame() {
+        if (!fullOverlay || !fullCanvas) return;
+
+        fullGameRunning = true;
+        fullScore = 0;
+        fullWave = 1;
+        fullLives = 3;
+        fullLasers = [];
+        fullEnemies = [];
+        fullParticles = [];
+        fullKeys = {};
+
+        if (fullScoreVal) fullScoreVal.textContent = fullScore;
+        if (fullWaveVal) fullWaveVal.textContent = fullWave;
+        if (fullLivesVal) fullLivesVal.textContent = '❤️❤️❤️';
+        if (fullHighscoreVal) fullHighscoreVal.textContent = fullHighscore;
+
+        fullOverlay.style.display = 'flex';
+        resizeFullCanvas();
+        fullPlayer.x = fullCanvas.width / 2 - fullPlayer.width / 2;
+
+        spawnFullEnemyWave(fullWave);
+
+        if (fullGameAnimId) cancelAnimationFrame(fullGameAnimId);
+        fullGameAnimId = requestAnimationFrame(updateFullGameLoop);
+
+        showToast("Full-Screen Space Invaders Launched! [ESC] to Exit", "success");
+    }
+
+    function exitFullWebsiteGame() {
+        if (!fullGameRunning) return;
+        fullGameRunning = false;
+        if (fullGameAnimId) {
+            cancelAnimationFrame(fullGameAnimId);
+            fullGameAnimId = null;
+        }
+        if (fullOverlay) {
+            fullOverlay.style.display = 'none';
+        }
+        appendTermLine(`<div>[<span class="term-highlight">Full-Website Space Invaders</span> closed. Returned to desktop]</div>`);
+        if (terminalInput) terminalInput.focus();
+    }
+
+    function spawnFullEnemyWave(wave) {
+        fullEnemies = [];
+        const rows = Math.min(6, 3 + Math.floor(wave / 2));
+        const cols = Math.min(14, 7 + wave);
+        const startX = 60;
+        const startY = 40;
+        const spacingX = Math.min(70, (fullCanvas.width - 120) / cols);
+        const spacingY = 36;
+
+        const colors = ['#ff5f56', '#00f2fe', '#ffbd2e', '#7f00ff', '#27c93f', '#e11d48'];
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                fullEnemies.push({
+                    x: startX + c * spacingX,
+                    y: startY + r * spacingY,
+                    width: 32,
+                    height: 22,
+                    color: colors[r % colors.length],
+                    vx: (1.5 + wave * 0.3),
+                    row: r
+                });
+            }
+        }
+    }
+
+    function fireFullLaser() {
+        const now = Date.now();
+        if (now - fullLastFire < 160) return;
+        fullLastFire = now;
+        fullLasers.push({
+            x: fullPlayer.x + fullPlayer.width / 2 - 2,
+            y: fullPlayer.y,
+            width: 5,
+            height: 14,
+            vy: 9
+        });
+    }
+
+    function createFullExplosion(x, y, color) {
+        for (let i = 0; i < 12; i++) {
+            fullParticles.push({
+                x, y,
+                vx: (Math.random() - 0.5) * 6,
+                vy: (Math.random() - 0.5) * 6,
+                life: 28,
+                color: color || '#00f2fe'
+            });
+        }
+    }
+
+    function updateFullGameLoop() {
+        if (!fullGameRunning || !fullCtx || !fullCanvas) return;
+
+        // Dark Canvas Background with Starfield
+        fullCtx.fillStyle = 'rgba(5, 7, 12, 0.95)';
+        fullCtx.fillRect(0, 0, fullCanvas.width, fullCanvas.height);
+
+        // Starfield Particles
+        fullCtx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        for (let i = 0; i < 35; i++) {
+            const rx = (Math.sin(Date.now() * 0.0008 + i * 19) * 0.5 + 0.5) * fullCanvas.width;
+            const ry = (Math.cos(Date.now() * 0.0006 + i * 11) * 0.5 + 0.5) * fullCanvas.height;
+            fullCtx.fillRect(rx, ry, 2, 2);
+        }
+
+        // Keyboard Movement
+        if (fullKeys['ArrowLeft'] || fullKeys['a'] || fullKeys['A']) {
+            fullPlayer.x = Math.max(0, fullPlayer.x - fullPlayer.speed);
+        }
+        if (fullKeys['ArrowRight'] || fullKeys['d'] || fullKeys['D']) {
+            fullPlayer.x = Math.min(fullCanvas.width - fullPlayer.width, fullPlayer.x + fullPlayer.speed);
+        }
+
+        // Draw Player Ship (Glowing Neon Cyan Spaceship)
+        fullCtx.shadowBlur = 15;
+        fullCtx.shadowColor = '#00f2fe';
+        fullCtx.fillStyle = '#00f2fe';
+        fullCtx.beginPath();
+        fullCtx.moveTo(fullPlayer.x + fullPlayer.width / 2, fullPlayer.y);
+        fullCtx.lineTo(fullPlayer.x, fullPlayer.y + fullPlayer.height);
+        fullCtx.lineTo(fullPlayer.x + fullPlayer.width / 2, fullPlayer.y + fullPlayer.height - 5);
+        fullCtx.lineTo(fullPlayer.x + fullPlayer.width, fullPlayer.y + fullPlayer.height);
+        fullCtx.closePath();
+        fullCtx.fill();
+
+        // Draw Lasers
+        fullCtx.fillStyle = '#00f2fe';
+        for (let i = fullLasers.length - 1; i >= 0; i--) {
+            fullLasers[i].y -= fullLasers[i].vy;
+            fullCtx.fillRect(fullLasers[i].x, fullLasers[i].y, fullLasers[i].width, fullLasers[i].height);
+
+            if (fullLasers[i].y < -20) {
+                fullLasers.splice(i, 1);
+            }
+        }
+
+        // Move & Draw Invaders
+        let hitEdge = false;
+        fullEnemies.forEach(e => {
+            e.x += e.vx;
+            if (e.x <= 15 || e.x + e.width >= fullCanvas.width - 15) {
+                hitEdge = true;
+            }
+        });
+
+        if (hitEdge) {
+            fullEnemies.forEach(e => {
+                e.vx = -e.vx;
+                e.y += 16;
+            });
+        }
+
+        const initialEnemyCount = fullEnemies.length;
+
+        for (let i = fullEnemies.length - 1; i >= 0; i--) {
+            const enemy = fullEnemies[i];
+
+            fullCtx.shadowBlur = 10;
+            fullCtx.shadowColor = enemy.color;
+            fullCtx.fillStyle = enemy.color;
+
+            fullCtx.fillRect(enemy.x, enemy.y + 5, enemy.width, enemy.height - 10);
+            fullCtx.fillRect(enemy.x + 5, enemy.y, enemy.width - 10, enemy.height);
+
+            // Eye details
+            fullCtx.fillStyle = '#000';
+            fullCtx.fillRect(enemy.x + 7, enemy.y + 6, 4, 4);
+            fullCtx.fillRect(enemy.x + enemy.width - 11, enemy.y + 6, 4, 4);
+
+            // Laser collision
+            for (let j = fullLasers.length - 1; j >= 0; j--) {
+                const l = fullLasers[j];
+                if (l.x >= enemy.x && l.x <= enemy.x + enemy.width &&
+                    l.y >= enemy.y && l.y <= enemy.y + enemy.height) {
+
+                    createFullExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color);
+                    fullEnemies.splice(i, 1);
+                    fullLasers.splice(j, 1);
+
+                    fullScore += 10 * fullWave;
+                    if (fullScoreVal) fullScoreVal.textContent = fullScore;
+
+                    if (fullScore > fullHighscore) {
+                        fullHighscore = fullScore;
+                        localStorage.setItem('full_game_highscore', fullHighscore);
+                        if (fullHighscoreVal) fullHighscoreVal.textContent = fullHighscore;
+                    }
+                    break;
+                }
+            }
+
+            // Enemy collision with bottom or player
+            if (enemy) {
+                const hitsPlayer = (
+                    enemy.x + enemy.width >= fullPlayer.x &&
+                    enemy.x <= fullPlayer.x + fullPlayer.width &&
+                    enemy.y + enemy.height >= fullPlayer.y &&
+                    enemy.y <= fullPlayer.y + fullPlayer.height
+                );
+
+                if (enemy.y + enemy.height >= fullCanvas.height - 10 || hitsPlayer) {
+                    fullLives--;
+                    updateFullLivesDisplay();
+                    createFullExplosion(fullPlayer.x + fullPlayer.width / 2, fullPlayer.y + fullPlayer.height / 2, '#ff5f56');
+
+                    if (fullLives <= 0) {
+                        endFullWebsiteGame();
+                        return;
+                    } else {
+                        spawnFullEnemyWave(fullWave);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Wave Completion Check
+        if (initialEnemyCount > 0 && fullEnemies.length === 0) {
+            fullWave++;
+            if (fullWaveVal) fullWaveVal.textContent = fullWave;
+            showToast(`WAVE ${fullWave} ENGAGED! Enemies Faster!`, 'success');
+            spawnFullEnemyWave(fullWave);
+        }
+
+        // Particles
+        for (let i = fullParticles.length - 1; i >= 0; i--) {
+            const p = fullParticles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life--;
+            fullCtx.shadowColor = p.color;
+            fullCtx.fillStyle = p.color;
+            fullCtx.fillRect(p.x, p.y, 3, 3);
+
+            if (p.life <= 0) {
+                fullParticles.splice(i, 1);
+            }
+        }
+
+        fullCtx.shadowBlur = 0;
+        fullGameAnimId = requestAnimationFrame(updateFullGameLoop);
+    }
+
+    function updateFullLivesDisplay() {
+        if (!fullLivesVal) return;
+        if (fullLives === 3) fullLivesVal.textContent = '❤️❤️❤️';
+        else if (fullLives === 2) fullLivesVal.textContent = '❤️❤️';
+        else if (fullLives === 1) fullLivesVal.textContent = '❤️';
+        else fullLivesVal.textContent = '💀';
+    }
+
+    function endFullWebsiteGame() {
+        fullGameRunning = false;
+        if (fullCtx && fullCanvas) {
+            fullCtx.fillStyle = 'rgba(5, 7, 12, 0.92)';
+            fullCtx.fillRect(0, 0, fullCanvas.width, fullCanvas.height);
+            fullCtx.font = 'bold 36px "Space Grotesk", sans-serif';
+            fullCtx.fillStyle = '#ff5f56';
+            fullCtx.textAlign = 'center';
+            fullCtx.fillText('GAME OVER', fullCanvas.width / 2, fullCanvas.height / 2 - 20);
+            fullCtx.font = '16px "Fira Code", monospace';
+            fullCtx.fillStyle = '#00f2fe';
+            fullCtx.fillText(`FINAL SCORE: ${fullScore} | WAVE REACHED: ${fullWave}`, fullCanvas.width / 2, fullCanvas.height / 2 + 25);
+            fullCtx.fillStyle = '#94a3b8';
+            fullCtx.fillText("Press [ESC] or click EXIT GAME to return to desktop", fullCanvas.width / 2, fullCanvas.height / 2 + 65);
+        }
+    }
+
+    if (fullCanvas) {
+        fullCanvas.addEventListener('mousemove', (e) => {
+            if (!fullGameRunning) return;
+            const rect = fullCanvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            fullPlayer.x = Math.max(0, Math.min(fullCanvas.width - fullPlayer.width, mouseX - fullPlayer.width / 2));
+        });
+
+        fullCanvas.addEventListener('mousedown', () => {
+            if (fullGameRunning) fireFullLaser();
+        });
+    }
+
+    if (fullExitBtn) {
+        fullExitBtn.addEventListener('click', exitFullWebsiteGame);
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (fullGameRunning) {
+            if (e.key === 'Escape') {
+                exitFullWebsiteGame();
+                return;
+            }
+            if (['ArrowLeft', 'ArrowRight', 'a', 'A', 'd', 'D', ' '].includes(e.key)) {
+                e.preventDefault();
+                fullKeys[e.key] = true;
+                if (e.key === ' ') fireFullLaser();
+            }
+        }
+    });
+
+    window.addEventListener('keyup', (e) => {
+        if (fullGameRunning) {
+            fullKeys[e.key] = false;
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        if (fullGameRunning) resizeFullCanvas();
+    });
+
     function processTerminalCommand(cmd) {
         // Output prompt echo
         appendTermLine(`<span class="terminal-prompt">visitor@os:~$</span> ${cmd}`);
@@ -471,11 +1186,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">experience</span>: Professional & organization experiences</div>
                     <div>- <span class="term-highlight">timeline</span>: Education and certifications</div>
                     <div>- <span class="term-highlight">contact</span>: Access email and contact details</div>
+                    <div>- <span class="term-highlight">game</span>: Launch Full-Viewport Canvas Space Invaders Game 👾</div>
+                    <div>- <span class="term-highlight">fullscreen / immersive</span>: Toggle Immersive Dark CRT Terminal 📺</div>
+                    <div>- <span class="term-highlight">theme [light|dark|toggle]</span>: Switch UI light/dark mode ☀️🌙</div>
                     <div>- <span class="term-highlight">snake</span>: Play Classic Snake game</div>
                     <div>- <span class="term-highlight">neofetch</span>: System summary report</div>
                     <div>- <span class="term-highlight">clear</span>: Clear terminal console screen</div>
                     <div>- <span class="term-highlight">sudo [command]</span>: Request superuser elevation</div>
                 `);
+                break;
+            case 'theme':
+                if (args.length > 0) {
+                    const mode = args[0].toLowerCase();
+                    if (mode === 'light') setTheme('light');
+                    else if (mode === 'dark') setTheme('dark');
+                    else if (mode === 'toggle') toggleTheme();
+                    else appendTermLine(`<div>Usage: <span class="term-highlight">theme light</span>, <span class="term-highlight">theme dark</span>, or <span class="term-highlight">theme toggle</span></div>`);
+                } else {
+                    toggleTheme();
+                }
+                break;
+            case 'fullscreen':
+            case 'immersive':
+                toggleTerminalImmersive();
+                break;
+            case 'game':
+            case 'invaders':
+            case 'space':
+                appendTermLine(`<div>Launching <span class="term-highlight">Full-Viewport Space Invaders</span> game overlay...</div>`);
+                startFullWebsiteGame();
                 break;
             case 'about':
             case 'profile':
@@ -537,7 +1276,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div><span class="term-highlight">Education:</span> B.Tech in CSE at College of Engineering, Attingal (2025-2029)</div>
                         <div><span class="term-highlight">Experience:</span> Media Team @ IEEE SB CEAL | Media Team @ FOSS SB CEAL | Media Lead @ ISTE</div>
                         <div><span class="term-highlight">Primary Stack:</span> Python, C/C++, ESP32, Edge AI, Data Analytics</div>
-                        <div><span class="term-highlight">Email:</span> ugsidharth@icloud.com</div>
+                        <div><span class="term-highlight">Email:</span> mail@ugsidharth.in</div>
                         <div><span class="term-highlight">Location:</span> Kazhakkoottam, Kerala</div>
                         <div>------------------------------------</div>
                         <div>Command Options:</div>
@@ -572,8 +1311,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">Location:</span> Kazhakkoottam, Kerala, India</div>
                 `);
                 break;
+            case 'quit':
+            case 'exit':
+                if (termGameRunning) {
+                    exitTerminalGame();
+                } else {
+                    appendTermLine(`<div>Type <span class="term-highlight">'help'</span> for available options.</div>`);
+                }
+                break;
             case 'snake':
-            case 'game':
                 appendTermLine(`<div>Launching <span class="term-highlight">Snake.app</span> Classic Snake...</div>`);
                 openApp('snake');
                 break;

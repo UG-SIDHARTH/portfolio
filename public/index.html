@@ -740,12 +740,21 @@
                     <div class="window-controls">
                         <button class="win-btn minimize-btn" data-control="minimize" aria-label="Minimize">&#9472;</button>
                         <button class="win-btn maximize-btn" data-control="maximize" aria-label="Maximize">&#9633;</button>
+                        <button class="win-btn immersive-btn" id="terminal-immersive-btn" title="Toggle Immersive Fullscreen Dark Mode" aria-label="Toggle Immersive Terminal">📺</button>
                         <button class="win-btn close-btn" data-control="close" aria-label="Close">&#10005;</button>
                     </div>
                     <div class="window-title">💻 Terminal.app - bash</div>
                     <div class="window-spacer"></div>
                 </div>
-                <div class="window-body terminal-body">
+                <div class="window-body terminal-body" style="position: relative;">
+                    <div class="crt-scanline-overlay"></div>
+                    <div id="terminal-game-container" style="display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 10; background: #07090e; flex-direction: column; align-items: center; justify-content: center;">
+                        <div id="terminal-game-hud" style="width: 100%; padding: 6px 12px; display: flex; justify-content: space-between; font-family: var(--ff-terminal); font-size: 0.8rem; background: rgba(0,242,254,0.08); border-bottom: 1px solid rgba(0,242,254,0.2); color: var(--color-cyan);">
+                            <div class="hud-left">SCORE: <span id="term-game-score" style="color: #fff; font-weight: bold;">0</span> | WAVE: <span id="term-game-wave" style="color: #ffbd2e; font-weight: bold;">1</span></div>
+                            <div class="hud-right">LIVES: <span id="term-game-lives" style="letter-spacing: 2px;">❤️❤️❤️</span> | <span style="color: #94a3b8; font-size: 0.75rem;">[ESC / 'quit' to exit]</span></div>
+                        </div>
+                        <canvas id="terminal-game-canvas" width="650" height="320" style="width: 100%; height: calc(100% - 32px); display: block; cursor: crosshair;"></canvas>
+                    </div>
                     <div class="terminal-output" id="terminal-output">
                         <div>OS v1.0.6 (tty1) - Interactive shell</div>
                         <div>Logged in as visitor@os-portfolio</div>
@@ -972,6 +981,10 @@
             
             <!-- System tray on the right corner -->
             <div id="system-tray" class="glass-card">
+                <button class="tray-theme-btn" id="tray-theme-toggle" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
+                    <span class="theme-icon" id="tray-theme-icon">🌙</span>
+                </button>
+                <span class="tray-divider">|</span>
                 <span class="tray-telemetry" id="tray-stats">CPU: 1.5% | ONLINE</span>
                 <span class="tray-divider">|</span>
                 <span class="tray-clock" id="tray-clock">10:00:00 PM</span>
@@ -1020,8 +1033,8 @@
     <span class="code-keyword">"name"</span>: <span class="code-string">"Sidharth D"</span>,
     <span class="code-keyword">"specialization"</span>: <span class="code-string">"Developer, IoT Engineer, ML Enthusiast"</span>,
     <span class="code-keyword">"location"</span>: <span class="code-string">"Kazhakkoottam, Kerala"</span>,
-    <span class="code-keyword">"email"</span>: <span class="code-string">"ugsidharth@icloud.com"</span>,
-    <span class="code-keyword">"phone"</span>: <span class="code-string">"+91 9846524801"</span>,
+    <span class="code-keyword">"email"</span>: <span class="code-string">"mail@ugsidharth.in"</span>,
+    <span class="code-keyword">"phone"</span>: <span class="code-string">"+91 (Protected - Use Mail.app)"</span>,
     <span class="code-keyword">"github"</span>: <span class="code-string">"github.com/ugsidharth"</span>
   },
   <span class="code-keyword">"skills"</span>: {
@@ -1088,6 +1101,22 @@
   <span class="code-attr">--color-cyan</span>: <span class="code-number">#00f2fe</span>;
   <span class="code-attr">--border-glow</span>: <span class="code-string">rgba(0, 242, 254, 0.35)</span>;
 }</template>
+
+    <!-- Full-Viewport Canvas Overlay Space Shooter Game -->
+    <div id="full-game-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999; backdrop-filter: blur(14px); background: rgba(5, 7, 12, 0.88); flex-direction: column; align-items: center; justify-content: center; user-select: none;">
+        <div id="full-game-hud" style="width: 100%; max-width: 1100px; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; font-family: var(--ff-terminal); font-size: 0.95rem; background: rgba(0, 242, 254, 0.08); border-bottom: 1px solid rgba(0, 242, 254, 0.25); color: var(--color-cyan); box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);">
+            <div class="hud-left" style="display: flex; gap: 20px;">
+                <span>SCORE: <strong id="full-game-score" style="color: #fff;">0</strong></span>
+                <span>WAVE: <strong id="full-game-wave" style="color: #ffbd2e;">1</strong></span>
+                <span>HIGH SCORE: <strong id="full-game-highscore" style="color: #27c93f;">0</strong></span>
+            </div>
+            <div class="hud-right" style="display: flex; align-items: center; gap: 20px;">
+                <span>LIVES: <span id="full-game-lives" style="letter-spacing: 3px; font-size: 1.1rem;">❤️❤️❤️</span></span>
+                <button id="full-game-exit-btn" style="background: rgba(255, 95, 86, 0.15); border: 1px solid #ff5f56; color: #ff5f56; padding: 4px 14px; font-family: var(--ff-terminal); font-weight: 600; font-size: 0.85rem; border-radius: 4px; cursor: pointer; transition: all 0.2s ease;">EXIT GAME [ESC]</button>
+            </div>
+        </div>
+        <canvas id="full-game-canvas" width="1200" height="700" style="width: 100%; height: calc(100vh - 60px); display: block; cursor: crosshair;"></canvas>
+    </div>
 
     <!-- Custom JS -->
     <script src="script.js"></script>

@@ -11,10 +11,13 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 # Copy application source files
-COPY . .
+COPY --chown=node:node . .
+
+# Set ownership and switch to non-root user for security
+USER node
 
 # Expose server port
-EXPOSE 3000
+EXPOSE 3500
 
 # Start Express backend
 CMD ["npm", "start"]

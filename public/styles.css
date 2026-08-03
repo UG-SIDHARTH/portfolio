@@ -2190,6 +2190,212 @@ html, body {
     }
 }
 
+/* ==========================================================================
+   Light Theme Custom Properties & Styles Overrides
+   ========================================================================== */
+[data-theme="light"] {
+    --bg-primary: #e2e8f0;
+    --bg-secondary: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.82);
+    --bg-card-focus: rgba(255, 255, 255, 0.95);
+    
+    --color-cyan: #007acc;
+    --color-purple: #6b21a8;
+    --color-red: #e11d48;
+    --color-yellow: #d97706;
+    --color-green: #16a34a;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    
+    --border-color: rgba(15, 23, 42, 0.12);
+    --border-glow: rgba(0, 122, 204, 0.4);
+}
+
+/* Light Mode Global & Component Overrides */
+[data-theme="light"] html,
+[data-theme="light"] body {
+    background-color: #e2e8f0;
+    background: radial-gradient(circle at 50% 50%, #f8fafc 0%, #cbd5e1 100%);
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .glass-card {
+    background: var(--bg-card);
+    border-color: rgba(15, 23, 42, 0.12);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .window-header {
+    background: rgba(241, 245, 249, 0.92);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .window-title {
+    color: #0f172a;
+}
+
+[data-theme="light"] .desktop-icon .icon-label {
+    color: #0f172a;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .desktop-icon:hover {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] #system-tray,
+[data-theme="light"] #dock {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(15, 23, 42, 0.12);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    color: #0f172a;
+}
+
+[data-theme="light"] .tray-telemetry,
+[data-theme="light"] .tray-clock {
+    color: #334155;
+}
+
+[data-theme="light"] .dock-tooltip {
+    background: #0f172a;
+    color: #f8fafc;
+}
+
+[data-theme="light"] #start-menu {
+    background: rgba(255, 255, 255, 0.94);
+    border-color: rgba(15, 23, 42, 0.15);
+    color: #0f172a;
+}
+
+[data-theme="light"] .start-shortcut-item,
+[data-theme="light"] .start-action-btn {
+    color: #334155;
+}
+
+[data-theme="light"] .start-shortcut-item:hover,
+[data-theme="light"] .start-action-btn:hover {
+    background: rgba(0, 122, 204, 0.1);
+    color: #007acc;
+}
+
+/* Light/Dark Tray Toggle Button */
+.tray-theme-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    transition: transform 0.2s ease;
+}
+
+.tray-theme-btn:hover {
+    transform: scale(1.2);
+}
+
+/* Ensure Terminal remains DARK authentic even in Light Theme */
+[data-theme="light"] .terminal-body,
+[data-theme="light"] #window-terminal .window-body {
+    background-color: #07090e !important;
+    color: #f1f5f9 !important;
+}
+
+[data-theme="light"] #window-terminal .terminal-output,
+[data-theme="light"] #window-terminal .terminal-prompt {
+    color: #00f2fe !important;
+}
+
+/* ==========================================================================
+   Immersive Dark Terminal Mode & CRT Scanlines
+   ========================================================================== */
+.window.immersive-terminal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 99999 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.window.immersive-terminal .window-header {
+    background: #05070a !important;
+    border-bottom: 1px solid rgba(0, 242, 254, 0.25) !important;
+}
+
+.window.immersive-terminal .terminal-body {
+    background-color: #030508 !important;
+    font-family: var(--ff-terminal) !important;
+}
+
+/* CRT Scanlines Overlay */
+.crt-scanline-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    opacity: 0.6;
+}
+
+.window.immersive-terminal .terminal-output,
+.window.immersive-terminal .terminal-prompt,
+.window.immersive-terminal #terminal-input {
+    color: var(--color-cyan) !important;
+    text-shadow: 0 0 6px rgba(0, 242, 254, 0.6), 0 0 12px rgba(0, 242, 254, 0.3);
+    font-weight: 500;
+}
+
+.win-btn.immersive-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0 4px;
+    transition: transform 0.15s ease;
+}
+
+.win-btn.immersive-btn:hover {
+    transform: scale(1.2);
+}
+
+/* ==========================================================================
+   Full-Viewport Canvas Space Invaders Game Overlay
+   ========================================================================== */
+#full-game-overlay {
+    box-shadow: inset 0 0 50px rgba(0, 242, 254, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+#full-game-canvas {
+    background: radial-gradient(circle at 50% 50%, #0c101d 0%, #040508 100%);
+}
+
+#full-game-exit-btn:hover {
+    background: #ff5f56 !important;
+    color: #000 !important;
+    box-shadow: 0 0 12px rgba(255, 95, 86, 0.5);
+}
+
+
+
 
 
 

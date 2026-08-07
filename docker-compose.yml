@@ -5,13 +5,15 @@ services:
     restart: always
     ports:
       - "3500:3500"
+    env_file:
+      - .env
     volumes:
-      - ./data/messages.json:/usr/src/app/data/messages.json
+      - ./data:/usr/src/app/data
     environment:
       - PORT=3500
       - NODE_ENV=production
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:3500/').then(r => r.ok ? process.exit(0) : process.exit(1))"]
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3500/').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"]
       interval: 30s
-      timeout: 10s
+      timeout: 5s
       retries: 3

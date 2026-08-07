@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: "MOUNTING CYBERPUNK PARTICLE LAYERS... OK", type: "success" },
         { text: "DECRYPTING PORTFOLIO DATA ARTIFACTS...", type: "info" },
         { text: "DECRYPTING GRABSTER / MEDIAHUB MODULES... SUCCESS", type: "success" },
+        { text: "DECRYPTING QR LINKTREE & BIO STUDIO MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING OS DESKTOP INTERFACES... SUCCESS", type: "success" },
         { text: "SYSTEM DIAGNOSTICS: STATUS_OK (0)", type: "success" },
         { text: "BOOT SEQUENCE FINISHED. STARTING GUI CLIENT...", type: "info" }

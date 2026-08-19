@@ -22,7 +22,7 @@ This portfolio is an interactive Web OS desktop interface built with vanilla HTM
 
 1. **Profile.app (About Me):** A general profile window detailing Sidharth's focus areas, biography, social hubs, and geolocation metadata (with phone number omitted).
 2. **Skills.app (Skills Directory):** A categorized skills directory filtered dynamically via tab selections (Languages, IoT & Hardware, AI/ML, Design & Media).
-3. **Projects.app (Showcase):** A grid card display highlighting featured engineering projects including **CrispCompress** and **QR Linktree**.
+3. **Projects.app (Showcase):** A grid card display highlighting featured engineering projects including **NOVARA**, **CrispCompress**, and **QR Linktree**.
 4. **VS_Code.app (Interactive Code Editor):** A simulated file-viewer editor that mimics the VS Code coding environment. Users can toggle tabs to preview Sidharth's index.html, styles.css, script.js, or resume.json code snippets.
 5. **Timeline.app (Education & Certs):** A glowing vertical academic path listing B.Tech CSE details and professional AI/ML analyst credentials.
 6. **Terminal.app (Interactive Command Line):** A retro-futuristic interactive shell prompt. Visitors can input terminal queries to print resume contents.

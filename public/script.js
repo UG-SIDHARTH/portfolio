@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: "CHECKING SECURE MESSAGE LOG CONNECTIONS... PORT_3500", type: "default" },
         { text: "MOUNTING CYBERPUNK PARTICLE LAYERS... OK", type: "success" },
         { text: "DECRYPTING PORTFOLIO DATA ARTIFACTS...", type: "info" },
+        { text: "DECRYPTING NOVARA MEDIA DOWNLOADER MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING CRISPCOMPRESS MEDIA ENGINE MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING GRABSTER / MEDIAHUB MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING QR LINKTREE & BIO STUDIO MODULES... SUCCESS", type: "success" },
@@ -1315,6 +1316,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">about</span>: Details on who I am</div>
                     <div>- <span class="term-highlight">skills</span>: Technical skills roster</div>
                     <div>- <span class="term-highlight">projects</span>: View areas of focus</div>
+                    <div>- <span class="term-highlight">novara</span>: Fast, Simple, High Quality Media Downloader ⚡</div>
                     <div>- <span class="term-highlight">crispcompress</span>: 100% Client-Side Media Compressor & Converter</div>
                     <div>- <span class="term-highlight">resume</span>: View and download my professional resume</div>
                     <div>- <span class="term-highlight">experience</span>: Professional & organization experiences</div>
@@ -1366,30 +1368,40 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'projects':
                 appendTermLine(`
                     <div>Portfolio Projects:</div>
-                    <div>1. <span class="term-highlight">CrispCompress Media Studio 🗜️</span></div>
+                    <div>1. <span class="term-highlight">NOVARA Media Stream & Downloader ⚡</span></div>
+                    <div>   - Description: Fast, simple, high-quality media downloader for YouTube, Pinterest, X, Facebook, and Instagram.</div>
+                    <div>   - Live Demo: <a href="https://crispcompress.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">crispcompress.ugsidharth.in</a></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/NOVARA" target="_blank" style="color: var(--color-cyan);">GitHub/NOVARA</a></div>
+                    <br>
+                    <div>2. <span class="term-highlight">CrispCompress Media Studio 🗜️</span></div>
                     <div>   - Description: 100% Client-Side private media compressor & converter for videos (up to 1.5GB) and photos.</div>
                     <div>   - Live Demo: <a href="https://crispcompress.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">crispcompress.ugsidharth.in</a></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/OMNI-PDF" target="_blank" style="color: var(--color-cyan);">GitHub/OMNI-PDF</a></div>
                     <br>
-                    <div>2. <span class="term-highlight">QR Linktree & Bio Studio 🔗</span></div>
+                    <div>3. <span class="term-highlight">QR Linktree & Bio Studio 🔗</span></div>
                     <div>   - Description: Bio card creator and dynamic high-resolution QR code generator studio.</div>
                     <div>   - Live Demo: <a href="https://qrcreater.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">qrcreater.ugsidharth.in</a></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/qr" target="_blank" style="color: var(--color-cyan);">GitHub/qr</a></div>
                     <br>
-                    <div>3. <span class="term-highlight">Smart Monitor Backend 📡</span></div>
+                    <div>4. <span class="term-highlight">Smart Monitor Backend 📡</span></div>
                     <div>   - Description: Telemetry processing backend for real-time sensor monitoring.</div>
                     <div>   - Status: <span style="color: #ff5f56;">Offline Backend Module</span></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/project" target="_blank" style="color: var(--color-cyan);">GitHub/project</a></div>
                     <br>
-                    <div>4. <span class="term-highlight">Football Outcome Predictor ⚽</span></div>
+                    <div>5. <span class="term-highlight">Football Outcome Predictor ⚽</span></div>
                     <div>   - Description: Machine learning team statistics outcome predictive model.</div>
                     <div>   - Status: <span style="color: #ff5f56;">Prediction Model Offline</span></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/Football-Match-Outcome-Predictor/tree/main" target="_blank" style="color: var(--color-cyan);">GitHub/Predictor</a></div>
-                    <br>
-                    <div>5. <span class="term-highlight">Project Front-End 🌐</span></div>
-                    <div>   - Description: Device telemetry frontend and real-time dashboard view.</div>
-                    <div>   - Status: <span style="color: #ff5f56;">Client Interface Offline</span></div>
-                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/PROJECT-FRONT-END/tree/main" target="_blank" style="color: var(--color-cyan);">GitHub/Front-End</a></div>
+                `);
+                break;
+            case 'novara':
+            case 'downloader':
+                appendTermLine(`
+                    <div><span class="term-highlight">NOVARA • Fast, Simple, High Quality Media Downloader ⚡</span></div>
+                    <div>- Description: Stream audio, video, and photos from YouTube, Pinterest, X, Facebook, and Instagram automatically without ads or trackers.</div>
+                    <div>- Web App Live Demo: <a href="https://crispcompress.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">https://crispcompress.ugsidharth.in/</a></div>
+                    <div>- Source Repository: <a href="https://github.com/UG-SIDHARTH/NOVARA" target="_blank" style="color: var(--color-cyan);">https://github.com/UG-SIDHARTH/NOVARA</a></div>
+                    <div>- Features: Multi-Platform Media Stream & Audio/Video Downloader without ads or trackers.</div>
                 `);
                 break;
             case 'crispcompress':

@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: "CHECKING SECURE MESSAGE LOG CONNECTIONS... PORT_3500", type: "default" },
         { text: "MOUNTING CYBERPUNK PARTICLE LAYERS... OK", type: "success" },
         { text: "DECRYPTING PORTFOLIO DATA ARTIFACTS...", type: "info" },
+        { text: "DECRYPTING OMNIPDF PRO MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING NOVARA MEDIA DOWNLOADER MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING CRISPCOMPRESS MEDIA ENGINE MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING GRABSTER / MEDIAHUB MODULES... SUCCESS", type: "success" },
@@ -1316,6 +1317,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">about</span>: Details on who I am</div>
                     <div>- <span class="term-highlight">skills</span>: Technical skills roster</div>
                     <div>- <span class="term-highlight">projects</span>: View areas of focus</div>
+                    <div>- <span class="term-highlight">omnipdf</span>: Privacy-First PDF & Image Suite 📄</div>
                     <div>- <span class="term-highlight">novara</span>: Fast, Simple, High Quality Media Downloader ⚡</div>
                     <div>- <span class="term-highlight">crispcompress</span>: 100% Client-Side Media Compressor & Converter</div>
                     <div>- <span class="term-highlight">resume</span>: View and download my professional resume</div>
@@ -1368,30 +1370,35 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'projects':
                 appendTermLine(`
                     <div>Portfolio Projects:</div>
-                    <div>1. <span class="term-highlight">NOVARA Media Stream & Downloader ⚡</span></div>
+                    <div>1. <span class="term-highlight">OmniPDF PRO (PDF & Image Suite) 📄</span></div>
+                    <div>   - Description: Privacy-first suite to merge, split, remove pages, compress, & convert PDFs and images.</div>
+                    <div>   - Live Demo: <a href="https://omnipdf.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">omnipdf.ugsidharth.in</a></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/OMNI-PDF" target="_blank" style="color: var(--color-cyan);">GitHub/OMNI-PDF</a></div>
+                    <br>
+                    <div>2. <span class="term-highlight">NOVARA Media Stream & Downloader ⚡</span></div>
                     <div>   - Description: Fast, simple, high-quality media downloader for YouTube, Pinterest, X, Facebook, and Instagram.</div>
                     <div>   - Live Demo: <a href="https://crispcompress.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">crispcompress.ugsidharth.in</a></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/NOVARA" target="_blank" style="color: var(--color-cyan);">GitHub/NOVARA</a></div>
                     <br>
-                    <div>2. <span class="term-highlight">CrispCompress Media Studio 🗜️</span></div>
+                    <div>3. <span class="term-highlight">CrispCompress Media Studio 🗜️</span></div>
                     <div>   - Description: 100% Client-Side private media compressor & converter for videos (up to 1.5GB) and photos.</div>
                     <div>   - Live Demo: <a href="https://crispcompress.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">crispcompress.ugsidharth.in</a></div>
-                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/OMNI-PDF" target="_blank" style="color: var(--color-cyan);">GitHub/OMNI-PDF</a></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/CrispCompress" target="_blank" style="color: var(--color-cyan);">GitHub/CrispCompress</a></div>
                     <br>
-                    <div>3. <span class="term-highlight">QR Linktree & Bio Studio 🔗</span></div>
+                    <div>4. <span class="term-highlight">QR Linktree & Bio Studio 🔗</span></div>
                     <div>   - Description: Bio card creator and dynamic high-resolution QR code generator studio.</div>
                     <div>   - Live Demo: <a href="https://qrcreater.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">qrcreater.ugsidharth.in</a></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/qr" target="_blank" style="color: var(--color-cyan);">GitHub/qr</a></div>
-                    <br>
-                    <div>4. <span class="term-highlight">Smart Monitor Backend 📡</span></div>
-                    <div>   - Description: Telemetry processing backend for real-time sensor monitoring.</div>
-                    <div>   - Status: <span style="color: #ff5f56;">Offline Backend Module</span></div>
-                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/project" target="_blank" style="color: var(--color-cyan);">GitHub/project</a></div>
-                    <br>
-                    <div>5. <span class="term-highlight">Football Outcome Predictor ⚽</span></div>
-                    <div>   - Description: Machine learning team statistics outcome predictive model.</div>
-                    <div>   - Status: <span style="color: #ff5f56;">Prediction Model Offline</span></div>
-                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/Football-Match-Outcome-Predictor/tree/main" target="_blank" style="color: var(--color-cyan);">GitHub/Predictor</a></div>
+                `);
+                break;
+            case 'omnipdf':
+            case 'pdf':
+                appendTermLine(`
+                    <div><span class="term-highlight">OmniPDF PRO • Privacy-First PDF & Image Suite 📄</span></div>
+                    <div>- Description: Fast, secure, and easy-to-use suite for merging, splitting, removing pages, compressing, and converting PDFs & images. Encrypted transit and automatic file deletion.</div>
+                    <div>- Web App Live Demo: <a href="https://omnipdf.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">https://omnipdf.ugsidharth.in/</a></div>
+                    <div>- Source Repository: <a href="https://github.com/UG-SIDHARTH/OMNI-PDF" target="_blank" style="color: var(--color-cyan);">https://github.com/UG-SIDHARTH/OMNI-PDF</a></div>
+                    <div>- Features: Merge PDF, Split PDF, Remove Pages, Compress PDF, Convert PDF, Image Tools.</div>
                 `);
                 break;
             case 'novara':
@@ -1406,12 +1413,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 'crispcompress':
             case 'compress':
-            case 'omni-pdf':
                 appendTermLine(`
                     <div><span class="term-highlight">CrispCompress PRO • 100% Client-Side Media Compressor & Converter</span></div>
                     <div>- Description: High-performance browser-based video & photo compressor and format converter.</div>
                     <div>- Web App Live Demo: <a href="https://crispcompress.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">https://crispcompress.ugsidharth.in/</a></div>
-                    <div>- Source Repository: <a href="https://github.com/UG-SIDHARTH/OMNI-PDF" target="_blank" style="color: var(--color-cyan);">https://github.com/UG-SIDHARTH/OMNI-PDF</a></div>
+                    <div>- Source Repository: <a href="https://github.com/UG-SIDHARTH/CrispCompress" target="_blank" style="color: var(--color-cyan);">https://github.com/UG-SIDHARTH/CrispCompress</a></div>
                     <div>- Features: 100% Client-Side Privacy, MP4/WebM/MOV Video & WebP/JPG/PNG Photo Presets, Batch Processing.</div>
                 `);
                 break;

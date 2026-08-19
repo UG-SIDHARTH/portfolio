@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { text: "CHECKING SECURE MESSAGE LOG CONNECTIONS... PORT_3500", type: "default" },
         { text: "MOUNTING CYBERPUNK PARTICLE LAYERS... OK", type: "success" },
         { text: "DECRYPTING PORTFOLIO DATA ARTIFACTS...", type: "info" },
+        { text: "DECRYPTING CRISPCOMPRESS MEDIA ENGINE MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING GRABSTER / MEDIAHUB MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING QR LINKTREE & BIO STUDIO MODULES... SUCCESS", type: "success" },
         { text: "DECRYPTING OS DESKTOP INTERFACES... SUCCESS", type: "success" },
@@ -1314,6 +1315,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>- <span class="term-highlight">about</span>: Details on who I am</div>
                     <div>- <span class="term-highlight">skills</span>: Technical skills roster</div>
                     <div>- <span class="term-highlight">projects</span>: View areas of focus</div>
+                    <div>- <span class="term-highlight">crispcompress</span>: 100% Client-Side Media Compressor & Converter</div>
                     <div>- <span class="term-highlight">resume</span>: View and download my professional resume</div>
                     <div>- <span class="term-highlight">experience</span>: Professional & organization experiences</div>
                     <div>- <span class="term-highlight">timeline</span>: Education and certifications</div>
@@ -1364,15 +1366,15 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'projects':
                 appendTermLine(`
                     <div>Portfolio Projects:</div>
-                    <div>1. <span class="term-highlight">Grabster / MediaHub Downloader ⚡</span></div>
-                    <div>   - Description: Self-hosted video/audio downloader powered by yt-dlp session streams.</div>
-                    <div>   - Live Demo: <a href="https://novara.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">novara.ugsidharth.in</a></div>
-                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/Grabster-5.0" target="_blank" style="color: var(--color-cyan);">GitHub/Grabster-5.0</a></div>
+                    <div>1. <span class="term-highlight">CrispCompress Media Studio 🗜️</span></div>
+                    <div>   - Description: 100% Client-Side private media compressor & converter for videos (up to 1.5GB) and photos.</div>
+                    <div>   - Live Demo: <a href="https://crispcompress.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">crispcompress.ugsidharth.in</a></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/OMNI-PDF" target="_blank" style="color: var(--color-cyan);">GitHub/OMNI-PDF</a></div>
                     <br>
-                    <div>2. <span class="term-highlight">OS (WebOS Portfolio) 🖥️</span></div>
-                    <div>   - Description: Interactive glassmorphic desktop environment displaying profile stats and timelines.</div>
-                    <div>   - Live Demo: <a href="https://ug-sidharth.github.io/portfolio" target="_blank" style="color: var(--color-cyan);">ug-sidharth.github.io/portfolio</a></div>
-                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/portfolio" target="_blank" style="color: var(--color-cyan);">GitHub/portfolio</a></div>
+                    <div>2. <span class="term-highlight">QR Linktree & Bio Studio 🔗</span></div>
+                    <div>   - Description: Bio card creator and dynamic high-resolution QR code generator studio.</div>
+                    <div>   - Live Demo: <a href="https://qrcreater.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">qrcreater.ugsidharth.in</a></div>
+                    <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/qr" target="_blank" style="color: var(--color-cyan);">GitHub/qr</a></div>
                     <br>
                     <div>3. <span class="term-highlight">Smart Monitor Backend 📡</span></div>
                     <div>   - Description: Telemetry processing backend for real-time sensor monitoring.</div>
@@ -1388,6 +1390,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>   - Description: Device telemetry frontend and real-time dashboard view.</div>
                     <div>   - Status: <span style="color: #ff5f56;">Client Interface Offline</span></div>
                     <div>   - Source Code: <a href="https://github.com/UG-SIDHARTH/PROJECT-FRONT-END/tree/main" target="_blank" style="color: var(--color-cyan);">GitHub/Front-End</a></div>
+                `);
+                break;
+            case 'crispcompress':
+            case 'compress':
+            case 'omni-pdf':
+                appendTermLine(`
+                    <div><span class="term-highlight">CrispCompress PRO • 100% Client-Side Media Compressor & Converter</span></div>
+                    <div>- Description: High-performance browser-based video & photo compressor and format converter.</div>
+                    <div>- Web App Live Demo: <a href="https://crispcompress.ugsidharth.in/" target="_blank" style="color: var(--color-cyan);">https://crispcompress.ugsidharth.in/</a></div>
+                    <div>- Source Repository: <a href="https://github.com/UG-SIDHARTH/OMNI-PDF" target="_blank" style="color: var(--color-cyan);">https://github.com/UG-SIDHARTH/OMNI-PDF</a></div>
+                    <div>- Features: 100% Client-Side Privacy, MP4/WebM/MOV Video & WebP/JPG/PNG Photo Presets, Batch Processing.</div>
                 `);
                 break;
             case 'resume':
